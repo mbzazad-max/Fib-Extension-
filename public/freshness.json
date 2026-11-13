@@ -1,0 +1,60 @@
+{
+ "generated": "2026-11-13 23:42 UTC",
+ "checked_at": 1794613367,
+ "series": [
+  {
+   "id": "btc_d",
+   "title": "BTC Daily",
+   "symbol": "BINANCE:BTCUSDT",
+   "tf": "1D",
+   "series": "binance/BTCUSDT/1D",
+   "source": "Binance spot via Market-Data",
+   "period_s": 86400,
+   "rows": 3375,
+   "last_close": 1794528000,
+   "built_from": 1794441600,
+   "status": "pullback"
+  },
+  {
+   "id": "btc_4h",
+   "title": "BTC 4H",
+   "symbol": "BINANCE:BTCUSDT",
+   "tf": "4H",
+   "series": "binance/BTCUSDT/4H",
+   "source": "Binance spot via Market-Data",
+   "period_s": 14400,
+   "rows": 20234,
+   "last_close": 1794542400,
+   "built_from": 1794528000,
+   "status": "broken"
+  },
+  {
+   "id": "eth_d",
+   "title": "ETH Daily",
+   "symbol": "BINANCE:ETHUSDT",
+   "tf": "1D",
+   "series": "binance/ETHUSDT/1D",
+   "source": "Binance spot via Market-Data",
+   "period_s": 86400,
+   "rows": 3375,
+   "last_close": 1794528000,
+   "built_from": 1794441600,
+   "status": "broken"
+  },
+  {
+   "id": "eth_4h",
+   "title": "ETH 4H",
+   "symbol": "BINANCE:ETHUSDT",
+   "tf": "4H",
+   "series": "binance/ETHUSDT/4H",
+   "source": "Binance spot via Market-Data",
+   "period_s": 14400,
+   "rows": 20234,
+   "last_close": 1794542400,
+   "built_from": 1794528000,
+   "status": "broken"
+  }
+ ],
+ "kept": [],
+ "last_result": "Rebuilt: BTC Daily 2026-11-12 (Pullback forming); BTC 4H 2026-11-13 00:00 (Structure broken); ETH Daily 2026-11-12 (Structure broken); ETH 4H 2026-11-13 00:00 (Structure broken)."
+}

@@ -1,0 +1,176 @@
+{
+ "forecasts": [
+  {
+   "key": "2026-07-01|2026-09-21|2026-10-30",
+   "opened": "2026-11-01",
+   "state": "replaced",
+   "a": "2026-07-01",
+   "b": "2026-09-21",
+   "c": "2026-10-30",
+   "A": 57735,
+   "B": 87374,
+   "C": 76173,
+   "ratio": 0.723,
+   "target": 97606,
+   "zone": [
+    90688,
+    106999
+   ],
+   "last_seen": "2026-11-04",
+   "max_high": 81105,
+   "closed": "2026-11-05",
+   "reason": "Data source switched from TradingView Bitstamp to Binance BTCUSDT (Google Drive)",
+   "source": "BITSTAMP:BTCUSD"
+  },
+  {
+   "key": "2026-07-01|2026-09-21|2026-10-30",
+   "opened": "2026-11-03",
+   "state": "reanchored",
+   "a": "2026-07-01",
+   "b": "2026-09-21",
+   "c": "2026-10-30",
+   "A": 57800,
+   "B": 87396,
+   "C": 76326,
+   "ratio": 0.748,
+   "target": 98459,
+   "zone": [
+    90642,
+    110025
+   ],
+   "last_seen": "2026-11-03",
+   "max_high": 81196,
+   "zone_touched": false,
+   "closed": "2026-11-04",
+   "reason": "New low under C; C moved lower"
+  },
+  {
+   "key": "2026-07-01|2026-09-21|2026-11-04",
+   "opened": "2026-11-04",
+   "state": "reanchored",
+   "a": "2026-07-01",
+   "b": "2026-09-21",
+   "c": "2026-11-04",
+   "A": 57800,
+   "B": 87396,
+   "C": 75736,
+   "ratio": 0.748,
+   "target": 97870,
+   "zone": [
+    90052,
+    109435
+   ],
+   "last_seen": "2026-11-04",
+   "max_high": 81196,
+   "zone_touched": false,
+   "closed": "2026-11-05",
+   "reason": "New low under C; C moved lower"
+  },
+  {
+   "key": "2026-07-01|2026-09-21|2026-11-05",
+   "opened": "2026-11-05",
+   "state": "reanchored",
+   "a": "2026-07-01",
+   "b": "2026-09-21",
+   "c": "2026-11-05",
+   "A": 57800,
+   "B": 87396,
+   "C": 75208,
+   "ratio": 0.748,
+   "target": 97342,
+   "zone": [
+    89524,
+    108907
+   ],
+   "last_seen": "2026-11-05",
+   "max_high": 80918,
+   "zone_touched": false,
+   "closed": "2026-11-06",
+   "reason": "New low under C; C moved lower"
+  },
+  {
+   "key": "2026-07-01|2026-09-21|2026-11-06",
+   "opened": "2026-11-06",
+   "state": "reanchored",
+   "a": "2026-07-01",
+   "b": "2026-09-21",
+   "c": "2026-11-06",
+   "A": 57800,
+   "B": 87396,
+   "C": 74888,
+   "ratio": 0.748,
+   "target": 97021,
+   "zone": [
+    89204,
+    108587
+   ],
+   "last_seen": "2026-11-07",
+   "max_high": 76416,
+   "zone_touched": false,
+   "closed": "2026-11-08",
+   "reason": "New low under C; C moved lower"
+  },
+  {
+   "key": "2026-07-01|2026-09-21|2026-11-08",
+   "opened": "2026-11-08",
+   "state": "reanchored",
+   "a": "2026-07-01",
+   "b": "2026-09-21",
+   "c": "2026-11-08",
+   "A": 57800,
+   "B": 87396,
+   "C": 73510,
+   "ratio": 0.748,
+   "target": 95643,
+   "zone": [
+    87826,
+    107209
+   ],
+   "last_seen": "2026-11-08",
+   "max_high": 76200,
+   "zone_touched": false,
+   "closed": "2026-11-10",
+   "reason": "New low under C; C moved lower"
+  },
+  {
+   "key": "2026-07-01|2026-09-21|2026-11-10",
+   "opened": "2026-11-10",
+   "state": "reanchored",
+   "a": "2026-07-01",
+   "b": "2026-09-21",
+   "c": "2026-11-10",
+   "A": 57800,
+   "B": 87396,
+   "C": 72727,
+   "ratio": 0.748,
+   "target": 94861,
+   "zone": [
+    87043,
+    106426
+   ],
+   "last_seen": "2026-11-10",
+   "max_high": 75442,
+   "zone_touched": false,
+   "closed": "2026-11-12",
+   "reason": "New low under C; C moved lower"
+  },
+  {
+   "key": "2026-07-01|2026-09-21|2026-11-12",
+   "opened": "2026-11-12",
+   "state": "open",
+   "a": "2026-07-01",
+   "b": "2026-09-21",
+   "c": "2026-11-12",
+   "A": 57800,
+   "B": 87396,
+   "C": 71113,
+   "ratio": 0.972,
+   "target": 99870,
+   "zone": [
+    93226,
+    113502
+   ],
+   "last_seen": "2026-11-12"
+  }
+ ]
+}

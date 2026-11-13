@@ -1,0 +1,11 @@
+{
+  "_about": "Four tabs of the BTC & ETH Fib Top Tracker. Each tab = one Market-Data series run through the unchanged engine (engine/fib_top_engine.py, engine/export_dash.py). prefix = the dataset name prefix the page reads (public/data/<prefix><name>.json). log = the tab's forecast log (state/), continued from the artifact's logs.",
+  "market_data": "mbzazad-max/market-data",
+  "tabs": [
+    {"id": "btc_d",  "title": "BTC Daily", "series": "binance/BTCUSDT/1D", "file": "data/binance/BTCUSDT_1D.csv", "period_s": 86400, "profile": "D",  "symbol": "BINANCE:BTCUSDT", "prefix": "",        "log": "state/forecast_log.json"},
+    {"id": "btc_4h", "title": "BTC 4H",    "series": "binance/BTCUSDT/4H", "file": "data/binance/BTCUSDT_4H.csv", "period_s": 14400, "profile": "4H", "symbol": "BINANCE:BTCUSDT", "prefix": "h4_",     "log": "state/forecast_log_4h.json"},
+    {"id": "eth_d",  "title": "ETH Daily", "series": "binance/ETHUSDT/1D", "file": "data/binance/ETHUSDT_1D.csv", "period_s": 86400, "profile": "D",  "symbol": "BINANCE:ETHUSDT", "prefix": "eth_",    "log": "state/forecast_log_eth.json"},
+    {"id": "eth_4h", "title": "ETH 4H",    "series": "binance/ETHUSDT/4H", "file": "data/binance/ETHUSDT_4H.csv", "period_s": 14400, "profile": "4H", "symbol": "BINANCE:ETHUSDT", "prefix": "eth_h4_", "log": "state/forecast_log_eth_4h.json"}
+  ],
+  "datasets": ["summary", "levels", "price", "forecasts", "backtest", "resistance"]
+}

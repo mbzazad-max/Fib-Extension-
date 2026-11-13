@@ -1,0 +1,1101 @@
+<meta name="dash-one-writer">
+<style>
+  .ft-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--cds-gap-md); }
+  .ft-tabs { display: inline-flex; gap: 2px; padding: 2px; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-panel); }
+  .ft-tabs button { font: inherit; font-size: var(--cds-font-size-body); padding: 6px 14px; border: 0; border-radius: var(--cds-radius); background: transparent; color: var(--color-fg-muted); cursor: pointer; }
+  .ft-tabs button[aria-selected="true"] { background: var(--color-bg); color: var(--color-fg); font-weight: 600; box-shadow: 0 0 0 1px var(--color-border-line); }
+  .ft-tabs button:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 2px; }
+  .ft-page { display: grid; gap: var(--cds-gap-lg); }
+  .ft-page[hidden] { display: none; }
+  .ft { display: grid; gap: var(--cds-gap-lg); font-family: var(--font-anthropic-sans); }
+  .ft-head { display: grid; gap: var(--cds-gap-xs); }
+  .ft-title { margin: 0; font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); text-wrap: balance; }
+  .ft-take { margin: 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-body); max-width: 70ch; }
+  .ft .ft-take b, .ft .ft-num b { color: var(--color-fg); font-weight: 600; }
+  .ft-meta { margin: 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+  .ft-pill { display: inline-flex; align-items: center; gap: .4em; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--color-border-line); font-size: var(--cds-font-size-caption); white-space: nowrap; }
+  .ft-pill::before { content: ""; width: .5rem; height: .5rem; border-radius: 50%; background: var(--color-fg-muted); }
+  .ft-pill.is-ok::before { background: var(--color-ok); }
+  .ft-pill.is-warn::before { background: var(--color-warn); }
+  .ft-pill.is-bad::before { background: var(--color-bad); }
+  .ft-tiles { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); }
+  .ft-tile { display: grid; gap: var(--cds-gap-xs); align-content: start; background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md); }
+  .ft-label { margin: 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .ft-big { margin: 0; font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; line-height: 1.15; }
+  .ft-sub { margin: 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+  .ft-grid { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); }
+  .ft-card { display: grid; gap: var(--cds-gap-sm); align-content: start; min-width: 0; background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); }
+  .ft-card h2 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); }
+  .ft-note { margin: 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .ft-chart { position: relative; min-height: 300px; }
+  .ft-chart svg { display: block; overflow: visible; }
+  .ft-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .ft-tip .d { color: var(--cds-text-secondary); }
+  .ft-anchors { display: grid; grid-template-columns: auto 1fr auto auto; gap: var(--cds-gap-xs) var(--cds-gap-md); align-items: baseline; font-variant-numeric: tabular-nums; }
+  .ft-anchors dt { font-weight: 600; }
+  .ft-anchors dd { margin: 0; }
+  .ft-badge { justify-self: end; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--color-border-line); font-size: var(--cds-font-size-caption); white-space: nowrap; }
+  .ft-badge.is-weak { color: var(--color-warn); border-color: var(--color-warn); }
+  .ft-badge.is-confirmed { color: var(--color-ok); border-color: var(--color-ok); }
+  .ft-badge.is-strong { color: var(--color-ok); border-color: var(--color-ok); font-weight: 600; }
+  .ft-badges { margin: 0; padding-left: 1.1em; display: grid; gap: 2px; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+  .ft .ft-badges b { color: var(--color-fg); }
+  .ft-anchors .r { text-align: right; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .ft-scroll { overflow-x: auto; }
+  .ft table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+  .ft th, .ft td { text-align: right; padding: 6px 8px; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+  .ft th:first-child, .ft td:first-child { text-align: left; }
+  .ft th { color: var(--color-fg-muted); font-weight: 500; }
+  .ft tr.is-target td { font-weight: 600; }
+  .ft td.up { color: var(--color-ok); }
+  .ft td.dn { color: var(--color-bad); }
+  .ft ul { margin: 0; padding-left: 1.1em; display: grid; gap: var(--cds-gap-xs); font-size: var(--cds-font-size-body); }
+  .ft-rules li b { font-variant-numeric: tabular-nums; }
+  .ft-checks { display: grid; gap: var(--cds-gap-sm); grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
+  .ft-check { display: flex; gap: var(--cds-gap-sm); align-items: flex-start; padding: var(--cds-pad-sm) var(--cds-pad-md); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); }
+  .ft-check .ft-dot { flex: none; width: .75rem; height: .75rem; margin-top: .3em; border-radius: 50%; border: 2px solid var(--color-fg-muted); }
+  .ft-check.is-on { border-color: var(--color-ok); }
+  .ft-check.is-on .ft-dot { background: var(--color-ok); border-color: var(--color-ok); }
+  .ft-check-t { margin: 0; font-weight: 600; font-size: var(--cds-font-size-body); }
+  .ft-sub-card { display: grid; gap: var(--cds-gap-xs); align-content: start; min-width: 0; }
+  .ft-sub-card h3 { margin: 0; font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); }
+  .ft-rsi { position: relative; min-height: 150px; }
+  .ft tr.in-zone td:first-child { font-weight: 600; }
+  [data-dash-source-state=empty] { color: transparent; }
+  [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+  .ft-fail { display: flex; align-items: center; justify-content: center; gap: .5em; min-height: inherit; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .ft-fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+</style>
+
+<div class="ft">
+  <div class="ft-top">
+    <h1 class="ft-title">BTC &amp; ETH Fib Top Tracker</h1>
+    <div class="ft-tabs" role="tablist" aria-label="Asset and timeframe">
+      <button type="button" role="tab" id="tab-daily" data-tab="daily" aria-selected="true" aria-controls="daily">BTC Daily</button>
+      <button type="button" role="tab" id="tab-h4" data-tab="h4" aria-selected="false" aria-controls="h4">BTC 4H</button>
+      <button type="button" role="tab" id="tab-ethd" data-tab="ethd" aria-selected="false" aria-controls="ethd">ETH Daily</button>
+      <button type="button" role="tab" id="tab-ethh4" data-tab="ethh4" aria-selected="false" aria-controls="ethh4">ETH 4H</button>
+    </div>
+  </div>
+
+  <section class="ft-page" id="daily" data-tf="d" role="tabpanel" aria-labelledby="tab-daily">
+  <header class="ft-head" id="top">
+    <p class="ft-take" data-when="setup">Next projected daily local top <b data-draw="target" data-source="summary" data-field="target" data-row="0">—</b>, likely zone <b data-draw="zlo" data-source="summary" data-field="zone_lo" data-row="0">—</b> to <b data-draw="zhi" data-source="summary" data-field="zone_hi" data-row="0">—</b>. Status: <span class="ft-pill" data-draw="status" data-source="summary" data-field="status_label" data-row="0">—</span></p>
+    <p class="ft-take" data-when="broken" hidden>No daily target right now. Price broke below swing low A, so the model waits for a new higher low before it projects the next top. The lowest point so far is <b data-draw="blow" data-source="summary" data-field="broken_low" data-row="0">—</b> (<span data-draw="blowdate" data-source="summary" data-field="broken_low_date" data-row="0">—</span>). Its strength is <span class="ft-badge" data-draw="blbadge" data-source="summary" data-field="broken_low_strength" data-row="0">—</span>; a daily candle closing above <b data-draw="bconf" data-source="summary" data-field="broken_confirm_at" data-row="0">—</b> confirms it. Status: <span class="ft-pill" data-draw="status" data-source="summary" data-field="status_label" data-row="0">—</span></p>
+    <p class="ft-note" data-draw="note" data-source="summary" data-field="note" data-row="0">—</p>
+    <p class="ft-meta">BINANCE:BTCUSDT daily, from your Google Drive file BTCUSDT_D.xlsx · latest candle <span data-draw="livedate" data-source="summary" data-field="live_date" data-row="0">—</span> · refreshed <span data-draw="gen" data-source="summary" data-field="generated" data-row="0">—</span></p>
+  </header>
+
+  <section class="ft-tiles" id="figures">
+    <div class="ft-tile">
+      <p class="ft-label">Model target</p>
+      <p class="ft-big" data-draw="target" data-source="summary" data-field="target" data-row="0">—</p>
+      <p class="ft-sub">Extension ratio <span data-draw="ratio" data-source="summary" data-field="ratio" data-row="0">—</span> of the A to B leg</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Price now</p>
+      <p class="ft-big" data-draw="close" data-source="summary" data-field="live_close" data-row="0">—</p>
+      <p class="ft-sub"><span data-draw="totarget" data-source="summary" data-field="to_target_pct" data-row="0">—</span> to target</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Backtest hit rate</p>
+      <p class="ft-big" data-draw="bt10" data-source="summary" data-field="bt_within10_pct" data-row="0">—</p>
+      <p class="ft-sub">Top within ±<span data-draw="tol" data-source="summary" data-field="hit_tol" data-row="0">—</span> of target, <span data-draw="btn" data-source="summary" data-field="bt_n" data-row="0">—</span> past tops</p>
+      <p class="ft-sub">Since Mar 2024: <span data-draw="btrecent" data-source="summary" data-field="bt_recent_pct" data-row="0">—</span> of <span data-draw="btrecentn" data-source="summary" data-field="bt_recent_n" data-row="0">—</span> tops</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Live record</p>
+      <p class="ft-big"><span data-draw="lhits" data-source="summary" data-field="live_hits" data-row="0">—</span> / <span data-draw="lscored" data-source="summary" data-field="live_scored" data-row="0">—</span></p>
+      <p class="ft-sub">Hits of scored forecasts · <span data-draw="linv" data-source="summary" data-field="live_invalidated" data-row="0">—</span> re-planned</p>
+    </div>
+  </section>
+
+  <section class="ft-card" id="chart">
+    <h2>Daily price, swing anchors and target zone</h2>
+    <p class="ft-note">Last 240 daily bars. Shaded band is the target zone, the solid line the model target, the dashed line the 200-day average, dotted lines resistance levels.</p>
+    <div class="ft-chart" data-draw="chart" data-source="price summary levels resistance"></div>
+  </section>
+
+  <section class="ft-grid" id="setup">
+    <div class="ft-card">
+      <h2>Current swing</h2>
+      <p class="ft-note">Bullish ABC: swing low, swing high, then a higher low. Targets project from C.</p>
+      <dl class="ft-anchors">
+        <dt>A</dt><dd data-draw="A" data-source="summary" data-field="A" data-row="0">—</dd><dd class="r" data-draw="adate" data-source="summary" data-field="a_date" data-row="0">—</dd><dd class="ft-badge" data-draw="abadge" data-source="summary" data-field="a_strength" data-row="0">—</dd>
+        <dt>B</dt><dd data-draw="B" data-source="summary" data-field="B" data-row="0">—</dd><dd class="r" data-draw="bdate" data-source="summary" data-field="b_date" data-row="0">—</dd><dd></dd>
+        <dt>C</dt><dd data-draw="C" data-source="summary" data-field="C" data-row="0">—</dd><dd class="r" data-draw="cdate" data-source="summary" data-field="c_date" data-row="0">—</dd><dd class="ft-badge" data-draw="cbadge" data-source="summary" data-field="c_strength" data-row="0">—</dd>
+      </dl>
+      <p class="ft-note">C is <b data-draw="cstate" data-source="summary" data-field="c_state" data-row="0">—</b>. It is confirmed once price rallies <span data-draw="zz" data-source="summary" data-field="zigzag" data-row="0">—</span> off it.</p>
+      <p class="ft-note">Low strength, from how often past daily lows were broken before rallying a further <span data-draw="zz" data-source="summary" data-field="zigzag" data-row="0">—</span>:</p>
+      <ul class="ft-badges">
+        <li><b>Weak</b>, no daily candle has closed <span data-draw="zz" data-source="summary" data-field="zigzag" data-row="0">—</span> above the low yet: broken <b data-draw="fkweak" data-source="summary" data-field="fk_weak_rate" data-row="0">—</b> of <span data-draw="fkweakn" data-source="summary" data-field="fk_weak_n" data-row="0">—</span> times</li>
+        <li><b>Confirmed</b>, a candle closed there: broken <b data-draw="fkconf" data-source="summary" data-field="fk_confirmed_rate" data-row="0">—</b> of <span data-draw="fkconfn" data-source="summary" data-field="fk_confirmed_n" data-row="0">—</span></li>
+        <li><b>Strong</b>, confirmed and a higher low: broken <b data-draw="fkstrong" data-source="summary" data-field="fk_strong_rate" data-row="0">—</b> of <span data-draw="fkstrongn" data-source="summary" data-field="fk_strong_n" data-row="0">—</span></li>
+      </ul>
+    </div>
+    <div class="ft-card">
+      <h2>What invalidates it</h2>
+      <ul class="ft-rules">
+        <li>Daily low under C (<b data-draw="C" data-source="summary" data-field="C" data-row="0">—</b>): C moves lower and a new target is planned.</li>
+        <li>C under the 200-day average (<b data-draw="sma" data-source="summary" data-field="sma200" data-row="0">—</b>): the target recalibrates on the below-trend history.</li>
+        <li>Price under A (<b data-draw="A" data-source="summary" data-field="A" data-row="0">—</b>): structure broken, no target until a new higher low forms.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="ft-card" id="early">
+    <h2>Early rejection check</h2>
+    <p class="ft-note">Catches a top that stalls below the zone, before the full confirmation drop.</p>
+    <div class="ft-tiles">
+      <div class="ft-tile">
+        <p class="ft-label">Highest since C</p>
+        <p class="ft-big" data-draw="posthigh" data-source="summary" data-field="post_c_high" data-row="0">—</p>
+        <p class="ft-sub" data-draw="posthighdate" data-source="summary" data-field="post_c_high_date" data-row="0">—</p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Close vs that high</p>
+        <p class="ft-big" data-draw="drop" data-source="summary" data-field="drop_from_high" data-row="0">—</p>
+        <p class="ft-sub">Watch at −<span data-draw="watchlvl" data-source="summary" data-field="watch" data-row="0">—</span>, warning at −<span data-draw="warnlvl" data-source="summary" data-field="warn" data-row="0">—</span></p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Watch accuracy</p>
+        <p class="ft-big" data-draw="ewwatch" data-source="summary" data-field="ew_watch_precision" data-row="0">—</p>
+        <p class="ft-sub"><span data-draw="ewwatchc" data-source="summary" data-field="ew_watch_correct" data-row="0">—</span> of <span data-draw="ewwatchf" data-source="summary" data-field="ew_watch_fired" data-row="0">—</span> past signals were real early tops</p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Warning accuracy</p>
+        <p class="ft-big" data-draw="ewwarn" data-source="summary" data-field="ew_warn_precision" data-row="0">—</p>
+        <p class="ft-sub"><span data-draw="ewwarnc" data-source="summary" data-field="ew_warn_correct" data-row="0">—</span> of <span data-draw="ewwarnf" data-source="summary" data-field="ew_warn_fired" data-row="0">—</span> past signals were real early tops</p>
+      </div>
+    </div>
+    <p class="ft-note">It only arms when the high since C is under the zone low and at least <span data-draw="minrally" data-source="summary" data-field="min_rally" data-row="0">—</span> above C. In past signals it usually fired about a day before the confirmation, at a few percent better price.</p>
+  </section>
+
+  <section class="ft-card" id="confluence">
+    <h2>Zone confluence</h2>
+    <p class="ft-note">Three checks for selling into the zone. More checks lit means a stronger case to scale out.</p>
+    <div class="ft-checks">
+      <div class="ft-check" data-chk="zone">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">Price at the zone</p><p class="ft-sub">Within <span data-draw="nearpct" data-source="summary" data-field="near" data-row="0">—</span> of the zone low <span data-draw="zlo" data-source="summary" data-field="zone_lo" data-row="0">—</span> or inside it</p></div>
+      </div>
+      <div class="ft-check" data-chk="res">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">At a resistance level</p><p class="ft-sub">Nearest level within <span data-draw="nearpct" data-source="summary" data-field="near" data-row="0">—</span>: <span data-draw="nearres" data-source="summary" data-field="near_resistance" data-row="0">—</span></p></div>
+      </div>
+      <div class="ft-check" data-chk="rsi">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">RSI(7) hooked below 70</p><p class="ft-sub">Daily RSI(7) <b data-draw="rsi" data-source="summary" data-field="rsi7" data-row="0">—</b> · <span data-draw="rsistate" data-source="summary" data-field="rsi_state_label" data-row="0">—</span></p></div>
+      </div>
+    </div>
+    <p class="ft-meta">Checks lit: <b data-draw="conf" data-source="summary" data-field="confluence" data-row="0">—</b> of 3 · Price is <span data-draw="emapos" data-source="summary" data-field="above_ema200" data-row="0">—</span> the 200-day EMA (<span data-draw="ema" data-source="summary" data-field="ema200" data-row="0">—</span>)</p>
+    <div class="ft-grid">
+      <div class="ft-sub-card">
+        <h3>Daily RSI(7)</h3>
+        <p class="ft-note">Overbought above 70. The hook is a close back under 70 after being above it.</p>
+        <div class="ft-rsi" data-draw="rsichart" data-source="price"></div>
+      </div>
+      <div class="ft-sub-card">
+        <h3>Resistance up to the zone top</h3>
+        <p class="ft-note">Price levels where at least one major daily swing high or low formed (10% swings, clustered within 2%).</p>
+        <div class="ft-scroll">
+          <table data-source="resistance" data-row-key="price">
+            <thead><tr><th data-field="price">Level</th><th data-field="touches">Swings</th><th data-field="last">Last swing</th><th data-field="dist">Distance</th></tr></thead>
+            <tbody data-draw="restable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <p class="ft-note">From your RSI(7) study: a reading above 70 alone did not mark tops on the daily chart. Price ran a median 12% further after it. The hook back below 70 was the better signal, and divergence made results worse.</p>
+  </section>
+
+  <section class="ft-grid" id="tables">
+    <div class="ft-card">
+      <h2>Extension ladder</h2>
+      <p class="ft-note">Distance is from today's price.</p>
+      <div class="ft-scroll">
+        <table data-source="levels" data-row-key="label">
+          <thead><tr><th data-field="label">Level</th><th data-field="price">Price</th><th data-source="ladder" data-field="dist">Distance</th></tr></thead>
+          <tbody data-draw="ladder"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="ft-card">
+      <h2>Recent backtest tops</h2>
+      <p class="ft-note">Walk-forward: each target used only swings known before that top.</p>
+      <div class="ft-scroll">
+        <table data-source="backtest" data-row-key="date">
+          <thead><tr><th data-field="date">Top date</th><th data-field="target">Target</th><th data-field="top">Actual</th><th data-field="err">Miss</th></tr></thead>
+          <tbody data-draw="bt"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="ft-card" id="log">
+    <h2>Forecast log</h2>
+    <p class="ft-note">Every target the daily refresh issues. A forecast is scored when its top is confirmed, and closed as re-planned if price breaks its anchors first.</p>
+    <div class="ft-scroll">
+      <table data-source="forecasts" data-row-key="key">
+        <thead><tr><th data-field="opened">Opened</th><th data-field="C">C</th><th data-field="target">Target</th><th data-field="state">State</th><th data-field="top">Actual top</th><th data-field="err">Miss</th></tr></thead>
+        <tbody data-draw="log"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="ft-card" id="method">
+    <h2>Method</h2>
+    <ul>
+      <li>Swings come from a zigzag on daily highs and lows that needs a <span data-draw="zz" data-source="summary" data-field="zigzag" data-row="0">—</span> reversal.</li>
+      <li>The extension ratio is the median of all completed BTC daily setups since 2017 (Binance BTCUSDT spot) in the same trend regime (above or below the 200-day average). The zone is their middle half.</li>
+      <li>A hit means the confirmed top landed within ±<span data-draw="tol" data-source="summary" data-field="hit_tol" data-row="0">—</span> of the target issued for it.</li>
+      <li>This is a statistical projection, not financial advice.</li>
+    </ul>
+  </section>
+
+  </section>
+
+  <section class="ft-page" id="h4" data-tf="h4" role="tabpanel" aria-labelledby="tab-h4" hidden>
+  <header class="ft-head" id="h4-top">
+    <p class="ft-take" data-when="setup">Next projected 4H local top <b data-draw="target" data-source="h4_summary" data-field="target" data-row="0">—</b>, likely zone <b data-draw="zlo" data-source="h4_summary" data-field="zone_lo" data-row="0">—</b> to <b data-draw="zhi" data-source="h4_summary" data-field="zone_hi" data-row="0">—</b>. Status: <span class="ft-pill" data-draw="status" data-source="h4_summary" data-field="status_label" data-row="0">—</span></p>
+    <p class="ft-take" data-when="broken" hidden>No 4H target right now. Price broke below swing low A, so the model waits for a new higher low before it projects the next top. The lowest point so far is <b data-draw="blow" data-source="h4_summary" data-field="broken_low" data-row="0">—</b> (<span data-draw="blowdate" data-source="h4_summary" data-field="broken_low_date" data-row="0">—</span>). Its strength is <span class="ft-badge" data-draw="blbadge" data-source="h4_summary" data-field="broken_low_strength" data-row="0">—</span>; a 4H candle closing above <b data-draw="bconf" data-source="h4_summary" data-field="broken_confirm_at" data-row="0">—</b> confirms it. Status: <span class="ft-pill" data-draw="status" data-source="h4_summary" data-field="status_label" data-row="0">—</span></p>
+    <p class="ft-note" data-draw="note" data-source="h4_summary" data-field="note" data-row="0">—</p>
+    <p class="ft-meta">BINANCE:BTCUSDT 4H, from your Google Drive file BTCUSDT_4H.xlsx · latest candle <span data-draw="livedate" data-source="h4_summary" data-field="live_date" data-row="0">—</span> UTC · refreshed <span data-draw="gen" data-source="h4_summary" data-field="generated" data-row="0">—</span></p>
+  </header>
+
+  <section class="ft-tiles" id="h4-figures">
+    <div class="ft-tile">
+      <p class="ft-label">Model target</p>
+      <p class="ft-big" data-draw="target" data-source="h4_summary" data-field="target" data-row="0">—</p>
+      <p class="ft-sub">Extension ratio <span data-draw="ratio" data-source="h4_summary" data-field="ratio" data-row="0">—</span> of the A to B leg</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Price now</p>
+      <p class="ft-big" data-draw="close" data-source="h4_summary" data-field="live_close" data-row="0">—</p>
+      <p class="ft-sub"><span data-draw="totarget" data-source="h4_summary" data-field="to_target_pct" data-row="0">—</span> to target</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Backtest hit rate</p>
+      <p class="ft-big" data-draw="bt10" data-source="h4_summary" data-field="bt_within10_pct" data-row="0">—</p>
+      <p class="ft-sub">Top within ±<span data-draw="tol" data-source="h4_summary" data-field="hit_tol" data-row="0">—</span> of target, <span data-draw="btn" data-source="h4_summary" data-field="bt_n" data-row="0">—</span> past tops</p>
+      <p class="ft-sub">Since Mar 2024: <span data-draw="btrecent" data-source="h4_summary" data-field="bt_recent_pct" data-row="0">—</span> of <span data-draw="btrecentn" data-source="h4_summary" data-field="bt_recent_n" data-row="0">—</span> tops</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Live record</p>
+      <p class="ft-big"><span data-draw="lhits" data-source="h4_summary" data-field="live_hits" data-row="0">—</span> / <span data-draw="lscored" data-source="h4_summary" data-field="live_scored" data-row="0">—</span></p>
+      <p class="ft-sub">Hits of scored forecasts · <span data-draw="linv" data-source="h4_summary" data-field="live_invalidated" data-row="0">—</span> re-planned</p>
+    </div>
+  </section>
+
+  <section class="ft-card" id="h4-chart">
+    <h2>4H price, swing anchors and target zone</h2>
+    <p class="ft-note">Last 240 4H bars (40 days). Shaded band is the target zone, the solid line the model target, the dashed line the 200-bar average, dotted lines resistance levels.</p>
+    <div class="ft-chart" data-draw="chart" data-source="h4_price h4_summary h4_levels h4_resistance"></div>
+  </section>
+
+  <section class="ft-grid" id="h4-setup">
+    <div class="ft-card">
+      <h2>Current swing</h2>
+      <p class="ft-note">Bullish ABC: swing low, swing high, then a higher low. Targets project from C.</p>
+      <dl class="ft-anchors">
+        <dt>A</dt><dd data-draw="A" data-source="h4_summary" data-field="A" data-row="0">—</dd><dd class="r" data-draw="adate" data-source="h4_summary" data-field="a_date" data-row="0">—</dd><dd class="ft-badge" data-draw="abadge" data-source="h4_summary" data-field="a_strength" data-row="0">—</dd>
+        <dt>B</dt><dd data-draw="B" data-source="h4_summary" data-field="B" data-row="0">—</dd><dd class="r" data-draw="bdate" data-source="h4_summary" data-field="b_date" data-row="0">—</dd><dd></dd>
+        <dt>C</dt><dd data-draw="C" data-source="h4_summary" data-field="C" data-row="0">—</dd><dd class="r" data-draw="cdate" data-source="h4_summary" data-field="c_date" data-row="0">—</dd><dd class="ft-badge" data-draw="cbadge" data-source="h4_summary" data-field="c_strength" data-row="0">—</dd>
+      </dl>
+      <p class="ft-note">C is <b data-draw="cstate" data-source="h4_summary" data-field="c_state" data-row="0">—</b>. It is confirmed once price rallies <span data-draw="zz" data-source="h4_summary" data-field="zigzag" data-row="0">—</span> off it.</p>
+      <p class="ft-note">Low strength, from how often past 4H lows were broken before rallying a further <span data-draw="zz" data-source="h4_summary" data-field="zigzag" data-row="0">—</span>:</p>
+      <ul class="ft-badges">
+        <li><b>Weak</b>, no 4H candle has closed <span data-draw="zz" data-source="h4_summary" data-field="zigzag" data-row="0">—</span> above the low yet: broken <b data-draw="fkweak" data-source="h4_summary" data-field="fk_weak_rate" data-row="0">—</b> of <span data-draw="fkweakn" data-source="h4_summary" data-field="fk_weak_n" data-row="0">—</span> times</li>
+        <li><b>Confirmed</b>, a candle closed there: broken <b data-draw="fkconf" data-source="h4_summary" data-field="fk_confirmed_rate" data-row="0">—</b> of <span data-draw="fkconfn" data-source="h4_summary" data-field="fk_confirmed_n" data-row="0">—</span></li>
+        <li><b>Strong</b>, confirmed and a higher low: broken <b data-draw="fkstrong" data-source="h4_summary" data-field="fk_strong_rate" data-row="0">—</b> of <span data-draw="fkstrongn" data-source="h4_summary" data-field="fk_strong_n" data-row="0">—</span></li>
+      </ul>
+    </div>
+    <div class="ft-card">
+      <h2>What invalidates it</h2>
+      <ul class="ft-rules">
+        <li>4H low under C (<b data-draw="C" data-source="h4_summary" data-field="C" data-row="0">—</b>): C moves lower and a new target is planned.</li>
+        <li>C under the 200-bar average (<b data-draw="sma" data-source="h4_summary" data-field="sma200" data-row="0">—</b>): the target recalibrates on the below-trend history.</li>
+        <li>Price under A (<b data-draw="A" data-source="h4_summary" data-field="A" data-row="0">—</b>): structure broken, no target until a new higher low forms.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="ft-card" id="h4-early">
+    <h2>Early rejection check</h2>
+    <p class="ft-note">Catches a top that stalls below the zone, before the full confirmation drop.</p>
+    <div class="ft-tiles">
+      <div class="ft-tile">
+        <p class="ft-label">Highest since C</p>
+        <p class="ft-big" data-draw="posthigh" data-source="h4_summary" data-field="post_c_high" data-row="0">—</p>
+        <p class="ft-sub" data-draw="posthighdate" data-source="h4_summary" data-field="post_c_high_date" data-row="0">—</p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Close vs that high</p>
+        <p class="ft-big" data-draw="drop" data-source="h4_summary" data-field="drop_from_high" data-row="0">—</p>
+        <p class="ft-sub">Watch at −<span data-draw="watchlvl" data-source="h4_summary" data-field="watch" data-row="0">—</span>, warning at −<span data-draw="warnlvl" data-source="h4_summary" data-field="warn" data-row="0">—</span></p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Watch accuracy</p>
+        <p class="ft-big" data-draw="ewwatch" data-source="h4_summary" data-field="ew_watch_precision" data-row="0">—</p>
+        <p class="ft-sub"><span data-draw="ewwatchc" data-source="h4_summary" data-field="ew_watch_correct" data-row="0">—</span> of <span data-draw="ewwatchf" data-source="h4_summary" data-field="ew_watch_fired" data-row="0">—</span> past signals were real early tops</p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Warning accuracy</p>
+        <p class="ft-big" data-draw="ewwarn" data-source="h4_summary" data-field="ew_warn_precision" data-row="0">—</p>
+        <p class="ft-sub"><span data-draw="ewwarnc" data-source="h4_summary" data-field="ew_warn_correct" data-row="0">—</span> of <span data-draw="ewwarnf" data-source="h4_summary" data-field="ew_warn_fired" data-row="0">—</span> past signals were real early tops</p>
+      </div>
+    </div>
+    <p class="ft-note">It only arms when the high since C is under the zone low and at least <span data-draw="minrally" data-source="h4_summary" data-field="min_rally" data-row="0">—</span> above C. In past signals it usually fired a few bars before the confirmation, at a few percent better price.</p>
+  </section>
+
+  <section class="ft-card" id="h4-confluence">
+    <h2>Zone confluence</h2>
+    <p class="ft-note">Three checks for selling into the zone. More checks lit means a stronger case to scale out.</p>
+    <div class="ft-checks">
+      <div class="ft-check" data-chk="zone">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">Price at the zone</p><p class="ft-sub">Within <span data-draw="nearpct" data-source="h4_summary" data-field="near" data-row="0">—</span> of the zone low <span data-draw="zlo" data-source="h4_summary" data-field="zone_lo" data-row="0">—</span> or inside it</p></div>
+      </div>
+      <div class="ft-check" data-chk="res">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">At a resistance level</p><p class="ft-sub">Nearest level within <span data-draw="nearpct" data-source="h4_summary" data-field="near" data-row="0">—</span>: <span data-draw="nearres" data-source="h4_summary" data-field="near_resistance" data-row="0">—</span></p></div>
+      </div>
+      <div class="ft-check" data-chk="rsi">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">RSI(7) hooked below 70</p><p class="ft-sub">4H RSI(7) <b data-draw="rsi" data-source="h4_summary" data-field="rsi7" data-row="0">—</b> · <span data-draw="rsistate" data-source="h4_summary" data-field="rsi_state_label" data-row="0">—</span></p></div>
+      </div>
+    </div>
+    <p class="ft-meta">Checks lit: <b data-draw="conf" data-source="h4_summary" data-field="confluence" data-row="0">—</b> of 3 · Price is <span data-draw="emapos" data-source="h4_summary" data-field="above_ema200" data-row="0">—</span> the 200-bar EMA (<span data-draw="ema" data-source="h4_summary" data-field="ema200" data-row="0">—</span>)</p>
+    <div class="ft-grid">
+      <div class="ft-sub-card">
+        <h3>4H RSI(7)</h3>
+        <p class="ft-note">Overbought above 70. The hook is a close back under 70 after being above it.</p>
+        <div class="ft-rsi" data-draw="rsichart" data-source="h4_price"></div>
+      </div>
+      <div class="ft-sub-card">
+        <h3>Resistance up to the zone top</h3>
+        <p class="ft-note">Price levels where at least one major 4H swing high or low formed (5% swings since 2017, clustered within 1%).</p>
+        <div class="ft-scroll">
+          <table data-source="h4_resistance" data-row-key="price">
+            <thead><tr><th data-field="price">Level</th><th data-field="touches">Swings</th><th data-field="last">Last swing</th><th data-field="dist">Distance</th></tr></thead>
+            <tbody data-draw="restable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <p class="ft-note">From your RSI(7) study: on 4H, a reading above 70 alone did no better than chance and price ran a median 3.6% further after it. The hook back below 70 worked best when price was under the 200 EMA, and divergence made results worse.</p>
+  </section>
+
+  <section class="ft-grid" id="h4-tables">
+    <div class="ft-card">
+      <h2>Extension ladder</h2>
+      <p class="ft-note">Distance is from today's price.</p>
+      <div class="ft-scroll">
+        <table data-source="h4_levels" data-row-key="label">
+          <thead><tr><th data-field="label">Level</th><th data-field="price">Price</th><th data-source="h4_ladder" data-field="dist">Distance</th></tr></thead>
+          <tbody data-draw="ladder"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="ft-card">
+      <h2>Recent backtest tops</h2>
+      <p class="ft-note">Walk-forward: each target used only swings known before that top.</p>
+      <div class="ft-scroll">
+        <table data-source="h4_backtest" data-row-key="date">
+          <thead><tr><th data-field="date">Top date</th><th data-field="target">Target</th><th data-field="top">Actual</th><th data-field="err">Miss</th></tr></thead>
+          <tbody data-draw="bt"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="ft-card" id="h4-log">
+    <h2>Forecast log</h2>
+    <p class="ft-note">Every target the daily refresh issues. A forecast is scored when its top is confirmed, and closed as re-planned if price breaks its anchors first.</p>
+    <div class="ft-scroll">
+      <table data-source="h4_forecasts" data-row-key="key">
+        <thead><tr><th data-field="opened">Opened</th><th data-field="C">C</th><th data-field="target">Target</th><th data-field="state">State</th><th data-field="top">Actual top</th><th data-field="err">Miss</th></tr></thead>
+        <tbody data-draw="log"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="ft-card" id="h4-method">
+    <h2>Method</h2>
+    <ul>
+      <li>Swings come from a zigzag on 4H highs and lows that needs a <span data-draw="zz" data-source="h4_summary" data-field="zigzag" data-row="0">—</span> reversal.</li>
+      <li>The extension ratio is the median of all completed BTC 4H setups since 2017 (Binance BTCUSDT spot) in the same trend regime (above or below the 200-bar average). The zone is their middle half.</li>
+      <li>A hit means the confirmed top landed within ±<span data-draw="tol" data-source="h4_summary" data-field="hit_tol" data-row="0">—</span> of the target issued for it.</li>
+      <li>This is a statistical projection, not financial advice.</li>
+    </ul>
+  </section>
+
+  </section>
+
+  <section class="ft-page" id="ethd" data-tf="eth" role="tabpanel" aria-labelledby="tab-ethd" hidden>
+  <header class="ft-head" id="ethd-top">
+    <p class="ft-take" data-when="setup">Next projected daily local top <b data-draw="target" data-source="eth_summary" data-field="target" data-row="0">—</b>, likely zone <b data-draw="zlo" data-source="eth_summary" data-field="zone_lo" data-row="0">—</b> to <b data-draw="zhi" data-source="eth_summary" data-field="zone_hi" data-row="0">—</b>. Status: <span class="ft-pill" data-draw="status" data-source="eth_summary" data-field="status_label" data-row="0">—</span></p>
+    <p class="ft-take" data-when="broken" hidden>No daily target right now. Price broke below swing low A, so the model waits for a new higher low before it projects the next top. The lowest point so far is <b data-draw="blow" data-source="eth_summary" data-field="broken_low" data-row="0">—</b> (<span data-draw="blowdate" data-source="eth_summary" data-field="broken_low_date" data-row="0">—</span>). Its strength is <span class="ft-badge" data-draw="blbadge" data-source="eth_summary" data-field="broken_low_strength" data-row="0">—</span>; a daily candle closing above <b data-draw="bconf" data-source="eth_summary" data-field="broken_confirm_at" data-row="0">—</b> confirms it. Status: <span class="ft-pill" data-draw="status" data-source="eth_summary" data-field="status_label" data-row="0">—</span></p>
+    <p class="ft-note" data-draw="note" data-source="eth_summary" data-field="note" data-row="0">—</p>
+    <p class="ft-meta">BINANCE:ETHUSDT daily, from your Google Drive file ETHUSDT_D.xlsx · latest candle <span data-draw="livedate" data-source="eth_summary" data-field="live_date" data-row="0">—</span> · refreshed <span data-draw="gen" data-source="eth_summary" data-field="generated" data-row="0">—</span></p>
+  </header>
+
+  <section class="ft-tiles" id="ethd-figures">
+    <div class="ft-tile">
+      <p class="ft-label">Model target</p>
+      <p class="ft-big" data-draw="target" data-source="eth_summary" data-field="target" data-row="0">—</p>
+      <p class="ft-sub">Extension ratio <span data-draw="ratio" data-source="eth_summary" data-field="ratio" data-row="0">—</span> of the A to B leg</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Price now</p>
+      <p class="ft-big" data-draw="close" data-source="eth_summary" data-field="live_close" data-row="0">—</p>
+      <p class="ft-sub"><span data-draw="totarget" data-source="eth_summary" data-field="to_target_pct" data-row="0">—</span> to target</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Backtest hit rate</p>
+      <p class="ft-big" data-draw="bt10" data-source="eth_summary" data-field="bt_within10_pct" data-row="0">—</p>
+      <p class="ft-sub">Top within ±<span data-draw="tol" data-source="eth_summary" data-field="hit_tol" data-row="0">—</span> of target, <span data-draw="btn" data-source="eth_summary" data-field="bt_n" data-row="0">—</span> past tops</p>
+      <p class="ft-sub">Since Mar 2024: <span data-draw="btrecent" data-source="eth_summary" data-field="bt_recent_pct" data-row="0">—</span> of <span data-draw="btrecentn" data-source="eth_summary" data-field="bt_recent_n" data-row="0">—</span> tops</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Live record</p>
+      <p class="ft-big"><span data-draw="lhits" data-source="eth_summary" data-field="live_hits" data-row="0">—</span> / <span data-draw="lscored" data-source="eth_summary" data-field="live_scored" data-row="0">—</span></p>
+      <p class="ft-sub">Hits of scored forecasts · <span data-draw="linv" data-source="eth_summary" data-field="live_invalidated" data-row="0">—</span> re-planned</p>
+    </div>
+  </section>
+
+  <section class="ft-card" id="ethd-chart">
+    <h2>Daily price, swing anchors and target zone</h2>
+    <p class="ft-note">Last 240 daily bars. Shaded band is the target zone, the solid line the model target, the dashed line the 200-day average, dotted lines resistance levels.</p>
+    <div class="ft-chart" data-draw="chart" data-source="eth_price eth_summary eth_levels eth_resistance"></div>
+  </section>
+
+  <section class="ft-grid" id="ethd-setup">
+    <div class="ft-card">
+      <h2>Current swing</h2>
+      <p class="ft-note">Bullish ABC: swing low, swing high, then a higher low. Targets project from C.</p>
+      <dl class="ft-anchors">
+        <dt>A</dt><dd data-draw="A" data-source="eth_summary" data-field="A" data-row="0">—</dd><dd class="r" data-draw="adate" data-source="eth_summary" data-field="a_date" data-row="0">—</dd><dd class="ft-badge" data-draw="abadge" data-source="eth_summary" data-field="a_strength" data-row="0">—</dd>
+        <dt>B</dt><dd data-draw="B" data-source="eth_summary" data-field="B" data-row="0">—</dd><dd class="r" data-draw="bdate" data-source="eth_summary" data-field="b_date" data-row="0">—</dd><dd></dd>
+        <dt>C</dt><dd data-draw="C" data-source="eth_summary" data-field="C" data-row="0">—</dd><dd class="r" data-draw="cdate" data-source="eth_summary" data-field="c_date" data-row="0">—</dd><dd class="ft-badge" data-draw="cbadge" data-source="eth_summary" data-field="c_strength" data-row="0">—</dd>
+      </dl>
+      <p class="ft-note">C is <b data-draw="cstate" data-source="eth_summary" data-field="c_state" data-row="0">—</b>. It is confirmed once price rallies <span data-draw="zz" data-source="eth_summary" data-field="zigzag" data-row="0">—</span> off it.</p>
+      <p class="ft-note">Low strength, from how often past daily lows were broken before rallying a further <span data-draw="zz" data-source="eth_summary" data-field="zigzag" data-row="0">—</span>:</p>
+      <ul class="ft-badges">
+        <li><b>Weak</b>, no daily candle has closed <span data-draw="zz" data-source="eth_summary" data-field="zigzag" data-row="0">—</span> above the low yet: broken <b data-draw="fkweak" data-source="eth_summary" data-field="fk_weak_rate" data-row="0">—</b> of <span data-draw="fkweakn" data-source="eth_summary" data-field="fk_weak_n" data-row="0">—</span> times</li>
+        <li><b>Confirmed</b>, a candle closed there: broken <b data-draw="fkconf" data-source="eth_summary" data-field="fk_confirmed_rate" data-row="0">—</b> of <span data-draw="fkconfn" data-source="eth_summary" data-field="fk_confirmed_n" data-row="0">—</span></li>
+        <li><b>Strong</b>, confirmed and a higher low: broken <b data-draw="fkstrong" data-source="eth_summary" data-field="fk_strong_rate" data-row="0">—</b> of <span data-draw="fkstrongn" data-source="eth_summary" data-field="fk_strong_n" data-row="0">—</span></li>
+      </ul>
+    </div>
+    <div class="ft-card">
+      <h2>What invalidates it</h2>
+      <ul class="ft-rules">
+        <li>Daily low under C (<b data-draw="C" data-source="eth_summary" data-field="C" data-row="0">—</b>): C moves lower and a new target is planned.</li>
+        <li>C under the 200-day average (<b data-draw="sma" data-source="eth_summary" data-field="sma200" data-row="0">—</b>): the target recalibrates on the below-trend history.</li>
+        <li>Price under A (<b data-draw="A" data-source="eth_summary" data-field="A" data-row="0">—</b>): structure broken, no target until a new higher low forms.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="ft-card" id="ethd-early">
+    <h2>Early rejection check</h2>
+    <p class="ft-note">Catches a top that stalls below the zone, before the full confirmation drop.</p>
+    <div class="ft-tiles">
+      <div class="ft-tile">
+        <p class="ft-label">Highest since C</p>
+        <p class="ft-big" data-draw="posthigh" data-source="eth_summary" data-field="post_c_high" data-row="0">—</p>
+        <p class="ft-sub" data-draw="posthighdate" data-source="eth_summary" data-field="post_c_high_date" data-row="0">—</p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Close vs that high</p>
+        <p class="ft-big" data-draw="drop" data-source="eth_summary" data-field="drop_from_high" data-row="0">—</p>
+        <p class="ft-sub">Watch at −<span data-draw="watchlvl" data-source="eth_summary" data-field="watch" data-row="0">—</span>, warning at −<span data-draw="warnlvl" data-source="eth_summary" data-field="warn" data-row="0">—</span></p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Watch accuracy</p>
+        <p class="ft-big" data-draw="ewwatch" data-source="eth_summary" data-field="ew_watch_precision" data-row="0">—</p>
+        <p class="ft-sub"><span data-draw="ewwatchc" data-source="eth_summary" data-field="ew_watch_correct" data-row="0">—</span> of <span data-draw="ewwatchf" data-source="eth_summary" data-field="ew_watch_fired" data-row="0">—</span> past signals were real early tops</p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Warning accuracy</p>
+        <p class="ft-big" data-draw="ewwarn" data-source="eth_summary" data-field="ew_warn_precision" data-row="0">—</p>
+        <p class="ft-sub"><span data-draw="ewwarnc" data-source="eth_summary" data-field="ew_warn_correct" data-row="0">—</span> of <span data-draw="ewwarnf" data-source="eth_summary" data-field="ew_warn_fired" data-row="0">—</span> past signals were real early tops</p>
+      </div>
+    </div>
+    <p class="ft-note">It only arms when the high since C is under the zone low and at least <span data-draw="minrally" data-source="eth_summary" data-field="min_rally" data-row="0">—</span> above C. In past signals it usually fired about a day before the confirmation, at a few percent better price.</p>
+  </section>
+
+  <section class="ft-card" id="ethd-confluence">
+    <h2>Zone confluence</h2>
+    <p class="ft-note">Three checks for selling into the zone. More checks lit means a stronger case to scale out.</p>
+    <div class="ft-checks">
+      <div class="ft-check" data-chk="zone">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">Price at the zone</p><p class="ft-sub">Within <span data-draw="nearpct" data-source="eth_summary" data-field="near" data-row="0">—</span> of the zone low <span data-draw="zlo" data-source="eth_summary" data-field="zone_lo" data-row="0">—</span> or inside it</p></div>
+      </div>
+      <div class="ft-check" data-chk="res">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">At a resistance level</p><p class="ft-sub">Nearest level within <span data-draw="nearpct" data-source="eth_summary" data-field="near" data-row="0">—</span>: <span data-draw="nearres" data-source="eth_summary" data-field="near_resistance" data-row="0">—</span></p></div>
+      </div>
+      <div class="ft-check" data-chk="rsi">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">RSI(7) hooked below 70</p><p class="ft-sub">Daily RSI(7) <b data-draw="rsi" data-source="eth_summary" data-field="rsi7" data-row="0">—</b> · <span data-draw="rsistate" data-source="eth_summary" data-field="rsi_state_label" data-row="0">—</span></p></div>
+      </div>
+    </div>
+    <p class="ft-meta">Checks lit: <b data-draw="conf" data-source="eth_summary" data-field="confluence" data-row="0">—</b> of 3 · Price is <span data-draw="emapos" data-source="eth_summary" data-field="above_ema200" data-row="0">—</span> the 200-day EMA (<span data-draw="ema" data-source="eth_summary" data-field="ema200" data-row="0">—</span>)</p>
+    <div class="ft-grid">
+      <div class="ft-sub-card">
+        <h3>Daily RSI(7)</h3>
+        <p class="ft-note">Overbought above 70. The hook is a close back under 70 after being above it.</p>
+        <div class="ft-rsi" data-draw="rsichart" data-source="eth_price"></div>
+      </div>
+      <div class="ft-sub-card">
+        <h3>Resistance up to the zone top</h3>
+        <p class="ft-note">Price levels where at least one major daily swing high or low formed (10% swings, clustered within 2%).</p>
+        <div class="ft-scroll">
+          <table data-source="eth_resistance" data-row-key="price">
+            <thead><tr><th data-field="price">Level</th><th data-field="touches">Swings</th><th data-field="last">Last swing</th><th data-field="dist">Distance</th></tr></thead>
+            <tbody data-draw="restable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <p class="ft-note">From your BTC RSI(7) study (not yet tested on ETH): a reading above 70 alone did not mark tops on the daily chart. Price ran a median 12% further after it. The hook back below 70 was the better signal, and divergence made results worse.</p>
+  </section>
+
+  <section class="ft-grid" id="ethd-tables">
+    <div class="ft-card">
+      <h2>Extension ladder</h2>
+      <p class="ft-note">Distance is from today's price.</p>
+      <div class="ft-scroll">
+        <table data-source="eth_levels" data-row-key="label">
+          <thead><tr><th data-field="label">Level</th><th data-field="price">Price</th><th data-source="eth_ladder" data-field="dist">Distance</th></tr></thead>
+          <tbody data-draw="ladder"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="ft-card">
+      <h2>Recent backtest tops</h2>
+      <p class="ft-note">Walk-forward: each target used only swings known before that top.</p>
+      <div class="ft-scroll">
+        <table data-source="eth_backtest" data-row-key="date">
+          <thead><tr><th data-field="date">Top date</th><th data-field="target">Target</th><th data-field="top">Actual</th><th data-field="err">Miss</th></tr></thead>
+          <tbody data-draw="bt"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="ft-card" id="ethd-log">
+    <h2>Forecast log</h2>
+    <p class="ft-note">Every ETH target the daily refresh issues, logged from 7 Nov 2026. A forecast is scored when its top is confirmed, and closed as re-planned if price breaks its anchors first.</p>
+    <div class="ft-scroll">
+      <table data-source="eth_forecasts" data-row-key="key">
+        <thead><tr><th data-field="opened">Opened</th><th data-field="C">C</th><th data-field="target">Target</th><th data-field="state">State</th><th data-field="top">Actual top</th><th data-field="err">Miss</th></tr></thead>
+        <tbody data-draw="log"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="ft-card" id="ethd-method">
+    <h2>Method</h2>
+    <ul>
+      <li>Swings come from a zigzag on daily highs and lows that needs a <span data-draw="zz" data-source="eth_summary" data-field="zigzag" data-row="0">—</span> reversal.</li>
+      <li>The extension ratio is the median of all completed ETH daily setups since 2017 (Binance ETHUSDT spot) in the same trend regime (above or below the 200-day average). The zone is their middle half.</li>
+      <li>A hit means the confirmed top landed within ±<span data-draw="tol" data-source="eth_summary" data-field="hit_tol" data-row="0">—</span> of the target issued for it.</li>
+      <li>This is a statistical projection, not financial advice.</li>
+    </ul>
+  </section>
+
+  </section>
+
+  <section class="ft-page" id="ethh4" data-tf="eth_h4" role="tabpanel" aria-labelledby="tab-ethh4" hidden>
+  <header class="ft-head" id="ethh4-top">
+    <p class="ft-take" data-when="setup">Next projected 4H local top <b data-draw="target" data-source="eth_h4_summary" data-field="target" data-row="0">—</b>, likely zone <b data-draw="zlo" data-source="eth_h4_summary" data-field="zone_lo" data-row="0">—</b> to <b data-draw="zhi" data-source="eth_h4_summary" data-field="zone_hi" data-row="0">—</b>. Status: <span class="ft-pill" data-draw="status" data-source="eth_h4_summary" data-field="status_label" data-row="0">—</span></p>
+    <p class="ft-take" data-when="broken" hidden>No 4H target right now. Price broke below swing low A, so the model waits for a new higher low before it projects the next top. The lowest point so far is <b data-draw="blow" data-source="eth_h4_summary" data-field="broken_low" data-row="0">—</b> (<span data-draw="blowdate" data-source="eth_h4_summary" data-field="broken_low_date" data-row="0">—</span>). Its strength is <span class="ft-badge" data-draw="blbadge" data-source="eth_h4_summary" data-field="broken_low_strength" data-row="0">—</span>; a 4H candle closing above <b data-draw="bconf" data-source="eth_h4_summary" data-field="broken_confirm_at" data-row="0">—</b> confirms it. Status: <span class="ft-pill" data-draw="status" data-source="eth_h4_summary" data-field="status_label" data-row="0">—</span></p>
+    <p class="ft-note" data-draw="note" data-source="eth_h4_summary" data-field="note" data-row="0">—</p>
+    <p class="ft-meta">BINANCE:ETHUSDT 4H, from your Google Drive file ETHUSDT_4H.xlsx · latest candle <span data-draw="livedate" data-source="eth_h4_summary" data-field="live_date" data-row="0">—</span> UTC · refreshed <span data-draw="gen" data-source="eth_h4_summary" data-field="generated" data-row="0">—</span></p>
+  </header>
+
+  <section class="ft-tiles" id="ethh4-figures">
+    <div class="ft-tile">
+      <p class="ft-label">Model target</p>
+      <p class="ft-big" data-draw="target" data-source="eth_h4_summary" data-field="target" data-row="0">—</p>
+      <p class="ft-sub">Extension ratio <span data-draw="ratio" data-source="eth_h4_summary" data-field="ratio" data-row="0">—</span> of the A to B leg</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Price now</p>
+      <p class="ft-big" data-draw="close" data-source="eth_h4_summary" data-field="live_close" data-row="0">—</p>
+      <p class="ft-sub"><span data-draw="totarget" data-source="eth_h4_summary" data-field="to_target_pct" data-row="0">—</span> to target</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Backtest hit rate</p>
+      <p class="ft-big" data-draw="bt10" data-source="eth_h4_summary" data-field="bt_within10_pct" data-row="0">—</p>
+      <p class="ft-sub">Top within ±<span data-draw="tol" data-source="eth_h4_summary" data-field="hit_tol" data-row="0">—</span> of target, <span data-draw="btn" data-source="eth_h4_summary" data-field="bt_n" data-row="0">—</span> past tops</p>
+      <p class="ft-sub">Since Mar 2024: <span data-draw="btrecent" data-source="eth_h4_summary" data-field="bt_recent_pct" data-row="0">—</span> of <span data-draw="btrecentn" data-source="eth_h4_summary" data-field="bt_recent_n" data-row="0">—</span> tops</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Live record</p>
+      <p class="ft-big"><span data-draw="lhits" data-source="eth_h4_summary" data-field="live_hits" data-row="0">—</span> / <span data-draw="lscored" data-source="eth_h4_summary" data-field="live_scored" data-row="0">—</span></p>
+      <p class="ft-sub">Hits of scored forecasts · <span data-draw="linv" data-source="eth_h4_summary" data-field="live_invalidated" data-row="0">—</span> re-planned</p>
+    </div>
+  </section>
+
+  <section class="ft-card" id="ethh4-chart">
+    <h2>4H price, swing anchors and target zone</h2>
+    <p class="ft-note">Last 240 4H bars (40 days). Shaded band is the target zone, the solid line the model target, the dashed line the 200-bar average, dotted lines resistance levels.</p>
+    <div class="ft-chart" data-draw="chart" data-source="eth_h4_price eth_h4_summary eth_h4_levels eth_h4_resistance"></div>
+  </section>
+
+  <section class="ft-grid" id="ethh4-setup">
+    <div class="ft-card">
+      <h2>Current swing</h2>
+      <p class="ft-note">Bullish ABC: swing low, swing high, then a higher low. Targets project from C.</p>
+      <dl class="ft-anchors">
+        <dt>A</dt><dd data-draw="A" data-source="eth_h4_summary" data-field="A" data-row="0">—</dd><dd class="r" data-draw="adate" data-source="eth_h4_summary" data-field="a_date" data-row="0">—</dd><dd class="ft-badge" data-draw="abadge" data-source="eth_h4_summary" data-field="a_strength" data-row="0">—</dd>
+        <dt>B</dt><dd data-draw="B" data-source="eth_h4_summary" data-field="B" data-row="0">—</dd><dd class="r" data-draw="bdate" data-source="eth_h4_summary" data-field="b_date" data-row="0">—</dd><dd></dd>
+        <dt>C</dt><dd data-draw="C" data-source="eth_h4_summary" data-field="C" data-row="0">—</dd><dd class="r" data-draw="cdate" data-source="eth_h4_summary" data-field="c_date" data-row="0">—</dd><dd class="ft-badge" data-draw="cbadge" data-source="eth_h4_summary" data-field="c_strength" data-row="0">—</dd>
+      </dl>
+      <p class="ft-note">C is <b data-draw="cstate" data-source="eth_h4_summary" data-field="c_state" data-row="0">—</b>. It is confirmed once price rallies <span data-draw="zz" data-source="eth_h4_summary" data-field="zigzag" data-row="0">—</span> off it.</p>
+      <p class="ft-note">Low strength, from how often past 4H lows were broken before rallying a further <span data-draw="zz" data-source="eth_h4_summary" data-field="zigzag" data-row="0">—</span>:</p>
+      <ul class="ft-badges">
+        <li><b>Weak</b>, no 4H candle has closed <span data-draw="zz" data-source="eth_h4_summary" data-field="zigzag" data-row="0">—</span> above the low yet: broken <b data-draw="fkweak" data-source="eth_h4_summary" data-field="fk_weak_rate" data-row="0">—</b> of <span data-draw="fkweakn" data-source="eth_h4_summary" data-field="fk_weak_n" data-row="0">—</span> times</li>
+        <li><b>Confirmed</b>, a candle closed there: broken <b data-draw="fkconf" data-source="eth_h4_summary" data-field="fk_confirmed_rate" data-row="0">—</b> of <span data-draw="fkconfn" data-source="eth_h4_summary" data-field="fk_confirmed_n" data-row="0">—</span></li>
+        <li><b>Strong</b>, confirmed and a higher low: broken <b data-draw="fkstrong" data-source="eth_h4_summary" data-field="fk_strong_rate" data-row="0">—</b> of <span data-draw="fkstrongn" data-source="eth_h4_summary" data-field="fk_strong_n" data-row="0">—</span></li>
+      </ul>
+    </div>
+    <div class="ft-card">
+      <h2>What invalidates it</h2>
+      <ul class="ft-rules">
+        <li>4H low under C (<b data-draw="C" data-source="eth_h4_summary" data-field="C" data-row="0">—</b>): C moves lower and a new target is planned.</li>
+        <li>C under the 200-bar average (<b data-draw="sma" data-source="eth_h4_summary" data-field="sma200" data-row="0">—</b>): the target recalibrates on the below-trend history.</li>
+        <li>Price under A (<b data-draw="A" data-source="eth_h4_summary" data-field="A" data-row="0">—</b>): structure broken, no target until a new higher low forms.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="ft-card" id="ethh4-early">
+    <h2>Early rejection check</h2>
+    <p class="ft-note">Catches a top that stalls below the zone, before the full confirmation drop.</p>
+    <div class="ft-tiles">
+      <div class="ft-tile">
+        <p class="ft-label">Highest since C</p>
+        <p class="ft-big" data-draw="posthigh" data-source="eth_h4_summary" data-field="post_c_high" data-row="0">—</p>
+        <p class="ft-sub" data-draw="posthighdate" data-source="eth_h4_summary" data-field="post_c_high_date" data-row="0">—</p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Close vs that high</p>
+        <p class="ft-big" data-draw="drop" data-source="eth_h4_summary" data-field="drop_from_high" data-row="0">—</p>
+        <p class="ft-sub">Watch at −<span data-draw="watchlvl" data-source="eth_h4_summary" data-field="watch" data-row="0">—</span>, warning at −<span data-draw="warnlvl" data-source="eth_h4_summary" data-field="warn" data-row="0">—</span></p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Watch accuracy</p>
+        <p class="ft-big" data-draw="ewwatch" data-source="eth_h4_summary" data-field="ew_watch_precision" data-row="0">—</p>
+        <p class="ft-sub"><span data-draw="ewwatchc" data-source="eth_h4_summary" data-field="ew_watch_correct" data-row="0">—</span> of <span data-draw="ewwatchf" data-source="eth_h4_summary" data-field="ew_watch_fired" data-row="0">—</span> past signals were real early tops</p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Warning accuracy</p>
+        <p class="ft-big" data-draw="ewwarn" data-source="eth_h4_summary" data-field="ew_warn_precision" data-row="0">—</p>
+        <p class="ft-sub"><span data-draw="ewwarnc" data-source="eth_h4_summary" data-field="ew_warn_correct" data-row="0">—</span> of <span data-draw="ewwarnf" data-source="eth_h4_summary" data-field="ew_warn_fired" data-row="0">—</span> past signals were real early tops</p>
+      </div>
+    </div>
+    <p class="ft-note">It only arms when the high since C is under the zone low and at least <span data-draw="minrally" data-source="eth_h4_summary" data-field="min_rally" data-row="0">—</span> above C. In past signals it usually fired a few bars before the confirmation, at a few percent better price.</p>
+  </section>
+
+  <section class="ft-card" id="ethh4-confluence">
+    <h2>Zone confluence</h2>
+    <p class="ft-note">Three checks for selling into the zone. More checks lit means a stronger case to scale out.</p>
+    <div class="ft-checks">
+      <div class="ft-check" data-chk="zone">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">Price at the zone</p><p class="ft-sub">Within <span data-draw="nearpct" data-source="eth_h4_summary" data-field="near" data-row="0">—</span> of the zone low <span data-draw="zlo" data-source="eth_h4_summary" data-field="zone_lo" data-row="0">—</span> or inside it</p></div>
+      </div>
+      <div class="ft-check" data-chk="res">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">At a resistance level</p><p class="ft-sub">Nearest level within <span data-draw="nearpct" data-source="eth_h4_summary" data-field="near" data-row="0">—</span>: <span data-draw="nearres" data-source="eth_h4_summary" data-field="near_resistance" data-row="0">—</span></p></div>
+      </div>
+      <div class="ft-check" data-chk="rsi">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">RSI(7) hooked below 70</p><p class="ft-sub">4H RSI(7) <b data-draw="rsi" data-source="eth_h4_summary" data-field="rsi7" data-row="0">—</b> · <span data-draw="rsistate" data-source="eth_h4_summary" data-field="rsi_state_label" data-row="0">—</span></p></div>
+      </div>
+    </div>
+    <p class="ft-meta">Checks lit: <b data-draw="conf" data-source="eth_h4_summary" data-field="confluence" data-row="0">—</b> of 3 · Price is <span data-draw="emapos" data-source="eth_h4_summary" data-field="above_ema200" data-row="0">—</span> the 200-bar EMA (<span data-draw="ema" data-source="eth_h4_summary" data-field="ema200" data-row="0">—</span>)</p>
+    <div class="ft-grid">
+      <div class="ft-sub-card">
+        <h3>4H RSI(7)</h3>
+        <p class="ft-note">Overbought above 70. The hook is a close back under 70 after being above it.</p>
+        <div class="ft-rsi" data-draw="rsichart" data-source="eth_h4_price"></div>
+      </div>
+      <div class="ft-sub-card">
+        <h3>Resistance up to the zone top</h3>
+        <p class="ft-note">Price levels where at least one major 4H swing high or low formed (5% swings since 2017, clustered within 1%).</p>
+        <div class="ft-scroll">
+          <table data-source="eth_h4_resistance" data-row-key="price">
+            <thead><tr><th data-field="price">Level</th><th data-field="touches">Swings</th><th data-field="last">Last swing</th><th data-field="dist">Distance</th></tr></thead>
+            <tbody data-draw="restable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <p class="ft-note">From your BTC RSI(7) study (not yet tested on ETH): on 4H, a reading above 70 alone did no better than chance and price ran a median 3.6% further after it. The hook back below 70 worked best when price was under the 200 EMA, and divergence made results worse.</p>
+  </section>
+
+  <section class="ft-grid" id="ethh4-tables">
+    <div class="ft-card">
+      <h2>Extension ladder</h2>
+      <p class="ft-note">Distance is from today's price.</p>
+      <div class="ft-scroll">
+        <table data-source="eth_h4_levels" data-row-key="label">
+          <thead><tr><th data-field="label">Level</th><th data-field="price">Price</th><th data-source="eth_h4_ladder" data-field="dist">Distance</th></tr></thead>
+          <tbody data-draw="ladder"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="ft-card">
+      <h2>Recent backtest tops</h2>
+      <p class="ft-note">Walk-forward: each target used only swings known before that top.</p>
+      <div class="ft-scroll">
+        <table data-source="eth_h4_backtest" data-row-key="date">
+          <thead><tr><th data-field="date">Top date</th><th data-field="target">Target</th><th data-field="top">Actual</th><th data-field="err">Miss</th></tr></thead>
+          <tbody data-draw="bt"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="ft-card" id="ethh4-log">
+    <h2>Forecast log</h2>
+    <p class="ft-note">Every ETH target the daily refresh issues, logged from 7 Nov 2026. A forecast is scored when its top is confirmed, and closed as re-planned if price breaks its anchors first.</p>
+    <div class="ft-scroll">
+      <table data-source="eth_h4_forecasts" data-row-key="key">
+        <thead><tr><th data-field="opened">Opened</th><th data-field="C">C</th><th data-field="target">Target</th><th data-field="state">State</th><th data-field="top">Actual top</th><th data-field="err">Miss</th></tr></thead>
+        <tbody data-draw="log"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="ft-card" id="ethh4-method">
+    <h2>Method</h2>
+    <ul>
+      <li>Swings come from a zigzag on 4H highs and lows that needs a <span data-draw="zz" data-source="eth_h4_summary" data-field="zigzag" data-row="0">—</span> reversal.</li>
+      <li>The extension ratio is the median of all completed ETH 4H setups since 2017 (Binance ETHUSDT spot) in the same trend regime (above or below the 200-bar average). The zone is their middle half.</li>
+      <li>A hit means the confirmed top landed within ±<span data-draw="tol" data-source="eth_h4_summary" data-field="hit_tol" data-row="0">—</span> of the target issued for it.</li>
+      <li>This is a statistical projection, not financial advice.</li>
+    </ul>
+  </section>
+
+  </section>
+</div>
+
+<script>
+  window.FT = (() => {
+    const PRE = { d: '', h4: 'h4_', eth: 'eth_', eth_h4: 'eth_h4_' };
+    const tf = (el) => { const p = el && el.closest('[data-tf]'); return p ? p.dataset.tf : 'd'; };
+    const pre = (el) => PRE[tf(el)] ?? '';
+    const ds = (el, id) => pre(el) + id;
+    const isH4 = (el) => /h4$/.test(tf(el));
+    const asset = (el) => (tf(el).startsWith('eth') ? 'ETH' : 'BTC');
+    const usd = (v) => (v == null || isNaN(v) ? '—' : '$' + d3.format(',.0f')(v));
+    const pct = (v, p = '.1%') => (v == null || isNaN(v) ? '—' : d3.format(p)(v));
+    const spct = (v) => (v == null || isNaN(v) ? '—' : d3.format('+.1%')(v));
+    const toDate = (s) => new Date(s.length > 10 ? s.replace(' ', 'T') + ':00Z' : s + 'T00:00:00Z');
+    const day = (s) => {
+      if (!s) return '—';
+      return s.length > 10 ? d3.utcFormat('%b %-d, %Y %H:%M UTC')(toDate(s)) : d3.utcFormat('%b %-d, %Y')(toDate(s));
+    };
+    const row = (el) => { const d = dash.data(ds(el, 'summary')); return d.status === 'ok' && d.data.length ? d.data[0] : null; };
+    return { pre, ds, isH4, asset, usd, pct, spct, toDate, day, row };
+  })();
+</script>
+
+<script>
+  (() => {
+    const pages = () => document.querySelectorAll('.ft-page[data-tf]');
+    const tabs = () => document.querySelectorAll('.ft-tabs [data-tab]');
+    const show = (id) => {
+      pages().forEach((p) => { p.hidden = p.id !== id; });
+      tabs().forEach((b) => b.setAttribute('aria-selected', b.dataset.tab === id ? 'true' : 'false'));
+    };
+    tabs().forEach((b) => b.addEventListener('click', () => { show(b.dataset.tab); dash.setLink(b.dataset.tab); }));
+    const start = location.hash.slice(1);
+    const hit = [...pages()].map((p) => p.id).find((id) => start === id || start.startsWith(id + '-'));
+    if (hit) show(hit);
+  })();
+</script>
+
+<script>
+  const { usd, pct, spct, day, row } = window.FT;
+  const fill = (name, fmt, field) => dash.draw(name, (el) => {
+    const r = row(el);
+    el.textContent = r ? fmt(r[field]) : '—';
+  });
+  const cnt = (v) => (v == null ? '—' : String(v));
+  const pc0 = (v) => (v == null ? '—' : d3.format('.0%')(v));
+  const pc1 = (v) => (v == null ? '—' : d3.format('.1~%')(v));
+  fill('target', usd, 'target');
+  fill('zlo', usd, 'zone_lo');
+  fill('zhi', usd, 'zone_hi');
+  fill('close', usd, 'live_close');
+  fill('totarget', spct, 'to_target_pct');
+  fill('ratio', (v) => (v == null ? '—' : d3.format('.3f')(v)), 'ratio');
+  fill('bt10', (v) => pct(v, '.0%'), 'bt_within10_pct');
+  fill('btn', cnt, 'bt_n');
+  fill('btrecent', (v) => pct(v, '.0%'), 'bt_recent_pct');
+  fill('btrecentn', cnt, 'bt_recent_n');
+  fill('lhits', cnt, 'live_hits');
+  fill('lscored', cnt, 'live_scored');
+  fill('linv', cnt, 'live_invalidated');
+  fill('A', usd, 'A');
+  fill('B', usd, 'B');
+  fill('C', usd, 'C');
+  fill('sma', usd, 'sma200');
+  fill('adate', day, 'a_date');
+  fill('bdate', day, 'b_date');
+  fill('cdate', day, 'c_date');
+  fill('cstate', (v) => (v ? v.toLowerCase() : '—'), 'c_state');
+  fill('gen', (v) => v || '—', 'generated');
+  fill('livedate', (v) => v || '—', 'live_date');
+  fill('note', (v) => v || '', 'note');
+  fill('posthigh', usd, 'post_c_high');
+  fill('posthighdate', day, 'post_c_high_date');
+  fill('drop', (v) => (v == null ? '—' : d3.format('+.1%')(v)), 'drop_from_high');
+  fill('ewwatch', (v) => pct(v, '.0%'), 'ew_watch_precision');
+  fill('ewwarn', (v) => pct(v, '.0%'), 'ew_warn_precision');
+  fill('ewwatchc', cnt, 'ew_watch_correct');
+  fill('ewwatchf', cnt, 'ew_watch_fired');
+  fill('ewwarnc', cnt, 'ew_warn_correct');
+  fill('ewwarnf', cnt, 'ew_warn_fired');
+  fill('nearres', (v) => (v == null ? 'none' : usd(v)), 'near_resistance');
+  fill('rsi', (v) => (v == null ? '—' : d3.format('.1f')(v)), 'rsi7');
+  fill('rsistate', (v) => v || '—', 'rsi_state_label');
+  fill('conf', cnt, 'confluence');
+  fill('ema', usd, 'ema200');
+  fill('emapos', (v) => (v == null ? '—' : v ? 'above' : 'below'), 'above_ema200');
+  fill('zz', pc0, 'zigzag');
+  fill('tol', pc0, 'hit_tol');
+  fill('watchlvl', pc1, 'watch');
+  fill('warnlvl', pc1, 'warn');
+  fill('blow', usd, 'broken_low');
+  const badge = (name, field) => dash.draw(name, (el) => {
+    const r = row(el);
+    const v = r ? r[field] : null;
+    el.textContent = v || '—';
+    el.classList.remove('is-weak', 'is-confirmed', 'is-strong');
+    if (v) el.classList.add('is-' + v.toLowerCase());
+  });
+  badge('abadge', 'a_strength');
+  badge('cbadge', 'c_strength');
+  badge('blbadge', 'broken_low_strength');
+  fill('fkweak', (v) => pct(v, '.0%'), 'fk_weak_rate');
+  fill('fkconf', (v) => pct(v, '.0%'), 'fk_confirmed_rate');
+  fill('fkstrong', (v) => pct(v, '.0%'), 'fk_strong_rate');
+  fill('fkweakn', cnt, 'fk_weak_n');
+  fill('fkconfn', cnt, 'fk_confirmed_n');
+  fill('fkstrongn', cnt, 'fk_strong_n');
+  fill('blowdate', day, 'broken_low_date');
+  fill('bconf', usd, 'broken_confirm_at');
+  fill('minrally', pc1, 'min_rally');
+  fill('nearpct', pc1, 'near');
+  dash.draw('status', (el) => {
+    const r = row(el);
+    el.textContent = r ? r.status_label : '—';
+    const tone = r ? ({ in_zone: 'is-ok', above_zone: 'is-warn', broken: 'is-bad', pullback: 'is-warn', rallying: 'is-ok', early_watch: 'is-warn', early_rejection: 'is-bad' }[r.status] || '') : '';
+    el.className = 'ft-pill ' + tone;
+  });
+  const checks = { zone: (r) => r.near_zone, res: (r) => r.near_resistance != null, rsi: (r) => r.rsi_state === 'hooked' };
+  dash.onData(() => {
+    document.querySelectorAll('.ft-page:not([hidden]) [data-when]').forEach((el) => {
+      const r = row(el);
+      const broken = !!(r && r.status === 'broken');
+      el.hidden = (el.dataset.when === 'broken') !== broken;
+    });
+    document.querySelectorAll('.ft-page:not([hidden]) .ft-check[data-chk]').forEach((el) => {
+      const r = row(el);
+      const on = checks[el.dataset.chk];
+      el.classList.toggle('is-on', !!(r && on && on(r)));
+    });
+  });
+</script>
+
+<script>
+  [['', 'Distance from price'], ['h4_', 'Distance from price (4H)'], ['eth_', 'ETH distance from price'], ['eth_h4_', 'ETH distance from price (4H)']].forEach(([p, title]) => {
+    dash.calc(p + 'ladder', {
+      inputs: [p + 'levels', p + 'summary'],
+      title,
+      description: 'Each extension level as a percent above or below the latest close.',
+      fn: (levels, summary) => levels.map((l) => ({ label: l.label, dist: l.price == null ? null : l.price / summary[0].live_close - 1 })),
+    });
+  });
+  const cell = (tr, text, cls) => { const td = document.createElement('td'); td.textContent = text; if (cls) td.className = cls; tr.append(td); };
+  dash.draw('ladder', (tb) => {
+    const { usd, spct, ds } = window.FT;
+    const lv = dash.data(ds(tb, 'levels'));
+    const ld = dash.data(ds(tb, 'ladder'));
+    tb.replaceChildren();
+    if (lv.status !== 'ok') return;
+    const dist = new Map((ld.status === 'ok' ? ld.data : []).map((r) => [r.label, r.dist]));
+    [...lv.data].reverse().forEach((l) => {
+      const tr = document.createElement('tr');
+      if (l.kind === 'target') tr.className = 'is-target';
+      if (l.kind === 'none') { cell(tr, l.label); cell(tr, '—'); cell(tr, '—'); tb.append(tr); return; }
+      cell(tr, l.label); cell(tr, usd(l.price)); cell(tr, spct(dist.get(l.label)));
+      tb.append(tr);
+    });
+  });
+  dash.draw('bt', (tb) => {
+    const { usd, spct, ds, row } = window.FT;
+    const d = dash.data(ds(tb, 'backtest'));
+    const tol = (row(tb) || {}).hit_tol ?? 0.1;
+    tb.replaceChildren();
+    if (d.status !== 'ok') return;
+    d.data.forEach((r) => {
+      const tr = document.createElement('tr');
+      cell(tr, r.date); cell(tr, usd(r.target)); cell(tr, usd(r.top));
+      cell(tr, spct(r.err), Math.abs(r.err) <= tol ? 'up' : 'dn');
+      tb.append(tr);
+    });
+  });
+  dash.draw('log', (tb) => {
+    const { usd, spct, ds } = window.FT;
+    const d = dash.data(ds(tb, 'forecasts'));
+    tb.replaceChildren();
+    if (d.status !== 'ok') return;
+    const names = { open: 'Open', scored: 'Scored', reanchored: 'Re-planned', invalidated: 'Invalidated', replaced: 'Replaced' };
+    d.data.forEach((r) => {
+      const tr = document.createElement('tr');
+      tr.dataset.key = r.key;
+      if (r.state === 'none') { cell(tr, r.reason || 'No forecast issued yet'); ['', '', '', '', ''].forEach((t) => cell(tr, '—')); tb.append(tr); return; }
+      let state = r.state === 'scored' ? (r.hit ? 'Hit' : 'Miss') : (names[r.state] || r.state);
+      if (r.state !== 'scored' && r.state !== 'open' && r.zone_touched) state += ' after zone touch';
+      if (r.reason && r.state === 'replaced') state += ' (' + r.reason + ')';
+      cell(tr, r.opened); cell(tr, usd(r.C)); cell(tr, usd(r.target));
+      cell(tr, state, r.state === 'scored' ? (r.hit ? 'up' : 'dn') : '');
+      cell(tr, r.top == null ? (r.max_high != null && r.state !== 'open' ? 'high ' + usd(r.max_high) : '—') : usd(r.top)); cell(tr, r.err == null ? '—' : spct(r.err));
+      tb.append(tr);
+    });
+  });
+  dash.draw('restable', (tb) => {
+    const { usd, spct, day, ds } = window.FT;
+    const d = dash.data(ds(tb, 'resistance'));
+    tb.replaceChildren();
+    if (d.status !== 'ok') return;
+    [...d.data].filter((r) => r.price != null).sort((a, b) => b.price - a.price).forEach((r) => {
+      const tr = document.createElement('tr');
+      tr.dataset.key = String(r.price);
+      if (r.in_zone) tr.className = 'in-zone';
+      cell(tr, usd(r.price) + (r.in_zone ? ' · in zone' : '')); cell(tr, String(r.touches)); cell(tr, day(r.last)); cell(tr, spct(r.dist));
+      tb.append(tr);
+    });
+  });
+</script>
+
+<script>
+  const fail = (el) => { const f = document.createElement('div'); f.className = 'ft-fail'; f.textContent = 'Failed to load'; el.append(f); };
+  const axisStyle = (a) => { a.select('.domain').attr('stroke', 'var(--cds-chart-axis)'); a.selectAll('line').attr('stroke', 'var(--cds-chart-axis)'); a.selectAll('text').attr('fill', 'var(--color-fg-muted)').attr('font-size', 11); };
+  dash.draw('rsichart', (el) => {
+    const { ds, toDate } = window.FT;
+    const P = dash.data(ds(el, 'price'));
+    el.replaceChildren();
+    if (P.status === 'error') { fail(el); return; }
+    if (P.status !== 'ok') return;
+    const rows = P.data.filter((r) => r.rsi7 != null).slice(-120).map((r) => ({ t: toDate(r.d), v: r.rsi7 }));
+    if (!rows.length) return;
+    const W = Math.max(260, el.clientWidth), H = 150, ml = 28, mr = 34, mt = 8, mb = 22;
+    const x = d3.scaleUtc(d3.extent(rows, (r) => r.t), [ml, W - mr]);
+    const y = d3.scaleLinear([0, 100], [H - mb, mt]);
+    const accent = dash.colors[0];
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'RSI 7');
+    svg.append('rect').attr('x', ml).attr('width', W - mr - ml).attr('y', y(100)).attr('height', y(70) - y(100)).attr('fill', 'var(--cds-chart-status-critical)').attr('fill-opacity', 0.08);
+    svg.append('rect').attr('x', ml).attr('width', W - mr - ml).attr('y', y(30)).attr('height', y(0) - y(30)).attr('fill', accent).attr('fill-opacity', 0.08);
+    [30, 50, 70].forEach((v) => {
+      svg.append('line').attr('x1', ml).attr('x2', W - mr).attr('y1', y(v)).attr('y2', y(v)).attr('stroke', v === 50 ? 'var(--cds-chart-grid)' : 'var(--cds-chart-reference)').attr('stroke-dasharray', v === 50 ? null : '3 3');
+      svg.append('text').attr('x', ml - 6).attr('y', y(v)).attr('dy', '0.32em').attr('text-anchor', 'end').attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text(v);
+    });
+    svg.append('g').attr('transform', `translate(0,${H - mb})`).call(d3.axisBottom(x).ticks(W < 420 ? 3 : 5).tickFormat(d3.utcFormat('%b %-d')).tickSizeOuter(0))
+      .attr('font-size', null).attr('font-family', null).call(axisStyle);
+    svg.append('path').datum(rows).attr('fill', 'none').attr('stroke', accent).attr('stroke-width', 2).attr('stroke-linejoin', 'round').attr('stroke-linecap', 'round').attr('d', d3.line().x((r) => x(r.t)).y((r) => y(r.v)));
+    const last = rows[rows.length - 1];
+    svg.append('circle').attr('cx', x(last.t)).attr('cy', y(last.v)).attr('r', 3.5).attr('fill', accent);
+    svg.append('text').attr('x', x(last.t) + 6).attr('y', y(last.v)).attr('dy', '0.32em').attr('font-size', 11).attr('font-weight', 600).attr('fill', 'var(--color-fg)').text(d3.format('.0f')(last.v));
+  });
+
+  dash.draw('chart', (el) => {
+    const { usd, ds, toDate, isH4, asset } = window.FT;
+    const h4 = isH4(el);
+    const P = dash.data(ds(el, 'price')), S = dash.data(ds(el, 'summary')), L = dash.data(ds(el, 'levels')), R = dash.data(ds(el, 'resistance'));
+    el.replaceChildren();
+    if ([P, S, L].some((d) => d.status === 'error')) { fail(el); return; }
+    if (P.status !== 'ok' || S.status !== 'ok' || !S.data.length) return;
+    const s = S.data[0];
+    const rows = P.data.map((r) => ({ ...r, t: toDate(r.d) }));
+    const W = Math.max(280, el.clientWidth), H = W < 520 ? 260 : 320;
+    const css = getComputedStyle(el);
+    const accent = dash.colors[0], muted = css.getPropertyValue('--cds-chart-muted').trim() || 'gray';
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', asset(el) + ' price with target zone');
+    const lows = d3.min(rows, (r) => r.l), highs = d3.max(rows, (r) => r.h);
+    const yMax = Math.max(highs, s.zone_hi || 0) * 1.02, yMin = lows * 0.97;
+    const y = d3.scaleLinear([yMin, yMax], [H - 28, 10]).nice();
+    const ticks = y.ticks(W < 520 ? 4 : 6);
+    const fmtK = (v) => '$' + d3.format(',.1~f')(v / 1000) + 'k';
+    const probe = svg.append('text').attr('font-size', 12).style('visibility', 'hidden');
+    const widest = (arr) => d3.max(arr, (t) => { probe.text(t); return probe.node().getComputedTextLength(); }) || 0;
+    const endLabels = [['Zone top', s.zone_hi], ['Target', s.target], ['Zone low', s.zone_lo], ['Close', s.live_close]].filter((d) => d[1]);
+    const ml = widest(ticks.map(fmtK)) + 10;
+    const mr = widest(endLabels.map((d) => `${d[0]} ${fmtK(d[1])}`)) + 12;
+    probe.remove();
+    const x = d3.scaleUtc(d3.extent(rows, (r) => r.t), [ml, W - mr]);
+    const g = svg.append('g');
+    g.selectAll('line.grid').data(ticks).join('line').attr('x1', ml).attr('x2', W - mr).attr('y1', (d) => y(d)).attr('y2', (d) => y(d)).attr('stroke', 'var(--cds-chart-grid)');
+    g.selectAll('text.yt').data(ticks).join('text').attr('x', ml - 8).attr('y', (d) => y(d)).attr('dy', '0.32em').attr('text-anchor', 'end').attr('font-size', 12).attr('fill', 'var(--color-fg-muted)').text(fmtK);
+    const xa = d3.axisBottom(x).ticks(W < 520 ? 4 : 7).tickFormat(d3.utcFormat(h4 ? '%b %-d' : '%b %y')).tickSizeOuter(0);
+    svg.append('g').attr('transform', `translate(0,${H - 28})`).call(xa).attr('font-size', null).attr('font-family', null)
+      .call((a) => { axisStyle(a); a.selectAll('text').attr('font-size', 12); });
+    if (s.zone_lo && s.zone_hi) {
+      g.append('rect').attr('x', ml).attr('width', W - mr - ml).attr('y', y(s.zone_hi)).attr('height', y(s.zone_lo) - y(s.zone_hi)).attr('fill', accent).attr('fill-opacity', 0.12);
+      g.append('line').attr('x1', ml).attr('x2', W - mr).attr('y1', y(s.target)).attr('y2', y(s.target)).attr('stroke', accent).attr('stroke-width', 1.5);
+    }
+    const [dLo, dHi] = y.domain();
+    (R.status === 'ok' ? R.data : []).filter((r) => r.price != null && r.price >= dLo && r.price <= dHi).forEach((r) => {
+      g.append('line').attr('x1', ml).attr('x2', W - mr).attr('y1', y(r.price)).attr('y2', y(r.price))
+        .attr('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '1 3').attr('stroke-width', 1);
+    });
+    const sma = rows.filter((r) => r.sma200);
+    g.append('path').datum(sma).attr('fill', 'none').attr('stroke', muted).attr('stroke-width', 1.5).attr('stroke-dasharray', '4 3').attr('d', d3.line().x((r) => x(r.t)).y((r) => y(r.sma200)));
+    g.append('path').datum(rows).attr('fill', 'none').attr('stroke', 'var(--color-fg)').attr('stroke-width', h4 ? 1.5 : 2).attr('stroke-linejoin', 'round').attr('stroke-linecap', 'round').attr('d', d3.line().x((r) => x(r.t)).y((r) => y(r.c)));
+    const pts = [['A', s.a_date, s.A, 1], ['B', s.b_date, s.B, -1], ['C', s.c_date, s.C, 1]]
+      .filter(([, d, v]) => d && v)
+      .map(([k, d, v, dir]) => ({ k, t: toDate(d), v, dir }))
+      .filter((p) => p.t >= x.domain()[0]);
+    const ag = g.selectAll('g.anchor').data(pts).join('g');
+    ag.append('circle').attr('cx', (p) => x(p.t)).attr('cy', (p) => y(p.v)).attr('r', 4.5).attr('fill', accent).attr('stroke', 'var(--color-panel)').attr('stroke-width', 1.5);
+    ag.append('text').attr('x', (p) => x(p.t)).attr('y', (p) => y(p.v) + p.dir * 16).attr('dy', '0.32em').attr('text-anchor', 'middle').attr('font-size', 12).attr('font-weight', 600).attr('fill', 'var(--color-fg)').text((p) => p.k);
+    const lab = endLabels.map(([n, v]) => ({ n, v, yy: y(v) })).sort((a, b) => a.yy - b.yy);
+    for (let i = 1; i < lab.length; i++) if (lab[i].yy - lab[i - 1].yy < 15) lab[i].yy = lab[i - 1].yy + 15;
+    g.selectAll('text.end').data(lab).join('text').attr('x', W - mr + 6).attr('y', (d) => d.yy).attr('dy', '0.32em').attr('font-size', 12)
+      .attr('fill', (d) => (d.n === 'Close' ? 'var(--color-fg)' : 'var(--color-fg-muted)')).attr('font-weight', (d) => (d.n === 'Target' || d.n === 'Close' ? 600 : 400))
+      .text((d) => `${d.n} ${fmtK(d.v)}`);
+    const last = rows[rows.length - 1];
+    g.append('circle').attr('cx', x(last.t)).attr('cy', y(last.c)).attr('r', 3.5).attr('fill', 'var(--color-fg)');
+    const tip = document.createElement('div'); tip.className = 'ft-tip'; tip.hidden = true; el.append(tip);
+    const dot = g.append('circle').attr('r', 4).attr('fill', 'var(--color-fg)').style('display', 'none');
+    const bis = d3.bisector((r) => r.t).center;
+    const tfmt = d3.utcFormat(h4 ? '%b %-d, %Y %H:%M UTC' : '%b %-d, %Y');
+    svg.append('rect').attr('x', ml).attr('y', 0).attr('width', W - mr - ml).attr('height', H - 28).attr('fill', 'transparent')
+      .on('pointermove', (ev) => {
+        const [mx] = d3.pointer(ev);
+        const r = rows[bis(rows, x.invert(mx))];
+        dot.style('display', null).attr('cx', x(r.t)).attr('cy', y(r.c));
+        tip.replaceChildren();
+        const line = (t, c) => { const e = document.createElement('div'); if (c) e.className = c; e.textContent = t; tip.append(e); };
+        line(tfmt(r.t), 'd'); line(`Close ${usd(r.c)}`); line(`High ${usd(r.h)} · Low ${usd(r.l)}`);
+        if (r.sma200) line(`${h4 ? '200-bar' : '200-day'} ${usd(r.sma200)}`);
+        if (r.rsi7 != null) line(`RSI(7) ${d3.format('.1f')(r.rsi7)}`);
+        tip.hidden = false;
+        const scale = el.clientWidth / W;
+        let left = x(r.t) * scale + 12; const tw = tip.offsetWidth;
+        if (left + tw > el.clientWidth) left = x(r.t) * scale - tw - 12;
+        tip.style.left = Math.max(0, left) + 'px'; tip.style.top = Math.max(0, y(r.c) * scale - 40) + 'px';
+      })
+      .on('pointerleave', () => { tip.hidden = true; dot.style('display', 'none'); });
+  });
+</script>
