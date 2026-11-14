@@ -11,7 +11,7 @@ Statistical projection, not financial advice. Spot only.
 - **Forecast logs**: `state/forecast_log*.json`, continued from the artifact's logs. Each build adds to them exactly as the artifact refresh did.
 - **Page**: `public/index.html` = the artifact host's head + d3 7.9.0 + `shim.js` + the original page (`reference/index.original.html`, checked against `reference/PAGE_SHA256SUMS`) + `cloud.js`.
   `shim.js` stands in for the claude.ai Dashboard runtime the page was written for (`dash.data`, `dash.draw`, `dash.calc`, `dash.onData`, `dash.setLink`, `dash.colors` and the CSS tokens) and reads `public/data/<prefix><name>.json`. `cloud.js` adds the Refresh button and the freshness strip above the page.
-  The page's own words still say "from your Google Drive file …": the page is kept unchanged; the strip says where the candles come from here.
+  The only text change to the page is the data-source line on each tab, which now says "from Market-Data (your Binance upload)" instead of the Drive file name (`reference/PAGE_EDITS.json`, approved 14 Nov 2026).
 - **Build**: `build/build.py <market-data dir>` runs the engine per tab (`config/dashboard.json`) and writes 6 files per tab (24 in all) to `public/data/`, plus `public/freshness.json`. A tab whose last closed candle is already built is skipped. A tab that fails keeps its last good files and log and is listed in `freshness.json`.
 - **Address**: none of its own (`workers_dev: false`). It opens at `/fib-extension/` on the home site (repo `dashboards`), which holds the one login lock. Controls at `/api/fib-extension/`.
 - **Runs**: when Market-Data gets new BTCUSDT/ETHUSDT candles (Market-Data `dashboards.json`), once a day as a safety net (01:25 UTC), or when Refresh is pressed.

@@ -1,0 +1,21 @@
+{
+ "_about": "The only changes to the original artifact page on Cloudflare (approved by the user 14 Nov 2026): the data-source line on each tab. Each 'from' must occur exactly once in reference/index.original.html.",
+ "edits": [
+  {
+   "from": "BINANCE:BTCUSDT daily, from your Google Drive file BTCUSDT_D.xlsx ·",
+   "to": "BINANCE:BTCUSDT daily, from Market-Data (your Binance upload) ·"
+  },
+  {
+   "from": "BINANCE:BTCUSDT 4H, from your Google Drive file BTCUSDT_4H.xlsx ·",
+   "to": "BINANCE:BTCUSDT 4H, from Market-Data (your Binance upload) ·"
+  },
+  {
+   "from": "BINANCE:ETHUSDT daily, from your Google Drive file ETHUSDT_D.xlsx ·",
+   "to": "BINANCE:ETHUSDT daily, from Market-Data (your Binance upload) ·"
+  },
+  {
+   "from": "BINANCE:ETHUSDT 4H, from your Google Drive file ETHUSDT_4H.xlsx ·",
+   "to": "BINANCE:ETHUSDT 4H, from Market-Data (your Binance upload) ·"
+  }
+ ]
+}
