@@ -1,11 +1,118 @@
 {
-  "_about": "Four tabs of the BTC & ETH Fib Top Tracker. Each tab = one Market-Data series run through the unchanged engine (engine/fib_top_engine.py, engine/export_dash.py). prefix = the dataset name prefix the page reads (public/data/<prefix><name>.json). log = the tab's forecast log (state/), continued from the artifact's logs.",
-  "market_data": "mbzazad-max/market-data",
-  "tabs": [
-    {"id": "btc_d",  "title": "BTC Daily", "series": "binance/BTCUSDT/1D", "file": "data/binance/BTCUSDT_1D.csv", "period_s": 86400, "profile": "D",  "symbol": "BINANCE:BTCUSDT", "prefix": "",        "log": "state/forecast_log.json"},
-    {"id": "btc_4h", "title": "BTC 4H",    "series": "binance/BTCUSDT/4H", "file": "data/binance/BTCUSDT_4H.csv", "period_s": 14400, "profile": "4H", "symbol": "BINANCE:BTCUSDT", "prefix": "h4_",     "log": "state/forecast_log_4h.json"},
-    {"id": "eth_d",  "title": "ETH Daily", "series": "binance/ETHUSDT/1D", "file": "data/binance/ETHUSDT_1D.csv", "period_s": 86400, "profile": "D",  "symbol": "BINANCE:ETHUSDT", "prefix": "eth_",    "log": "state/forecast_log_eth.json"},
-    {"id": "eth_4h", "title": "ETH 4H",    "series": "binance/ETHUSDT/4H", "file": "data/binance/ETHUSDT_4H.csv", "period_s": 14400, "profile": "4H", "symbol": "BINANCE:ETHUSDT", "prefix": "eth_h4_", "log": "state/forecast_log_eth_4h.json"}
-  ],
-  "datasets": ["summary", "levels", "price", "forecasts", "backtest", "resistance"]
+ "_about": "Tabs of the Fib Top Tracker (BTC and ETH from the artifact; SOL and BNB added 14 Nov 2026). Each tab = one Market-Data series run through the unchanged engine (engine/fib_top_engine.py, engine/export_dash.py). prefix = the dataset name prefix the page reads (public/data/<prefix><name>.json). log = the tab's forecast log (state/), continued from the artifact's logs.",
+ "market_data": "mbzazad-max/market-data",
+ "tabs": [
+  {
+   "id": "btc_d",
+   "title": "BTC Daily",
+   "series": "binance/BTCUSDT/1D",
+   "file": "data/binance/BTCUSDT_1D.csv",
+   "period_s": 86400,
+   "profile": "D",
+   "symbol": "BINANCE:BTCUSDT",
+   "prefix": "",
+   "log": "state/forecast_log.json"
+  },
+  {
+   "id": "btc_4h",
+   "title": "BTC 4H",
+   "series": "binance/BTCUSDT/4H",
+   "file": "data/binance/BTCUSDT_4H.csv",
+   "period_s": 14400,
+   "profile": "4H",
+   "symbol": "BINANCE:BTCUSDT",
+   "prefix": "h4_",
+   "log": "state/forecast_log_4h.json"
+  },
+  {
+   "id": "eth_d",
+   "title": "ETH Daily",
+   "series": "binance/ETHUSDT/1D",
+   "file": "data/binance/ETHUSDT_1D.csv",
+   "period_s": 86400,
+   "profile": "D",
+   "symbol": "BINANCE:ETHUSDT",
+   "prefix": "eth_",
+   "log": "state/forecast_log_eth.json"
+  },
+  {
+   "id": "eth_4h",
+   "title": "ETH 4H",
+   "series": "binance/ETHUSDT/4H",
+   "file": "data/binance/ETHUSDT_4H.csv",
+   "period_s": 14400,
+   "profile": "4H",
+   "symbol": "BINANCE:ETHUSDT",
+   "prefix": "eth_h4_",
+   "log": "state/forecast_log_eth_4h.json"
+  },
+  {
+   "id": "sol_d",
+   "title": "SOL Daily",
+   "series": "binance/SOLUSDT/1D",
+   "file": "data/binance/SOLUSDT_1D.csv",
+   "period_s": 86400,
+   "profile": "D",
+   "symbol": "BINANCE:SOLUSDT",
+   "prefix": "sol_",
+   "log": "state/forecast_log_sol.json"
+  },
+  {
+   "id": "sol_4h",
+   "title": "SOL 4H",
+   "series": "binance/SOLUSDT/4H",
+   "file": "data/binance/SOLUSDT_4H.csv",
+   "period_s": 14400,
+   "profile": "4H",
+   "symbol": "BINANCE:SOLUSDT",
+   "prefix": "sol_h4_",
+   "log": "state/forecast_log_sol_4h.json"
+  },
+  {
+   "id": "bnb_d",
+   "title": "BNB Daily",
+   "series": "binance/BNBUSDT/1D",
+   "file": "data/binance/BNBUSDT_1D.csv",
+   "period_s": 86400,
+   "profile": "D",
+   "symbol": "BINANCE:BNBUSDT",
+   "prefix": "bnb_",
+   "log": "state/forecast_log_bnb.json"
+  },
+  {
+   "id": "bnb_4h",
+   "title": "BNB 4H",
+   "series": "binance/BNBUSDT/4H",
+   "file": "data/binance/BNBUSDT_4H.csv",
+   "period_s": 14400,
+   "profile": "4H",
+   "symbol": "BINANCE:BNBUSDT",
+   "prefix": "bnb_h4_",
+   "log": "state/forecast_log_bnb_4h.json"
+  }
+ ],
+ "datasets": [
+  "summary",
+  "levels",
+  "price",
+  "forecasts",
+  "backtest",
+  "resistance"
+ ],
+ "page_coins": [
+  {
+   "sym": "SOL",
+   "key": "sol",
+   "since": "2020",
+   "logged_from": "14 Nov 2026"
+  },
+  {
+   "sym": "BNB",
+   "key": "bnb",
+   "since": "2017",
+   "logged_from": "14 Nov 2026"
+  }
+ ],
+ "_about_page_coins": "Coins added on Cloudflare (14 Nov 2026). Their two tabs are made by tools/page.js from the ETH Daily and ETH 4H tabs of the original page, with only the coin, its data and its history start changed. Their forecast logs start empty.",
+ "title": "BTC, ETH, SOL &amp; BNB Fib Top Tracker"
 }

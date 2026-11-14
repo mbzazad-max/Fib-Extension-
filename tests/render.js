@@ -1,5 +1,5 @@
 /* Render check: public/index.html (artifact host head + d3 + shim.js + the original page + cloud.js) opened with the
-   built public/data/*.json. Clicks through all four tabs and fails on any page error, a drawing that stays empty, a
+   built public/data/*.json. Clicks through all eight tabs and fails on any page error, a drawing that stays empty, a
    wrong number on screen (compared with summary.json), or a chart missing.
    usage: node tests/render.js <node_modules dir that has jsdom and d3> */
 'use strict';
@@ -7,7 +7,7 @@ const fs = require('fs'), path = require('path');
 const NM = path.resolve(process.argv[2]);
 const { JSDOM, VirtualConsole } = require(path.join(NM, 'jsdom'));
 const PUB = path.resolve(__dirname, '..', 'public');
-const TABS = [['daily', ''], ['h4', 'h4_'], ['ethd', 'eth_'], ['ethh4', 'eth_h4_']];
+const TABS = [['daily', ''], ['h4', 'h4_'], ['ethd', 'eth_'], ['ethh4', 'eth_h4_'], ['sold', 'sol_'], ['solh4', 'sol_h4_'], ['bnbd', 'bnb_'], ['bnbh4', 'bnb_h4_']];
 const usd = (v) => (v == null ? '—' : '$' + Math.round(v).toLocaleString('en-US'));
 (async () => {
   const html = fs.readFileSync(path.join(PUB, 'index.html'), 'utf8')
@@ -55,5 +55,5 @@ const usd = (v) => (v == null ? '—' : '$' + Math.round(v).toLocaleString('en-U
   console.log(JSON.stringify(res, null, 1));
   w.close();
   if (bad.length) { console.error('RENDER FAILED:\n' + bad.join('\n')); process.exit(1); }
-  console.log('RENDER OK: all four tabs drawn, numbers match the data, no page errors.');
+  console.log('RENDER OK: all eight tabs drawn, numbers match the data, no page errors.');
 })();

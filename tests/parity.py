@@ -19,7 +19,8 @@ DRIVE_FILE = {'btc_d': 'd.json', 'btc_4h': 'h4.json', 'eth_d': 'ethd.json', 'eth
 fails = 0
 with tempfile.TemporaryDirectory() as tmp:
     upto = {}
-    for tab in CFG['tabs']:
+    TABS = [t for t in CFG['tabs'] if t['id'] in DRIVE_FILE]   # tabs that came from the artifact (SOL and BNB were added on Cloudflare)
+    for tab in TABS:
         b = json.load(open(os.path.join(DRIVE, DRIVE_FILE[tab['id']])))['bars']
         D = {t: (b['o'][i], b['h'][i], b['l'][i], b['c'][i]) for i, t in enumerate(b['t'])}
         with open(os.path.join(MD, tab['file'])) as f:
@@ -38,14 +39,14 @@ with tempfile.TemporaryDirectory() as tmp:
         subprocess.run([sys.executable, os.path.join(ROOT, 'engine/fib_top_engine.py'), 'in.json', 'log.json', 'st.json', tab['profile']], cwd=a, env=env, check=True, capture_output=True)
         subprocess.run([sys.executable, os.path.join(ROOT, 'engine/export_dash.py'), 'st.json', 'out'], cwd=a, env=env, check=True, capture_output=True)
     # path B: build.py, one tab at a time so each tab is cut at its own candle
-    for tab in CFG['tabs']:
+    for tab in TABS:
         out, state = os.path.join(tmp, 'B_' + tab['id']), os.path.join(tmp, 'Bstate_' + tab['id'])
         shutil.copytree(os.path.join(ROOT, 'state'), state)   # fresh copy of the logs for every call
         if os.path.exists(os.path.join(state, 'built.json')): os.remove(os.path.join(state, 'built.json'))
         p = subprocess.run([sys.executable, os.path.join(ROOT, 'build/build.py'), MD, '--force', '--upto', str(upto[tab['id']]), '--out', out, '--state', state],
                            capture_output=True, text=True)
         if p.returncode: print(p.stdout, p.stderr); sys.exit(1)
-    for tab in CFG['tabs']:
+    for tab in TABS:
         for name in CFG['datasets']:
             A = json.load(open(os.path.join(tmp, 'A', tab['id'], 'out', name + '.json')))
             B = json.load(open(os.path.join(tmp, 'B_' + tab['id'], 'data', tab['prefix'] + name + '.json')))

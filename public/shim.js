@@ -27,7 +27,8 @@
     '--cds-chart-reference:#97958d;--cds-chart-muted:#5f5e5a;--cds-chart-status-critical:#dc3c3d;color-scheme:dark}}',
     'html,body{background:var(--color-bg)!important;color:var(--color-fg)!important}',
     'body{font-family:var(--font-anthropic-sans)!important;font-size:var(--cds-font-size-body)!important;line-height:1.45}',
-    'body>.ft{max-width:1200px;margin:0 auto;padding:16px 16px 40px}'
+    'body>.ft{max-width:1200px;margin:0 auto;padding:16px 16px 40px}',
+    '.ft{grid-template-columns:minmax(0,1fr)}.ft-top>*{min-width:0}.ft-tabs{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}.ft-tabs button{flex:0 0 auto;white-space:nowrap}'
   ].join('');
   var st = document.createElement('style'); st.textContent = css; (document.head || document.documentElement).appendChild(st);
 

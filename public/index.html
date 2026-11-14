@@ -72,12 +72,16 @@
 
 <div class="ft">
   <div class="ft-top">
-    <h1 class="ft-title">BTC &amp; ETH Fib Top Tracker</h1>
+    <h1 class="ft-title">BTC, ETH, SOL &amp; BNB Fib Top Tracker</h1>
     <div class="ft-tabs" role="tablist" aria-label="Asset and timeframe">
       <button type="button" role="tab" id="tab-daily" data-tab="daily" aria-selected="true" aria-controls="daily">BTC Daily</button>
       <button type="button" role="tab" id="tab-h4" data-tab="h4" aria-selected="false" aria-controls="h4">BTC 4H</button>
       <button type="button" role="tab" id="tab-ethd" data-tab="ethd" aria-selected="false" aria-controls="ethd">ETH Daily</button>
       <button type="button" role="tab" id="tab-ethh4" data-tab="ethh4" aria-selected="false" aria-controls="ethh4">ETH 4H</button>
+      <button type="button" role="tab" id="tab-sold" data-tab="sold" aria-selected="false" aria-controls="sold">SOL Daily</button>
+      <button type="button" role="tab" id="tab-solh4" data-tab="solh4" aria-selected="false" aria-controls="solh4">SOL 4H</button>
+      <button type="button" role="tab" id="tab-bnbd" data-tab="bnbd" aria-selected="false" aria-controls="bnbd">BNB Daily</button>
+      <button type="button" role="tab" id="tab-bnbh4" data-tab="bnbh4" aria-selected="false" aria-controls="bnbh4">BNB 4H</button>
     </div>
   </div>
 
@@ -788,16 +792,723 @@
   </section>
 
   </section>
+  <section class="ft-page" id="sold" data-tf="sol" role="tabpanel" aria-labelledby="tab-sold" hidden>
+  <header class="ft-head" id="sold-top">
+    <p class="ft-take" data-when="setup">Next projected daily local top <b data-draw="target" data-source="sol_summary" data-field="target" data-row="0">—</b>, likely zone <b data-draw="zlo" data-source="sol_summary" data-field="zone_lo" data-row="0">—</b> to <b data-draw="zhi" data-source="sol_summary" data-field="zone_hi" data-row="0">—</b>. Status: <span class="ft-pill" data-draw="status" data-source="sol_summary" data-field="status_label" data-row="0">—</span></p>
+    <p class="ft-take" data-when="broken" hidden>No daily target right now. Price broke below swing low A, so the model waits for a new higher low before it projects the next top. The lowest point so far is <b data-draw="blow" data-source="sol_summary" data-field="broken_low" data-row="0">—</b> (<span data-draw="blowdate" data-source="sol_summary" data-field="broken_low_date" data-row="0">—</span>). Its strength is <span class="ft-badge" data-draw="blbadge" data-source="sol_summary" data-field="broken_low_strength" data-row="0">—</span>; a daily candle closing above <b data-draw="bconf" data-source="sol_summary" data-field="broken_confirm_at" data-row="0">—</b> confirms it. Status: <span class="ft-pill" data-draw="status" data-source="sol_summary" data-field="status_label" data-row="0">—</span></p>
+    <p class="ft-note" data-draw="note" data-source="sol_summary" data-field="note" data-row="0">—</p>
+    <p class="ft-meta">BINANCE:SOLUSDT daily, from Market-Data (your Binance upload) · latest candle <span data-draw="livedate" data-source="sol_summary" data-field="live_date" data-row="0">—</span> · refreshed <span data-draw="gen" data-source="sol_summary" data-field="generated" data-row="0">—</span></p>
+  </header>
+
+  <section class="ft-tiles" id="sold-figures">
+    <div class="ft-tile">
+      <p class="ft-label">Model target</p>
+      <p class="ft-big" data-draw="target" data-source="sol_summary" data-field="target" data-row="0">—</p>
+      <p class="ft-sub">Extension ratio <span data-draw="ratio" data-source="sol_summary" data-field="ratio" data-row="0">—</span> of the A to B leg</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Price now</p>
+      <p class="ft-big" data-draw="close" data-source="sol_summary" data-field="live_close" data-row="0">—</p>
+      <p class="ft-sub"><span data-draw="totarget" data-source="sol_summary" data-field="to_target_pct" data-row="0">—</span> to target</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Backtest hit rate</p>
+      <p class="ft-big" data-draw="bt10" data-source="sol_summary" data-field="bt_within10_pct" data-row="0">—</p>
+      <p class="ft-sub">Top within ±<span data-draw="tol" data-source="sol_summary" data-field="hit_tol" data-row="0">—</span> of target, <span data-draw="btn" data-source="sol_summary" data-field="bt_n" data-row="0">—</span> past tops</p>
+      <p class="ft-sub">Since Mar 2024: <span data-draw="btrecent" data-source="sol_summary" data-field="bt_recent_pct" data-row="0">—</span> of <span data-draw="btrecentn" data-source="sol_summary" data-field="bt_recent_n" data-row="0">—</span> tops</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Live record</p>
+      <p class="ft-big"><span data-draw="lhits" data-source="sol_summary" data-field="live_hits" data-row="0">—</span> / <span data-draw="lscored" data-source="sol_summary" data-field="live_scored" data-row="0">—</span></p>
+      <p class="ft-sub">Hits of scored forecasts · <span data-draw="linv" data-source="sol_summary" data-field="live_invalidated" data-row="0">—</span> re-planned</p>
+    </div>
+  </section>
+
+  <section class="ft-card" id="sold-chart">
+    <h2>Daily price, swing anchors and target zone</h2>
+    <p class="ft-note">Last 240 daily bars. Shaded band is the target zone, the solid line the model target, the dashed line the 200-day average, dotted lines resistance levels.</p>
+    <div class="ft-chart" data-draw="chart" data-source="sol_price eth_summary eth_levels eth_resistance"></div>
+  </section>
+
+  <section class="ft-grid" id="sold-setup">
+    <div class="ft-card">
+      <h2>Current swing</h2>
+      <p class="ft-note">Bullish ABC: swing low, swing high, then a higher low. Targets project from C.</p>
+      <dl class="ft-anchors">
+        <dt>A</dt><dd data-draw="A" data-source="sol_summary" data-field="A" data-row="0">—</dd><dd class="r" data-draw="adate" data-source="sol_summary" data-field="a_date" data-row="0">—</dd><dd class="ft-badge" data-draw="abadge" data-source="sol_summary" data-field="a_strength" data-row="0">—</dd>
+        <dt>B</dt><dd data-draw="B" data-source="sol_summary" data-field="B" data-row="0">—</dd><dd class="r" data-draw="bdate" data-source="sol_summary" data-field="b_date" data-row="0">—</dd><dd></dd>
+        <dt>C</dt><dd data-draw="C" data-source="sol_summary" data-field="C" data-row="0">—</dd><dd class="r" data-draw="cdate" data-source="sol_summary" data-field="c_date" data-row="0">—</dd><dd class="ft-badge" data-draw="cbadge" data-source="sol_summary" data-field="c_strength" data-row="0">—</dd>
+      </dl>
+      <p class="ft-note">C is <b data-draw="cstate" data-source="sol_summary" data-field="c_state" data-row="0">—</b>. It is confirmed once price rallies <span data-draw="zz" data-source="sol_summary" data-field="zigzag" data-row="0">—</span> off it.</p>
+      <p class="ft-note">Low strength, from how often past daily lows were broken before rallying a further <span data-draw="zz" data-source="sol_summary" data-field="zigzag" data-row="0">—</span>:</p>
+      <ul class="ft-badges">
+        <li><b>Weak</b>, no daily candle has closed <span data-draw="zz" data-source="sol_summary" data-field="zigzag" data-row="0">—</span> above the low yet: broken <b data-draw="fkweak" data-source="sol_summary" data-field="fk_weak_rate" data-row="0">—</b> of <span data-draw="fkweakn" data-source="sol_summary" data-field="fk_weak_n" data-row="0">—</span> times</li>
+        <li><b>Confirmed</b>, a candle closed there: broken <b data-draw="fkconf" data-source="sol_summary" data-field="fk_confirmed_rate" data-row="0">—</b> of <span data-draw="fkconfn" data-source="sol_summary" data-field="fk_confirmed_n" data-row="0">—</span></li>
+        <li><b>Strong</b>, confirmed and a higher low: broken <b data-draw="fkstrong" data-source="sol_summary" data-field="fk_strong_rate" data-row="0">—</b> of <span data-draw="fkstrongn" data-source="sol_summary" data-field="fk_strong_n" data-row="0">—</span></li>
+      </ul>
+    </div>
+    <div class="ft-card">
+      <h2>What invalidates it</h2>
+      <ul class="ft-rules">
+        <li>Daily low under C (<b data-draw="C" data-source="sol_summary" data-field="C" data-row="0">—</b>): C moves lower and a new target is planned.</li>
+        <li>C under the 200-day average (<b data-draw="sma" data-source="sol_summary" data-field="sma200" data-row="0">—</b>): the target recalibrates on the below-trend history.</li>
+        <li>Price under A (<b data-draw="A" data-source="sol_summary" data-field="A" data-row="0">—</b>): structure broken, no target until a new higher low forms.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="ft-card" id="sold-early">
+    <h2>Early rejection check</h2>
+    <p class="ft-note">Catches a top that stalls below the zone, before the full confirmation drop.</p>
+    <div class="ft-tiles">
+      <div class="ft-tile">
+        <p class="ft-label">Highest since C</p>
+        <p class="ft-big" data-draw="posthigh" data-source="sol_summary" data-field="post_c_high" data-row="0">—</p>
+        <p class="ft-sub" data-draw="posthighdate" data-source="sol_summary" data-field="post_c_high_date" data-row="0">—</p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Close vs that high</p>
+        <p class="ft-big" data-draw="drop" data-source="sol_summary" data-field="drop_from_high" data-row="0">—</p>
+        <p class="ft-sub">Watch at −<span data-draw="watchlvl" data-source="sol_summary" data-field="watch" data-row="0">—</span>, warning at −<span data-draw="warnlvl" data-source="sol_summary" data-field="warn" data-row="0">—</span></p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Watch accuracy</p>
+        <p class="ft-big" data-draw="ewwatch" data-source="sol_summary" data-field="ew_watch_precision" data-row="0">—</p>
+        <p class="ft-sub"><span data-draw="ewwatchc" data-source="sol_summary" data-field="ew_watch_correct" data-row="0">—</span> of <span data-draw="ewwatchf" data-source="sol_summary" data-field="ew_watch_fired" data-row="0">—</span> past signals were real early tops</p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Warning accuracy</p>
+        <p class="ft-big" data-draw="ewwarn" data-source="sol_summary" data-field="ew_warn_precision" data-row="0">—</p>
+        <p class="ft-sub"><span data-draw="ewwarnc" data-source="sol_summary" data-field="ew_warn_correct" data-row="0">—</span> of <span data-draw="ewwarnf" data-source="sol_summary" data-field="ew_warn_fired" data-row="0">—</span> past signals were real early tops</p>
+      </div>
+    </div>
+    <p class="ft-note">It only arms when the high since C is under the zone low and at least <span data-draw="minrally" data-source="sol_summary" data-field="min_rally" data-row="0">—</span> above C. In past signals it usually fired about a day before the confirmation, at a few percent better price.</p>
+  </section>
+
+  <section class="ft-card" id="sold-confluence">
+    <h2>Zone confluence</h2>
+    <p class="ft-note">Three checks for selling into the zone. More checks lit means a stronger case to scale out.</p>
+    <div class="ft-checks">
+      <div class="ft-check" data-chk="zone">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">Price at the zone</p><p class="ft-sub">Within <span data-draw="nearpct" data-source="sol_summary" data-field="near" data-row="0">—</span> of the zone low <span data-draw="zlo" data-source="sol_summary" data-field="zone_lo" data-row="0">—</span> or inside it</p></div>
+      </div>
+      <div class="ft-check" data-chk="res">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">At a resistance level</p><p class="ft-sub">Nearest level within <span data-draw="nearpct" data-source="sol_summary" data-field="near" data-row="0">—</span>: <span data-draw="nearres" data-source="sol_summary" data-field="near_resistance" data-row="0">—</span></p></div>
+      </div>
+      <div class="ft-check" data-chk="rsi">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">RSI(7) hooked below 70</p><p class="ft-sub">Daily RSI(7) <b data-draw="rsi" data-source="sol_summary" data-field="rsi7" data-row="0">—</b> · <span data-draw="rsistate" data-source="sol_summary" data-field="rsi_state_label" data-row="0">—</span></p></div>
+      </div>
+    </div>
+    <p class="ft-meta">Checks lit: <b data-draw="conf" data-source="sol_summary" data-field="confluence" data-row="0">—</b> of 3 · Price is <span data-draw="emapos" data-source="sol_summary" data-field="above_ema200" data-row="0">—</span> the 200-day EMA (<span data-draw="ema" data-source="sol_summary" data-field="ema200" data-row="0">—</span>)</p>
+    <div class="ft-grid">
+      <div class="ft-sub-card">
+        <h3>Daily RSI(7)</h3>
+        <p class="ft-note">Overbought above 70. The hook is a close back under 70 after being above it.</p>
+        <div class="ft-rsi" data-draw="rsichart" data-source="sol_price"></div>
+      </div>
+      <div class="ft-sub-card">
+        <h3>Resistance up to the zone top</h3>
+        <p class="ft-note">Price levels where at least one major daily swing high or low formed (10% swings, clustered within 2%).</p>
+        <div class="ft-scroll">
+          <table data-source="sol_resistance" data-row-key="price">
+            <thead><tr><th data-field="price">Level</th><th data-field="touches">Swings</th><th data-field="last">Last swing</th><th data-field="dist">Distance</th></tr></thead>
+            <tbody data-draw="restable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <p class="ft-note">From your BTC RSI(7) study (not yet tested on SOL): a reading above 70 alone did not mark tops on the daily chart. Price ran a median 12% further after it. The hook back below 70 was the better signal, and divergence made results worse.</p>
+  </section>
+
+  <section class="ft-grid" id="sold-tables">
+    <div class="ft-card">
+      <h2>Extension ladder</h2>
+      <p class="ft-note">Distance is from today's price.</p>
+      <div class="ft-scroll">
+        <table data-source="sol_levels" data-row-key="label">
+          <thead><tr><th data-field="label">Level</th><th data-field="price">Price</th><th data-source="sol_ladder" data-field="dist">Distance</th></tr></thead>
+          <tbody data-draw="ladder"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="ft-card">
+      <h2>Recent backtest tops</h2>
+      <p class="ft-note">Walk-forward: each target used only swings known before that top.</p>
+      <div class="ft-scroll">
+        <table data-source="sol_backtest" data-row-key="date">
+          <thead><tr><th data-field="date">Top date</th><th data-field="target">Target</th><th data-field="top">Actual</th><th data-field="err">Miss</th></tr></thead>
+          <tbody data-draw="bt"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="ft-card" id="sold-log">
+    <h2>Forecast log</h2>
+    <p class="ft-note">Every SOL target the daily refresh issues, logged from 14 Nov 2026. A forecast is scored when its top is confirmed, and closed as re-planned if price breaks its anchors first.</p>
+    <div class="ft-scroll">
+      <table data-source="sol_forecasts" data-row-key="key">
+        <thead><tr><th data-field="opened">Opened</th><th data-field="C">C</th><th data-field="target">Target</th><th data-field="state">State</th><th data-field="top">Actual top</th><th data-field="err">Miss</th></tr></thead>
+        <tbody data-draw="log"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="ft-card" id="sold-method">
+    <h2>Method</h2>
+    <ul>
+      <li>Swings come from a zigzag on daily highs and lows that needs a <span data-draw="zz" data-source="sol_summary" data-field="zigzag" data-row="0">—</span> reversal.</li>
+      <li>The extension ratio is the median of all completed SOL daily setups since 2020 (Binance SOLUSDT spot) in the same trend regime (above or below the 200-day average). The zone is their middle half.</li>
+      <li>A hit means the confirmed top landed within ±<span data-draw="tol" data-source="sol_summary" data-field="hit_tol" data-row="0">—</span> of the target issued for it.</li>
+      <li>This is a statistical projection, not financial advice.</li>
+    </ul>
+  </section>
+
+  </section>
+
+  <section class="ft-page" id="solh4" data-tf="sol_h4" role="tabpanel" aria-labelledby="tab-solh4" hidden>
+  <header class="ft-head" id="solh4-top">
+    <p class="ft-take" data-when="setup">Next projected 4H local top <b data-draw="target" data-source="sol_h4_summary" data-field="target" data-row="0">—</b>, likely zone <b data-draw="zlo" data-source="sol_h4_summary" data-field="zone_lo" data-row="0">—</b> to <b data-draw="zhi" data-source="sol_h4_summary" data-field="zone_hi" data-row="0">—</b>. Status: <span class="ft-pill" data-draw="status" data-source="sol_h4_summary" data-field="status_label" data-row="0">—</span></p>
+    <p class="ft-take" data-when="broken" hidden>No 4H target right now. Price broke below swing low A, so the model waits for a new higher low before it projects the next top. The lowest point so far is <b data-draw="blow" data-source="sol_h4_summary" data-field="broken_low" data-row="0">—</b> (<span data-draw="blowdate" data-source="sol_h4_summary" data-field="broken_low_date" data-row="0">—</span>). Its strength is <span class="ft-badge" data-draw="blbadge" data-source="sol_h4_summary" data-field="broken_low_strength" data-row="0">—</span>; a 4H candle closing above <b data-draw="bconf" data-source="sol_h4_summary" data-field="broken_confirm_at" data-row="0">—</b> confirms it. Status: <span class="ft-pill" data-draw="status" data-source="sol_h4_summary" data-field="status_label" data-row="0">—</span></p>
+    <p class="ft-note" data-draw="note" data-source="sol_h4_summary" data-field="note" data-row="0">—</p>
+    <p class="ft-meta">BINANCE:SOLUSDT 4H, from Market-Data (your Binance upload) · latest candle <span data-draw="livedate" data-source="sol_h4_summary" data-field="live_date" data-row="0">—</span> UTC · refreshed <span data-draw="gen" data-source="sol_h4_summary" data-field="generated" data-row="0">—</span></p>
+  </header>
+
+  <section class="ft-tiles" id="solh4-figures">
+    <div class="ft-tile">
+      <p class="ft-label">Model target</p>
+      <p class="ft-big" data-draw="target" data-source="sol_h4_summary" data-field="target" data-row="0">—</p>
+      <p class="ft-sub">Extension ratio <span data-draw="ratio" data-source="sol_h4_summary" data-field="ratio" data-row="0">—</span> of the A to B leg</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Price now</p>
+      <p class="ft-big" data-draw="close" data-source="sol_h4_summary" data-field="live_close" data-row="0">—</p>
+      <p class="ft-sub"><span data-draw="totarget" data-source="sol_h4_summary" data-field="to_target_pct" data-row="0">—</span> to target</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Backtest hit rate</p>
+      <p class="ft-big" data-draw="bt10" data-source="sol_h4_summary" data-field="bt_within10_pct" data-row="0">—</p>
+      <p class="ft-sub">Top within ±<span data-draw="tol" data-source="sol_h4_summary" data-field="hit_tol" data-row="0">—</span> of target, <span data-draw="btn" data-source="sol_h4_summary" data-field="bt_n" data-row="0">—</span> past tops</p>
+      <p class="ft-sub">Since Mar 2024: <span data-draw="btrecent" data-source="sol_h4_summary" data-field="bt_recent_pct" data-row="0">—</span> of <span data-draw="btrecentn" data-source="sol_h4_summary" data-field="bt_recent_n" data-row="0">—</span> tops</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Live record</p>
+      <p class="ft-big"><span data-draw="lhits" data-source="sol_h4_summary" data-field="live_hits" data-row="0">—</span> / <span data-draw="lscored" data-source="sol_h4_summary" data-field="live_scored" data-row="0">—</span></p>
+      <p class="ft-sub">Hits of scored forecasts · <span data-draw="linv" data-source="sol_h4_summary" data-field="live_invalidated" data-row="0">—</span> re-planned</p>
+    </div>
+  </section>
+
+  <section class="ft-card" id="solh4-chart">
+    <h2>4H price, swing anchors and target zone</h2>
+    <p class="ft-note">Last 240 4H bars (40 days). Shaded band is the target zone, the solid line the model target, the dashed line the 200-bar average, dotted lines resistance levels.</p>
+    <div class="ft-chart" data-draw="chart" data-source="sol_h4_price eth_h4_summary eth_h4_levels eth_h4_resistance"></div>
+  </section>
+
+  <section class="ft-grid" id="solh4-setup">
+    <div class="ft-card">
+      <h2>Current swing</h2>
+      <p class="ft-note">Bullish ABC: swing low, swing high, then a higher low. Targets project from C.</p>
+      <dl class="ft-anchors">
+        <dt>A</dt><dd data-draw="A" data-source="sol_h4_summary" data-field="A" data-row="0">—</dd><dd class="r" data-draw="adate" data-source="sol_h4_summary" data-field="a_date" data-row="0">—</dd><dd class="ft-badge" data-draw="abadge" data-source="sol_h4_summary" data-field="a_strength" data-row="0">—</dd>
+        <dt>B</dt><dd data-draw="B" data-source="sol_h4_summary" data-field="B" data-row="0">—</dd><dd class="r" data-draw="bdate" data-source="sol_h4_summary" data-field="b_date" data-row="0">—</dd><dd></dd>
+        <dt>C</dt><dd data-draw="C" data-source="sol_h4_summary" data-field="C" data-row="0">—</dd><dd class="r" data-draw="cdate" data-source="sol_h4_summary" data-field="c_date" data-row="0">—</dd><dd class="ft-badge" data-draw="cbadge" data-source="sol_h4_summary" data-field="c_strength" data-row="0">—</dd>
+      </dl>
+      <p class="ft-note">C is <b data-draw="cstate" data-source="sol_h4_summary" data-field="c_state" data-row="0">—</b>. It is confirmed once price rallies <span data-draw="zz" data-source="sol_h4_summary" data-field="zigzag" data-row="0">—</span> off it.</p>
+      <p class="ft-note">Low strength, from how often past 4H lows were broken before rallying a further <span data-draw="zz" data-source="sol_h4_summary" data-field="zigzag" data-row="0">—</span>:</p>
+      <ul class="ft-badges">
+        <li><b>Weak</b>, no 4H candle has closed <span data-draw="zz" data-source="sol_h4_summary" data-field="zigzag" data-row="0">—</span> above the low yet: broken <b data-draw="fkweak" data-source="sol_h4_summary" data-field="fk_weak_rate" data-row="0">—</b> of <span data-draw="fkweakn" data-source="sol_h4_summary" data-field="fk_weak_n" data-row="0">—</span> times</li>
+        <li><b>Confirmed</b>, a candle closed there: broken <b data-draw="fkconf" data-source="sol_h4_summary" data-field="fk_confirmed_rate" data-row="0">—</b> of <span data-draw="fkconfn" data-source="sol_h4_summary" data-field="fk_confirmed_n" data-row="0">—</span></li>
+        <li><b>Strong</b>, confirmed and a higher low: broken <b data-draw="fkstrong" data-source="sol_h4_summary" data-field="fk_strong_rate" data-row="0">—</b> of <span data-draw="fkstrongn" data-source="sol_h4_summary" data-field="fk_strong_n" data-row="0">—</span></li>
+      </ul>
+    </div>
+    <div class="ft-card">
+      <h2>What invalidates it</h2>
+      <ul class="ft-rules">
+        <li>4H low under C (<b data-draw="C" data-source="sol_h4_summary" data-field="C" data-row="0">—</b>): C moves lower and a new target is planned.</li>
+        <li>C under the 200-bar average (<b data-draw="sma" data-source="sol_h4_summary" data-field="sma200" data-row="0">—</b>): the target recalibrates on the below-trend history.</li>
+        <li>Price under A (<b data-draw="A" data-source="sol_h4_summary" data-field="A" data-row="0">—</b>): structure broken, no target until a new higher low forms.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="ft-card" id="solh4-early">
+    <h2>Early rejection check</h2>
+    <p class="ft-note">Catches a top that stalls below the zone, before the full confirmation drop.</p>
+    <div class="ft-tiles">
+      <div class="ft-tile">
+        <p class="ft-label">Highest since C</p>
+        <p class="ft-big" data-draw="posthigh" data-source="sol_h4_summary" data-field="post_c_high" data-row="0">—</p>
+        <p class="ft-sub" data-draw="posthighdate" data-source="sol_h4_summary" data-field="post_c_high_date" data-row="0">—</p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Close vs that high</p>
+        <p class="ft-big" data-draw="drop" data-source="sol_h4_summary" data-field="drop_from_high" data-row="0">—</p>
+        <p class="ft-sub">Watch at −<span data-draw="watchlvl" data-source="sol_h4_summary" data-field="watch" data-row="0">—</span>, warning at −<span data-draw="warnlvl" data-source="sol_h4_summary" data-field="warn" data-row="0">—</span></p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Watch accuracy</p>
+        <p class="ft-big" data-draw="ewwatch" data-source="sol_h4_summary" data-field="ew_watch_precision" data-row="0">—</p>
+        <p class="ft-sub"><span data-draw="ewwatchc" data-source="sol_h4_summary" data-field="ew_watch_correct" data-row="0">—</span> of <span data-draw="ewwatchf" data-source="sol_h4_summary" data-field="ew_watch_fired" data-row="0">—</span> past signals were real early tops</p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Warning accuracy</p>
+        <p class="ft-big" data-draw="ewwarn" data-source="sol_h4_summary" data-field="ew_warn_precision" data-row="0">—</p>
+        <p class="ft-sub"><span data-draw="ewwarnc" data-source="sol_h4_summary" data-field="ew_warn_correct" data-row="0">—</span> of <span data-draw="ewwarnf" data-source="sol_h4_summary" data-field="ew_warn_fired" data-row="0">—</span> past signals were real early tops</p>
+      </div>
+    </div>
+    <p class="ft-note">It only arms when the high since C is under the zone low and at least <span data-draw="minrally" data-source="sol_h4_summary" data-field="min_rally" data-row="0">—</span> above C. In past signals it usually fired a few bars before the confirmation, at a few percent better price.</p>
+  </section>
+
+  <section class="ft-card" id="solh4-confluence">
+    <h2>Zone confluence</h2>
+    <p class="ft-note">Three checks for selling into the zone. More checks lit means a stronger case to scale out.</p>
+    <div class="ft-checks">
+      <div class="ft-check" data-chk="zone">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">Price at the zone</p><p class="ft-sub">Within <span data-draw="nearpct" data-source="sol_h4_summary" data-field="near" data-row="0">—</span> of the zone low <span data-draw="zlo" data-source="sol_h4_summary" data-field="zone_lo" data-row="0">—</span> or inside it</p></div>
+      </div>
+      <div class="ft-check" data-chk="res">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">At a resistance level</p><p class="ft-sub">Nearest level within <span data-draw="nearpct" data-source="sol_h4_summary" data-field="near" data-row="0">—</span>: <span data-draw="nearres" data-source="sol_h4_summary" data-field="near_resistance" data-row="0">—</span></p></div>
+      </div>
+      <div class="ft-check" data-chk="rsi">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">RSI(7) hooked below 70</p><p class="ft-sub">4H RSI(7) <b data-draw="rsi" data-source="sol_h4_summary" data-field="rsi7" data-row="0">—</b> · <span data-draw="rsistate" data-source="sol_h4_summary" data-field="rsi_state_label" data-row="0">—</span></p></div>
+      </div>
+    </div>
+    <p class="ft-meta">Checks lit: <b data-draw="conf" data-source="sol_h4_summary" data-field="confluence" data-row="0">—</b> of 3 · Price is <span data-draw="emapos" data-source="sol_h4_summary" data-field="above_ema200" data-row="0">—</span> the 200-bar EMA (<span data-draw="ema" data-source="sol_h4_summary" data-field="ema200" data-row="0">—</span>)</p>
+    <div class="ft-grid">
+      <div class="ft-sub-card">
+        <h3>4H RSI(7)</h3>
+        <p class="ft-note">Overbought above 70. The hook is a close back under 70 after being above it.</p>
+        <div class="ft-rsi" data-draw="rsichart" data-source="sol_h4_price"></div>
+      </div>
+      <div class="ft-sub-card">
+        <h3>Resistance up to the zone top</h3>
+        <p class="ft-note">Price levels where at least one major 4H swing high or low formed (5% swings since 2020, clustered within 1%).</p>
+        <div class="ft-scroll">
+          <table data-source="sol_h4_resistance" data-row-key="price">
+            <thead><tr><th data-field="price">Level</th><th data-field="touches">Swings</th><th data-field="last">Last swing</th><th data-field="dist">Distance</th></tr></thead>
+            <tbody data-draw="restable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <p class="ft-note">From your BTC RSI(7) study (not yet tested on SOL): on 4H, a reading above 70 alone did no better than chance and price ran a median 3.6% further after it. The hook back below 70 worked best when price was under the 200 EMA, and divergence made results worse.</p>
+  </section>
+
+  <section class="ft-grid" id="solh4-tables">
+    <div class="ft-card">
+      <h2>Extension ladder</h2>
+      <p class="ft-note">Distance is from today's price.</p>
+      <div class="ft-scroll">
+        <table data-source="sol_h4_levels" data-row-key="label">
+          <thead><tr><th data-field="label">Level</th><th data-field="price">Price</th><th data-source="sol_h4_ladder" data-field="dist">Distance</th></tr></thead>
+          <tbody data-draw="ladder"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="ft-card">
+      <h2>Recent backtest tops</h2>
+      <p class="ft-note">Walk-forward: each target used only swings known before that top.</p>
+      <div class="ft-scroll">
+        <table data-source="sol_h4_backtest" data-row-key="date">
+          <thead><tr><th data-field="date">Top date</th><th data-field="target">Target</th><th data-field="top">Actual</th><th data-field="err">Miss</th></tr></thead>
+          <tbody data-draw="bt"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="ft-card" id="solh4-log">
+    <h2>Forecast log</h2>
+    <p class="ft-note">Every SOL target the daily refresh issues, logged from 14 Nov 2026. A forecast is scored when its top is confirmed, and closed as re-planned if price breaks its anchors first.</p>
+    <div class="ft-scroll">
+      <table data-source="sol_h4_forecasts" data-row-key="key">
+        <thead><tr><th data-field="opened">Opened</th><th data-field="C">C</th><th data-field="target">Target</th><th data-field="state">State</th><th data-field="top">Actual top</th><th data-field="err">Miss</th></tr></thead>
+        <tbody data-draw="log"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="ft-card" id="solh4-method">
+    <h2>Method</h2>
+    <ul>
+      <li>Swings come from a zigzag on 4H highs and lows that needs a <span data-draw="zz" data-source="sol_h4_summary" data-field="zigzag" data-row="0">—</span> reversal.</li>
+      <li>The extension ratio is the median of all completed SOL 4H setups since 2020 (Binance SOLUSDT spot) in the same trend regime (above or below the 200-bar average). The zone is their middle half.</li>
+      <li>A hit means the confirmed top landed within ±<span data-draw="tol" data-source="sol_h4_summary" data-field="hit_tol" data-row="0">—</span> of the target issued for it.</li>
+      <li>This is a statistical projection, not financial advice.</li>
+    </ul>
+  </section>
+
+  </section>
+
+  <section class="ft-page" id="bnbd" data-tf="bnb" role="tabpanel" aria-labelledby="tab-bnbd" hidden>
+  <header class="ft-head" id="bnbd-top">
+    <p class="ft-take" data-when="setup">Next projected daily local top <b data-draw="target" data-source="bnb_summary" data-field="target" data-row="0">—</b>, likely zone <b data-draw="zlo" data-source="bnb_summary" data-field="zone_lo" data-row="0">—</b> to <b data-draw="zhi" data-source="bnb_summary" data-field="zone_hi" data-row="0">—</b>. Status: <span class="ft-pill" data-draw="status" data-source="bnb_summary" data-field="status_label" data-row="0">—</span></p>
+    <p class="ft-take" data-when="broken" hidden>No daily target right now. Price broke below swing low A, so the model waits for a new higher low before it projects the next top. The lowest point so far is <b data-draw="blow" data-source="bnb_summary" data-field="broken_low" data-row="0">—</b> (<span data-draw="blowdate" data-source="bnb_summary" data-field="broken_low_date" data-row="0">—</span>). Its strength is <span class="ft-badge" data-draw="blbadge" data-source="bnb_summary" data-field="broken_low_strength" data-row="0">—</span>; a daily candle closing above <b data-draw="bconf" data-source="bnb_summary" data-field="broken_confirm_at" data-row="0">—</b> confirms it. Status: <span class="ft-pill" data-draw="status" data-source="bnb_summary" data-field="status_label" data-row="0">—</span></p>
+    <p class="ft-note" data-draw="note" data-source="bnb_summary" data-field="note" data-row="0">—</p>
+    <p class="ft-meta">BINANCE:BNBUSDT daily, from Market-Data (your Binance upload) · latest candle <span data-draw="livedate" data-source="bnb_summary" data-field="live_date" data-row="0">—</span> · refreshed <span data-draw="gen" data-source="bnb_summary" data-field="generated" data-row="0">—</span></p>
+  </header>
+
+  <section class="ft-tiles" id="bnbd-figures">
+    <div class="ft-tile">
+      <p class="ft-label">Model target</p>
+      <p class="ft-big" data-draw="target" data-source="bnb_summary" data-field="target" data-row="0">—</p>
+      <p class="ft-sub">Extension ratio <span data-draw="ratio" data-source="bnb_summary" data-field="ratio" data-row="0">—</span> of the A to B leg</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Price now</p>
+      <p class="ft-big" data-draw="close" data-source="bnb_summary" data-field="live_close" data-row="0">—</p>
+      <p class="ft-sub"><span data-draw="totarget" data-source="bnb_summary" data-field="to_target_pct" data-row="0">—</span> to target</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Backtest hit rate</p>
+      <p class="ft-big" data-draw="bt10" data-source="bnb_summary" data-field="bt_within10_pct" data-row="0">—</p>
+      <p class="ft-sub">Top within ±<span data-draw="tol" data-source="bnb_summary" data-field="hit_tol" data-row="0">—</span> of target, <span data-draw="btn" data-source="bnb_summary" data-field="bt_n" data-row="0">—</span> past tops</p>
+      <p class="ft-sub">Since Mar 2024: <span data-draw="btrecent" data-source="bnb_summary" data-field="bt_recent_pct" data-row="0">—</span> of <span data-draw="btrecentn" data-source="bnb_summary" data-field="bt_recent_n" data-row="0">—</span> tops</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Live record</p>
+      <p class="ft-big"><span data-draw="lhits" data-source="bnb_summary" data-field="live_hits" data-row="0">—</span> / <span data-draw="lscored" data-source="bnb_summary" data-field="live_scored" data-row="0">—</span></p>
+      <p class="ft-sub">Hits of scored forecasts · <span data-draw="linv" data-source="bnb_summary" data-field="live_invalidated" data-row="0">—</span> re-planned</p>
+    </div>
+  </section>
+
+  <section class="ft-card" id="bnbd-chart">
+    <h2>Daily price, swing anchors and target zone</h2>
+    <p class="ft-note">Last 240 daily bars. Shaded band is the target zone, the solid line the model target, the dashed line the 200-day average, dotted lines resistance levels.</p>
+    <div class="ft-chart" data-draw="chart" data-source="bnb_price eth_summary eth_levels eth_resistance"></div>
+  </section>
+
+  <section class="ft-grid" id="bnbd-setup">
+    <div class="ft-card">
+      <h2>Current swing</h2>
+      <p class="ft-note">Bullish ABC: swing low, swing high, then a higher low. Targets project from C.</p>
+      <dl class="ft-anchors">
+        <dt>A</dt><dd data-draw="A" data-source="bnb_summary" data-field="A" data-row="0">—</dd><dd class="r" data-draw="adate" data-source="bnb_summary" data-field="a_date" data-row="0">—</dd><dd class="ft-badge" data-draw="abadge" data-source="bnb_summary" data-field="a_strength" data-row="0">—</dd>
+        <dt>B</dt><dd data-draw="B" data-source="bnb_summary" data-field="B" data-row="0">—</dd><dd class="r" data-draw="bdate" data-source="bnb_summary" data-field="b_date" data-row="0">—</dd><dd></dd>
+        <dt>C</dt><dd data-draw="C" data-source="bnb_summary" data-field="C" data-row="0">—</dd><dd class="r" data-draw="cdate" data-source="bnb_summary" data-field="c_date" data-row="0">—</dd><dd class="ft-badge" data-draw="cbadge" data-source="bnb_summary" data-field="c_strength" data-row="0">—</dd>
+      </dl>
+      <p class="ft-note">C is <b data-draw="cstate" data-source="bnb_summary" data-field="c_state" data-row="0">—</b>. It is confirmed once price rallies <span data-draw="zz" data-source="bnb_summary" data-field="zigzag" data-row="0">—</span> off it.</p>
+      <p class="ft-note">Low strength, from how often past daily lows were broken before rallying a further <span data-draw="zz" data-source="bnb_summary" data-field="zigzag" data-row="0">—</span>:</p>
+      <ul class="ft-badges">
+        <li><b>Weak</b>, no daily candle has closed <span data-draw="zz" data-source="bnb_summary" data-field="zigzag" data-row="0">—</span> above the low yet: broken <b data-draw="fkweak" data-source="bnb_summary" data-field="fk_weak_rate" data-row="0">—</b> of <span data-draw="fkweakn" data-source="bnb_summary" data-field="fk_weak_n" data-row="0">—</span> times</li>
+        <li><b>Confirmed</b>, a candle closed there: broken <b data-draw="fkconf" data-source="bnb_summary" data-field="fk_confirmed_rate" data-row="0">—</b> of <span data-draw="fkconfn" data-source="bnb_summary" data-field="fk_confirmed_n" data-row="0">—</span></li>
+        <li><b>Strong</b>, confirmed and a higher low: broken <b data-draw="fkstrong" data-source="bnb_summary" data-field="fk_strong_rate" data-row="0">—</b> of <span data-draw="fkstrongn" data-source="bnb_summary" data-field="fk_strong_n" data-row="0">—</span></li>
+      </ul>
+    </div>
+    <div class="ft-card">
+      <h2>What invalidates it</h2>
+      <ul class="ft-rules">
+        <li>Daily low under C (<b data-draw="C" data-source="bnb_summary" data-field="C" data-row="0">—</b>): C moves lower and a new target is planned.</li>
+        <li>C under the 200-day average (<b data-draw="sma" data-source="bnb_summary" data-field="sma200" data-row="0">—</b>): the target recalibrates on the below-trend history.</li>
+        <li>Price under A (<b data-draw="A" data-source="bnb_summary" data-field="A" data-row="0">—</b>): structure broken, no target until a new higher low forms.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="ft-card" id="bnbd-early">
+    <h2>Early rejection check</h2>
+    <p class="ft-note">Catches a top that stalls below the zone, before the full confirmation drop.</p>
+    <div class="ft-tiles">
+      <div class="ft-tile">
+        <p class="ft-label">Highest since C</p>
+        <p class="ft-big" data-draw="posthigh" data-source="bnb_summary" data-field="post_c_high" data-row="0">—</p>
+        <p class="ft-sub" data-draw="posthighdate" data-source="bnb_summary" data-field="post_c_high_date" data-row="0">—</p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Close vs that high</p>
+        <p class="ft-big" data-draw="drop" data-source="bnb_summary" data-field="drop_from_high" data-row="0">—</p>
+        <p class="ft-sub">Watch at −<span data-draw="watchlvl" data-source="bnb_summary" data-field="watch" data-row="0">—</span>, warning at −<span data-draw="warnlvl" data-source="bnb_summary" data-field="warn" data-row="0">—</span></p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Watch accuracy</p>
+        <p class="ft-big" data-draw="ewwatch" data-source="bnb_summary" data-field="ew_watch_precision" data-row="0">—</p>
+        <p class="ft-sub"><span data-draw="ewwatchc" data-source="bnb_summary" data-field="ew_watch_correct" data-row="0">—</span> of <span data-draw="ewwatchf" data-source="bnb_summary" data-field="ew_watch_fired" data-row="0">—</span> past signals were real early tops</p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Warning accuracy</p>
+        <p class="ft-big" data-draw="ewwarn" data-source="bnb_summary" data-field="ew_warn_precision" data-row="0">—</p>
+        <p class="ft-sub"><span data-draw="ewwarnc" data-source="bnb_summary" data-field="ew_warn_correct" data-row="0">—</span> of <span data-draw="ewwarnf" data-source="bnb_summary" data-field="ew_warn_fired" data-row="0">—</span> past signals were real early tops</p>
+      </div>
+    </div>
+    <p class="ft-note">It only arms when the high since C is under the zone low and at least <span data-draw="minrally" data-source="bnb_summary" data-field="min_rally" data-row="0">—</span> above C. In past signals it usually fired about a day before the confirmation, at a few percent better price.</p>
+  </section>
+
+  <section class="ft-card" id="bnbd-confluence">
+    <h2>Zone confluence</h2>
+    <p class="ft-note">Three checks for selling into the zone. More checks lit means a stronger case to scale out.</p>
+    <div class="ft-checks">
+      <div class="ft-check" data-chk="zone">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">Price at the zone</p><p class="ft-sub">Within <span data-draw="nearpct" data-source="bnb_summary" data-field="near" data-row="0">—</span> of the zone low <span data-draw="zlo" data-source="bnb_summary" data-field="zone_lo" data-row="0">—</span> or inside it</p></div>
+      </div>
+      <div class="ft-check" data-chk="res">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">At a resistance level</p><p class="ft-sub">Nearest level within <span data-draw="nearpct" data-source="bnb_summary" data-field="near" data-row="0">—</span>: <span data-draw="nearres" data-source="bnb_summary" data-field="near_resistance" data-row="0">—</span></p></div>
+      </div>
+      <div class="ft-check" data-chk="rsi">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">RSI(7) hooked below 70</p><p class="ft-sub">Daily RSI(7) <b data-draw="rsi" data-source="bnb_summary" data-field="rsi7" data-row="0">—</b> · <span data-draw="rsistate" data-source="bnb_summary" data-field="rsi_state_label" data-row="0">—</span></p></div>
+      </div>
+    </div>
+    <p class="ft-meta">Checks lit: <b data-draw="conf" data-source="bnb_summary" data-field="confluence" data-row="0">—</b> of 3 · Price is <span data-draw="emapos" data-source="bnb_summary" data-field="above_ema200" data-row="0">—</span> the 200-day EMA (<span data-draw="ema" data-source="bnb_summary" data-field="ema200" data-row="0">—</span>)</p>
+    <div class="ft-grid">
+      <div class="ft-sub-card">
+        <h3>Daily RSI(7)</h3>
+        <p class="ft-note">Overbought above 70. The hook is a close back under 70 after being above it.</p>
+        <div class="ft-rsi" data-draw="rsichart" data-source="bnb_price"></div>
+      </div>
+      <div class="ft-sub-card">
+        <h3>Resistance up to the zone top</h3>
+        <p class="ft-note">Price levels where at least one major daily swing high or low formed (10% swings, clustered within 2%).</p>
+        <div class="ft-scroll">
+          <table data-source="bnb_resistance" data-row-key="price">
+            <thead><tr><th data-field="price">Level</th><th data-field="touches">Swings</th><th data-field="last">Last swing</th><th data-field="dist">Distance</th></tr></thead>
+            <tbody data-draw="restable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <p class="ft-note">From your BTC RSI(7) study (not yet tested on BNB): a reading above 70 alone did not mark tops on the daily chart. Price ran a median 12% further after it. The hook back below 70 was the better signal, and divergence made results worse.</p>
+  </section>
+
+  <section class="ft-grid" id="bnbd-tables">
+    <div class="ft-card">
+      <h2>Extension ladder</h2>
+      <p class="ft-note">Distance is from today's price.</p>
+      <div class="ft-scroll">
+        <table data-source="bnb_levels" data-row-key="label">
+          <thead><tr><th data-field="label">Level</th><th data-field="price">Price</th><th data-source="bnb_ladder" data-field="dist">Distance</th></tr></thead>
+          <tbody data-draw="ladder"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="ft-card">
+      <h2>Recent backtest tops</h2>
+      <p class="ft-note">Walk-forward: each target used only swings known before that top.</p>
+      <div class="ft-scroll">
+        <table data-source="bnb_backtest" data-row-key="date">
+          <thead><tr><th data-field="date">Top date</th><th data-field="target">Target</th><th data-field="top">Actual</th><th data-field="err">Miss</th></tr></thead>
+          <tbody data-draw="bt"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="ft-card" id="bnbd-log">
+    <h2>Forecast log</h2>
+    <p class="ft-note">Every BNB target the daily refresh issues, logged from 14 Nov 2026. A forecast is scored when its top is confirmed, and closed as re-planned if price breaks its anchors first.</p>
+    <div class="ft-scroll">
+      <table data-source="bnb_forecasts" data-row-key="key">
+        <thead><tr><th data-field="opened">Opened</th><th data-field="C">C</th><th data-field="target">Target</th><th data-field="state">State</th><th data-field="top">Actual top</th><th data-field="err">Miss</th></tr></thead>
+        <tbody data-draw="log"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="ft-card" id="bnbd-method">
+    <h2>Method</h2>
+    <ul>
+      <li>Swings come from a zigzag on daily highs and lows that needs a <span data-draw="zz" data-source="bnb_summary" data-field="zigzag" data-row="0">—</span> reversal.</li>
+      <li>The extension ratio is the median of all completed BNB daily setups since 2017 (Binance BNBUSDT spot) in the same trend regime (above or below the 200-day average). The zone is their middle half.</li>
+      <li>A hit means the confirmed top landed within ±<span data-draw="tol" data-source="bnb_summary" data-field="hit_tol" data-row="0">—</span> of the target issued for it.</li>
+      <li>This is a statistical projection, not financial advice.</li>
+    </ul>
+  </section>
+
+  </section>
+
+  <section class="ft-page" id="bnbh4" data-tf="bnb_h4" role="tabpanel" aria-labelledby="tab-bnbh4" hidden>
+  <header class="ft-head" id="bnbh4-top">
+    <p class="ft-take" data-when="setup">Next projected 4H local top <b data-draw="target" data-source="bnb_h4_summary" data-field="target" data-row="0">—</b>, likely zone <b data-draw="zlo" data-source="bnb_h4_summary" data-field="zone_lo" data-row="0">—</b> to <b data-draw="zhi" data-source="bnb_h4_summary" data-field="zone_hi" data-row="0">—</b>. Status: <span class="ft-pill" data-draw="status" data-source="bnb_h4_summary" data-field="status_label" data-row="0">—</span></p>
+    <p class="ft-take" data-when="broken" hidden>No 4H target right now. Price broke below swing low A, so the model waits for a new higher low before it projects the next top. The lowest point so far is <b data-draw="blow" data-source="bnb_h4_summary" data-field="broken_low" data-row="0">—</b> (<span data-draw="blowdate" data-source="bnb_h4_summary" data-field="broken_low_date" data-row="0">—</span>). Its strength is <span class="ft-badge" data-draw="blbadge" data-source="bnb_h4_summary" data-field="broken_low_strength" data-row="0">—</span>; a 4H candle closing above <b data-draw="bconf" data-source="bnb_h4_summary" data-field="broken_confirm_at" data-row="0">—</b> confirms it. Status: <span class="ft-pill" data-draw="status" data-source="bnb_h4_summary" data-field="status_label" data-row="0">—</span></p>
+    <p class="ft-note" data-draw="note" data-source="bnb_h4_summary" data-field="note" data-row="0">—</p>
+    <p class="ft-meta">BINANCE:BNBUSDT 4H, from Market-Data (your Binance upload) · latest candle <span data-draw="livedate" data-source="bnb_h4_summary" data-field="live_date" data-row="0">—</span> UTC · refreshed <span data-draw="gen" data-source="bnb_h4_summary" data-field="generated" data-row="0">—</span></p>
+  </header>
+
+  <section class="ft-tiles" id="bnbh4-figures">
+    <div class="ft-tile">
+      <p class="ft-label">Model target</p>
+      <p class="ft-big" data-draw="target" data-source="bnb_h4_summary" data-field="target" data-row="0">—</p>
+      <p class="ft-sub">Extension ratio <span data-draw="ratio" data-source="bnb_h4_summary" data-field="ratio" data-row="0">—</span> of the A to B leg</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Price now</p>
+      <p class="ft-big" data-draw="close" data-source="bnb_h4_summary" data-field="live_close" data-row="0">—</p>
+      <p class="ft-sub"><span data-draw="totarget" data-source="bnb_h4_summary" data-field="to_target_pct" data-row="0">—</span> to target</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Backtest hit rate</p>
+      <p class="ft-big" data-draw="bt10" data-source="bnb_h4_summary" data-field="bt_within10_pct" data-row="0">—</p>
+      <p class="ft-sub">Top within ±<span data-draw="tol" data-source="bnb_h4_summary" data-field="hit_tol" data-row="0">—</span> of target, <span data-draw="btn" data-source="bnb_h4_summary" data-field="bt_n" data-row="0">—</span> past tops</p>
+      <p class="ft-sub">Since Mar 2024: <span data-draw="btrecent" data-source="bnb_h4_summary" data-field="bt_recent_pct" data-row="0">—</span> of <span data-draw="btrecentn" data-source="bnb_h4_summary" data-field="bt_recent_n" data-row="0">—</span> tops</p>
+    </div>
+    <div class="ft-tile">
+      <p class="ft-label">Live record</p>
+      <p class="ft-big"><span data-draw="lhits" data-source="bnb_h4_summary" data-field="live_hits" data-row="0">—</span> / <span data-draw="lscored" data-source="bnb_h4_summary" data-field="live_scored" data-row="0">—</span></p>
+      <p class="ft-sub">Hits of scored forecasts · <span data-draw="linv" data-source="bnb_h4_summary" data-field="live_invalidated" data-row="0">—</span> re-planned</p>
+    </div>
+  </section>
+
+  <section class="ft-card" id="bnbh4-chart">
+    <h2>4H price, swing anchors and target zone</h2>
+    <p class="ft-note">Last 240 4H bars (40 days). Shaded band is the target zone, the solid line the model target, the dashed line the 200-bar average, dotted lines resistance levels.</p>
+    <div class="ft-chart" data-draw="chart" data-source="bnb_h4_price eth_h4_summary eth_h4_levels eth_h4_resistance"></div>
+  </section>
+
+  <section class="ft-grid" id="bnbh4-setup">
+    <div class="ft-card">
+      <h2>Current swing</h2>
+      <p class="ft-note">Bullish ABC: swing low, swing high, then a higher low. Targets project from C.</p>
+      <dl class="ft-anchors">
+        <dt>A</dt><dd data-draw="A" data-source="bnb_h4_summary" data-field="A" data-row="0">—</dd><dd class="r" data-draw="adate" data-source="bnb_h4_summary" data-field="a_date" data-row="0">—</dd><dd class="ft-badge" data-draw="abadge" data-source="bnb_h4_summary" data-field="a_strength" data-row="0">—</dd>
+        <dt>B</dt><dd data-draw="B" data-source="bnb_h4_summary" data-field="B" data-row="0">—</dd><dd class="r" data-draw="bdate" data-source="bnb_h4_summary" data-field="b_date" data-row="0">—</dd><dd></dd>
+        <dt>C</dt><dd data-draw="C" data-source="bnb_h4_summary" data-field="C" data-row="0">—</dd><dd class="r" data-draw="cdate" data-source="bnb_h4_summary" data-field="c_date" data-row="0">—</dd><dd class="ft-badge" data-draw="cbadge" data-source="bnb_h4_summary" data-field="c_strength" data-row="0">—</dd>
+      </dl>
+      <p class="ft-note">C is <b data-draw="cstate" data-source="bnb_h4_summary" data-field="c_state" data-row="0">—</b>. It is confirmed once price rallies <span data-draw="zz" data-source="bnb_h4_summary" data-field="zigzag" data-row="0">—</span> off it.</p>
+      <p class="ft-note">Low strength, from how often past 4H lows were broken before rallying a further <span data-draw="zz" data-source="bnb_h4_summary" data-field="zigzag" data-row="0">—</span>:</p>
+      <ul class="ft-badges">
+        <li><b>Weak</b>, no 4H candle has closed <span data-draw="zz" data-source="bnb_h4_summary" data-field="zigzag" data-row="0">—</span> above the low yet: broken <b data-draw="fkweak" data-source="bnb_h4_summary" data-field="fk_weak_rate" data-row="0">—</b> of <span data-draw="fkweakn" data-source="bnb_h4_summary" data-field="fk_weak_n" data-row="0">—</span> times</li>
+        <li><b>Confirmed</b>, a candle closed there: broken <b data-draw="fkconf" data-source="bnb_h4_summary" data-field="fk_confirmed_rate" data-row="0">—</b> of <span data-draw="fkconfn" data-source="bnb_h4_summary" data-field="fk_confirmed_n" data-row="0">—</span></li>
+        <li><b>Strong</b>, confirmed and a higher low: broken <b data-draw="fkstrong" data-source="bnb_h4_summary" data-field="fk_strong_rate" data-row="0">—</b> of <span data-draw="fkstrongn" data-source="bnb_h4_summary" data-field="fk_strong_n" data-row="0">—</span></li>
+      </ul>
+    </div>
+    <div class="ft-card">
+      <h2>What invalidates it</h2>
+      <ul class="ft-rules">
+        <li>4H low under C (<b data-draw="C" data-source="bnb_h4_summary" data-field="C" data-row="0">—</b>): C moves lower and a new target is planned.</li>
+        <li>C under the 200-bar average (<b data-draw="sma" data-source="bnb_h4_summary" data-field="sma200" data-row="0">—</b>): the target recalibrates on the below-trend history.</li>
+        <li>Price under A (<b data-draw="A" data-source="bnb_h4_summary" data-field="A" data-row="0">—</b>): structure broken, no target until a new higher low forms.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="ft-card" id="bnbh4-early">
+    <h2>Early rejection check</h2>
+    <p class="ft-note">Catches a top that stalls below the zone, before the full confirmation drop.</p>
+    <div class="ft-tiles">
+      <div class="ft-tile">
+        <p class="ft-label">Highest since C</p>
+        <p class="ft-big" data-draw="posthigh" data-source="bnb_h4_summary" data-field="post_c_high" data-row="0">—</p>
+        <p class="ft-sub" data-draw="posthighdate" data-source="bnb_h4_summary" data-field="post_c_high_date" data-row="0">—</p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Close vs that high</p>
+        <p class="ft-big" data-draw="drop" data-source="bnb_h4_summary" data-field="drop_from_high" data-row="0">—</p>
+        <p class="ft-sub">Watch at −<span data-draw="watchlvl" data-source="bnb_h4_summary" data-field="watch" data-row="0">—</span>, warning at −<span data-draw="warnlvl" data-source="bnb_h4_summary" data-field="warn" data-row="0">—</span></p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Watch accuracy</p>
+        <p class="ft-big" data-draw="ewwatch" data-source="bnb_h4_summary" data-field="ew_watch_precision" data-row="0">—</p>
+        <p class="ft-sub"><span data-draw="ewwatchc" data-source="bnb_h4_summary" data-field="ew_watch_correct" data-row="0">—</span> of <span data-draw="ewwatchf" data-source="bnb_h4_summary" data-field="ew_watch_fired" data-row="0">—</span> past signals were real early tops</p>
+      </div>
+      <div class="ft-tile">
+        <p class="ft-label">Warning accuracy</p>
+        <p class="ft-big" data-draw="ewwarn" data-source="bnb_h4_summary" data-field="ew_warn_precision" data-row="0">—</p>
+        <p class="ft-sub"><span data-draw="ewwarnc" data-source="bnb_h4_summary" data-field="ew_warn_correct" data-row="0">—</span> of <span data-draw="ewwarnf" data-source="bnb_h4_summary" data-field="ew_warn_fired" data-row="0">—</span> past signals were real early tops</p>
+      </div>
+    </div>
+    <p class="ft-note">It only arms when the high since C is under the zone low and at least <span data-draw="minrally" data-source="bnb_h4_summary" data-field="min_rally" data-row="0">—</span> above C. In past signals it usually fired a few bars before the confirmation, at a few percent better price.</p>
+  </section>
+
+  <section class="ft-card" id="bnbh4-confluence">
+    <h2>Zone confluence</h2>
+    <p class="ft-note">Three checks for selling into the zone. More checks lit means a stronger case to scale out.</p>
+    <div class="ft-checks">
+      <div class="ft-check" data-chk="zone">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">Price at the zone</p><p class="ft-sub">Within <span data-draw="nearpct" data-source="bnb_h4_summary" data-field="near" data-row="0">—</span> of the zone low <span data-draw="zlo" data-source="bnb_h4_summary" data-field="zone_lo" data-row="0">—</span> or inside it</p></div>
+      </div>
+      <div class="ft-check" data-chk="res">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">At a resistance level</p><p class="ft-sub">Nearest level within <span data-draw="nearpct" data-source="bnb_h4_summary" data-field="near" data-row="0">—</span>: <span data-draw="nearres" data-source="bnb_h4_summary" data-field="near_resistance" data-row="0">—</span></p></div>
+      </div>
+      <div class="ft-check" data-chk="rsi">
+        <span class="ft-dot"></span>
+        <div><p class="ft-check-t">RSI(7) hooked below 70</p><p class="ft-sub">4H RSI(7) <b data-draw="rsi" data-source="bnb_h4_summary" data-field="rsi7" data-row="0">—</b> · <span data-draw="rsistate" data-source="bnb_h4_summary" data-field="rsi_state_label" data-row="0">—</span></p></div>
+      </div>
+    </div>
+    <p class="ft-meta">Checks lit: <b data-draw="conf" data-source="bnb_h4_summary" data-field="confluence" data-row="0">—</b> of 3 · Price is <span data-draw="emapos" data-source="bnb_h4_summary" data-field="above_ema200" data-row="0">—</span> the 200-bar EMA (<span data-draw="ema" data-source="bnb_h4_summary" data-field="ema200" data-row="0">—</span>)</p>
+    <div class="ft-grid">
+      <div class="ft-sub-card">
+        <h3>4H RSI(7)</h3>
+        <p class="ft-note">Overbought above 70. The hook is a close back under 70 after being above it.</p>
+        <div class="ft-rsi" data-draw="rsichart" data-source="bnb_h4_price"></div>
+      </div>
+      <div class="ft-sub-card">
+        <h3>Resistance up to the zone top</h3>
+        <p class="ft-note">Price levels where at least one major 4H swing high or low formed (5% swings since 2017, clustered within 1%).</p>
+        <div class="ft-scroll">
+          <table data-source="bnb_h4_resistance" data-row-key="price">
+            <thead><tr><th data-field="price">Level</th><th data-field="touches">Swings</th><th data-field="last">Last swing</th><th data-field="dist">Distance</th></tr></thead>
+            <tbody data-draw="restable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <p class="ft-note">From your BTC RSI(7) study (not yet tested on BNB): on 4H, a reading above 70 alone did no better than chance and price ran a median 3.6% further after it. The hook back below 70 worked best when price was under the 200 EMA, and divergence made results worse.</p>
+  </section>
+
+  <section class="ft-grid" id="bnbh4-tables">
+    <div class="ft-card">
+      <h2>Extension ladder</h2>
+      <p class="ft-note">Distance is from today's price.</p>
+      <div class="ft-scroll">
+        <table data-source="bnb_h4_levels" data-row-key="label">
+          <thead><tr><th data-field="label">Level</th><th data-field="price">Price</th><th data-source="bnb_h4_ladder" data-field="dist">Distance</th></tr></thead>
+          <tbody data-draw="ladder"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="ft-card">
+      <h2>Recent backtest tops</h2>
+      <p class="ft-note">Walk-forward: each target used only swings known before that top.</p>
+      <div class="ft-scroll">
+        <table data-source="bnb_h4_backtest" data-row-key="date">
+          <thead><tr><th data-field="date">Top date</th><th data-field="target">Target</th><th data-field="top">Actual</th><th data-field="err">Miss</th></tr></thead>
+          <tbody data-draw="bt"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="ft-card" id="bnbh4-log">
+    <h2>Forecast log</h2>
+    <p class="ft-note">Every BNB target the daily refresh issues, logged from 14 Nov 2026. A forecast is scored when its top is confirmed, and closed as re-planned if price breaks its anchors first.</p>
+    <div class="ft-scroll">
+      <table data-source="bnb_h4_forecasts" data-row-key="key">
+        <thead><tr><th data-field="opened">Opened</th><th data-field="C">C</th><th data-field="target">Target</th><th data-field="state">State</th><th data-field="top">Actual top</th><th data-field="err">Miss</th></tr></thead>
+        <tbody data-draw="log"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="ft-card" id="bnbh4-method">
+    <h2>Method</h2>
+    <ul>
+      <li>Swings come from a zigzag on 4H highs and lows that needs a <span data-draw="zz" data-source="bnb_h4_summary" data-field="zigzag" data-row="0">—</span> reversal.</li>
+      <li>The extension ratio is the median of all completed BNB 4H setups since 2017 (Binance BNBUSDT spot) in the same trend regime (above or below the 200-bar average). The zone is their middle half.</li>
+      <li>A hit means the confirmed top landed within ±<span data-draw="tol" data-source="bnb_h4_summary" data-field="hit_tol" data-row="0">—</span> of the target issued for it.</li>
+      <li>This is a statistical projection, not financial advice.</li>
+    </ul>
+  </section>
+
+  </section>
 </div>
 
 <script>
   window.FT = (() => {
-    const PRE = { d: '', h4: 'h4_', eth: 'eth_', eth_h4: 'eth_h4_' };
+    const PRE = { d: '', h4: 'h4_', eth: 'eth_', eth_h4: 'eth_h4_', sol: 'sol_', sol_h4: 'sol_h4_', bnb: 'bnb_', bnb_h4: 'bnb_h4_' };
     const tf = (el) => { const p = el && el.closest('[data-tf]'); return p ? p.dataset.tf : 'd'; };
     const pre = (el) => PRE[tf(el)] ?? '';
     const ds = (el, id) => pre(el) + id;
     const isH4 = (el) => /h4$/.test(tf(el));
-    const asset = (el) => (tf(el).startsWith('eth') ? 'ETH' : 'BTC');
+    const asset = (el) => ({"eth":"ETH","sol":"SOL","bnb":"BNB"}[tf(el).split('_')[0]] || 'BTC');
     const usd = (v) => (v == null || isNaN(v) ? '—' : '$' + d3.format(',.0f')(v));
     const pct = (v, p = '.1%') => (v == null || isNaN(v) ? '—' : d3.format(p)(v));
     const spct = (v) => (v == null || isNaN(v) ? '—' : d3.format('+.1%')(v));
@@ -921,7 +1632,7 @@
 </script>
 
 <script>
-  [['', 'Distance from price'], ['h4_', 'Distance from price (4H)'], ['eth_', 'ETH distance from price'], ['eth_h4_', 'ETH distance from price (4H)']].forEach(([p, title]) => {
+  [['', 'Distance from price'], ['h4_', 'Distance from price (4H)'], ['eth_', 'ETH distance from price'], ['eth_h4_', 'ETH distance from price (4H)'], ['sol_', 'SOL distance from price'], ['sol_h4_', 'SOL distance from price (4H)'], ['bnb_', 'BNB distance from price'], ['bnb_h4_', 'BNB distance from price (4H)']].forEach(([p, title]) => {
     dash.calc(p + 'ladder', {
       inputs: [p + 'levels', p + 'summary'],
       title,
@@ -1039,7 +1750,7 @@
     const yMax = Math.max(highs, s.zone_hi || 0) * 1.02, yMin = lows * 0.97;
     const y = d3.scaleLinear([yMin, yMax], [H - 28, 10]).nice();
     const ticks = y.ticks(W < 520 ? 4 : 6);
-    const fmtK = (v) => '$' + d3.format(',.1~f')(v / 1000) + 'k';
+    const fmtK = (v) => (Math.abs(v) >= 1000 ? '$' + d3.format(',.1~f')(v / 1000) + 'k' : '$' + d3.format(',.1~f')(v));
     const probe = svg.append('text').attr('font-size', 12).style('visibility', 'hidden');
     const widest = (arr) => d3.max(arr, (t) => { probe.text(t); return probe.node().getComputedTextLength(); }) || 0;
     const endLabels = [['Zone top', s.zone_hi], ['Target', s.target], ['Zone low', s.zone_lo], ['Close', s.live_close]].filter((d) => d[1]);

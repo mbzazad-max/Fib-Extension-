@@ -7,7 +7,7 @@
   var API = slug ? '/api/' + slug + '/' : 'api/';   // controls live at /api/<slug>/ on the home site, behind the owner's login
   var st = document.createElement('style');
   st.textContent = '.fx-bar{max-width:1200px;margin:0 auto;padding:12px 16px 0;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}' +
-    '.fx-bar details{flex:1 1 320px;min-width:0}.fx-bar summary{cursor:pointer}.fx-bar b{color:var(--color-fg)}' +
+    '.fx-bar details{flex:1 1 320px;min-width:0;overflow-x:auto}.fx-bar summary{cursor:pointer}.fx-bar b{color:var(--color-fg)}' +
     '.fx-bar table{margin-top:6px;border-collapse:collapse;font-variant-numeric:tabular-nums}.fx-bar td,.fx-bar th{padding:2px 14px 2px 0;text-align:left;white-space:nowrap}' +
     '.fx-btn{font:inherit;padding:4px 12px;border:1px solid var(--color-border-line);border-radius:var(--cds-radius);background:var(--color-panel);color:var(--color-fg);cursor:pointer}' +
     '.fx-btn[disabled]{opacity:.5;cursor:default}.fx-pill{padding:1px 8px;border-radius:999px;border:1px solid var(--color-border-line)}' +
@@ -17,7 +17,7 @@
   var info = document.createElement('details'); info.innerHTML = '<summary>Loading data status…</summary>';
   var pill = document.createElement('span'); pill.className = 'fx-pill'; pill.hidden = true;
   var btn = document.createElement('button'); btn.className = 'fx-btn'; btn.type = 'button'; btn.textContent = 'Refresh'; btn.hidden = true;
-  btn.title = 'Ask GitHub to rebuild all four tabs from the newest closed candles';
+  btn.title = 'Ask GitHub to rebuild every tab from the newest closed candles';
   bar.appendChild(info); bar.appendChild(pill); bar.appendChild(btn);
   var page = document.querySelector('body > .ft');
   document.body.insertBefore(bar, page || document.body.firstChild);
@@ -34,7 +34,7 @@
       return { s: s, when: t2s(s.last_close), st: stt, flag: behind === null || behind > 1 || !!kept };
     });
     var flagged = rows.filter(function (r) { return r.flag; }).length;
-    info.innerHTML = '<summary>Built ' + esc(F.generated) + ' · ' + (flagged ? '<b>' + flagged + ' of 4 tabs behind</b>' : 'all 4 tabs current') + '</summary>' +
+    info.innerHTML = '<summary>Built ' + esc(F.generated) + ' · ' + (flagged ? '<b>' + flagged + ' of ' + rows.length + ' tabs behind</b>' : 'all ' + rows.length + ' tabs current') + '</summary>' +
       '<table><thead><tr><th>Tab</th><th>Candles</th><th>Last closed candle (your time)</th><th>Status</th></tr></thead><tbody>' +
       rows.map(function (r) { return '<tr' + (r.flag ? ' style="font-weight:600"' : '') + '><td>' + esc(r.s.title) + '</td><td>' + esc(r.s.symbol + ' ' + r.s.tf) + '</td><td>' + esc(r.when) + '</td><td>' + esc(r.st) + '</td></tr>'; }).join('') +
       '</tbody></table><p style="margin:6px 0 0">' + esc(F.last_result) + ' Candles: Binance spot BTCUSDT and ETHUSDT from the shared Market-Data store (your Binance upload, the same candles as your Google Drive files), closed candles only. The engine, rules and forecast logs are the ones the artifact used.</p>';
