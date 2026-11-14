@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-14 00:04 UTC",
- "checked_at": 1794614690,
+ "generated": "2026-11-14 00:19 UTC",
+ "checked_at": 1794615548,
  "series": [
   {
    "id": "btc_d",
@@ -10,9 +10,10 @@
    "series": "binance/BTCUSDT/1D",
    "source": "Binance spot via Market-Data",
    "period_s": 86400,
-   "rows": 3375,
-   "last_close": 1794528000,
-   "built_from": 1794441600
+   "rows": 3376,
+   "last_close": 1794614400,
+   "built_from": 1794528000,
+   "status": "pullback"
   },
   {
    "id": "btc_4h",
@@ -24,8 +25,7 @@
    "period_s": 14400,
    "rows": 20238,
    "last_close": 1794600000,
-   "built_from": 1794585600,
-   "status": "broken"
+   "built_from": 1794585600
   },
   {
    "id": "eth_d",
@@ -49,10 +49,9 @@
    "period_s": 14400,
    "rows": 20238,
    "last_close": 1794600000,
-   "built_from": 1794585600,
-   "status": "broken"
+   "built_from": 1794585600
   }
  ],
  "kept": [],
- "last_result": "Rebuilt: BTC 4H 2026-11-13 16:00 (Structure broken); ETH 4H 2026-11-13 16:00 (Structure broken)."
+ "last_result": "Rebuilt: BTC Daily 2026-11-13 (Pullback forming)."
 }
