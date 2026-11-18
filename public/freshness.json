@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-18 12:11 UTC",
- "checked_at": 1795003899,
+ "generated": "2026-11-18 16:11 UTC",
+ "checked_at": 1795018316,
  "series": [
   {
    "id": "btc_d",
@@ -22,9 +22,9 @@
    "series": "binance/BTCUSDT/4H",
    "source": "Binance spot via Market-Data",
    "period_s": 14400,
-   "rows": 20266,
-   "last_close": 1795003200,
-   "built_from": 1794988800,
+   "rows": 20267,
+   "last_close": 1795017600,
+   "built_from": 1795003200,
    "status": "broken"
   },
   {
@@ -47,10 +47,10 @@
    "series": "binance/ETHUSDT/4H",
    "source": "Binance spot via Market-Data",
    "period_s": 14400,
-   "rows": 20266,
-   "last_close": 1795003200,
-   "built_from": 1794988800,
-   "status": "pullback"
+   "rows": 20267,
+   "last_close": 1795017600,
+   "built_from": 1795003200,
+   "status": "early_rejection"
   },
   {
    "id": "sol_d",
@@ -72,9 +72,9 @@
    "series": "binance/SOLUSDT/4H",
    "source": "Binance spot via Market-Data",
    "period_s": 14400,
-   "rows": 13742,
-   "last_close": 1795003200,
-   "built_from": 1794988800,
+   "rows": 13743,
+   "last_close": 1795017600,
+   "built_from": 1795003200,
    "status": "broken"
   },
   {
@@ -97,12 +97,12 @@
    "series": "binance/BNBUSDT/4H",
    "source": "Binance spot via Market-Data",
    "period_s": 14400,
-   "rows": 19781,
-   "last_close": 1795003200,
-   "built_from": 1794988800,
+   "rows": 19782,
+   "last_close": 1795017600,
+   "built_from": 1795003200,
    "status": "broken"
   }
  ],
  "kept": [],
- "last_result": "Rebuilt: BTC 4H 2026-11-18 08:00 (Structure broken); ETH 4H 2026-11-18 08:00 (Pullback forming); SOL 4H 2026-11-18 08:00 (Structure broken); BNB 4H 2026-11-18 08:00 (Structure broken)."
+ "last_result": "Rebuilt: BTC 4H 2026-11-18 12:00 (Structure broken); ETH 4H 2026-11-18 12:00 (Early rejection warning); SOL 4H 2026-11-18 12:00 (Structure broken); BNB 4H 2026-11-18 12:00 (Structure broken)."
 }
