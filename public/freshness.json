@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-20 05:47 UTC",
- "checked_at": 1795153629,
+ "generated": "2026-11-20 08:53 UTC",
+ "checked_at": 1795164798,
  "series": [
   {
    "id": "btc_d",
@@ -12,7 +12,8 @@
    "period_s": 86400,
    "rows": 3382,
    "last_close": 1795132800,
-   "built_from": 1795046400
+   "built_from": 1795046400,
+   "status": "pullback"
   },
   {
    "id": "btc_4h",
@@ -24,7 +25,8 @@
    "period_s": 14400,
    "rows": 20276,
    "last_close": 1795147200,
-   "built_from": 1795132800
+   "built_from": 1795132800,
+   "status": "broken"
   },
   {
    "id": "eth_d",
@@ -36,7 +38,8 @@
    "period_s": 86400,
    "rows": 3382,
    "last_close": 1795132800,
-   "built_from": 1795046400
+   "built_from": 1795046400,
+   "status": "broken"
   },
   {
    "id": "eth_4h",
@@ -48,7 +51,8 @@
    "period_s": 14400,
    "rows": 20276,
    "last_close": 1795147200,
-   "built_from": 1795132800
+   "built_from": 1795132800,
+   "status": "pullback"
   },
   {
    "id": "sol_d",
@@ -60,7 +64,8 @@
    "period_s": 86400,
    "rows": 2292,
    "last_close": 1795132800,
-   "built_from": 1795046400
+   "built_from": 1795046400,
+   "status": "broken"
   },
   {
    "id": "sol_4h",
@@ -72,7 +77,8 @@
    "period_s": 14400,
    "rows": 13752,
    "last_close": 1795147200,
-   "built_from": 1795132800
+   "built_from": 1795132800,
+   "status": "pullback"
   },
   {
    "id": "bnb_d",
@@ -84,7 +90,8 @@
    "period_s": 86400,
    "rows": 3301,
    "last_close": 1795132800,
-   "built_from": 1795046400
+   "built_from": 1795046400,
+   "status": "broken"
   },
   {
    "id": "bnb_4h",
@@ -96,7 +103,8 @@
    "period_s": 14400,
    "rows": 19791,
    "last_close": 1795147200,
-   "built_from": 1795132800
+   "built_from": 1795132800,
+   "status": "pullback"
   },
   {
    "id": "usdtd_d",
@@ -113,5 +121,5 @@
   }
  ],
  "kept": [],
- "last_result": "Rebuilt: USDT.D Daily 2026-11-19 (Structure broken)."
+ "last_result": "Rebuilt: BTC Daily 2026-11-19 (Pullback forming); BTC 4H 2026-11-20 00:00 (Structure broken); ETH Daily 2026-11-19 (Structure broken); ETH 4H 2026-11-20 00:00 (Pullback forming); SOL Daily 2026-11-19 (Structure broken); SOL 4H 2026-11-20 00:00 (Pullback forming); BNB Daily 2026-11-19 (Structure broken); BNB 4H 2026-11-20 00:00 (Pullback forming); USDT.D Daily 2026-11-19 (Structure broken)."
 }
