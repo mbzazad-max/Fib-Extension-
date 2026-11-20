@@ -25,7 +25,7 @@ def arg(name, default=None):
     return a[a.index(name) + 1] if name in a else default
 
 
-def load_csv(path, period, upto):
+def load_csv(path, period, upto, min_rows=400):
     now = time.time()
     rows = []
     with open(path, newline='') as f:
@@ -42,6 +42,29 @@ def load_csv(path, period, upto):
             rows.append((t, o, h, l, c))
     for a, b in zip(rows, rows[1:]):
         if b[0] <= a[0]: raise ValueError('candles out of order at %d' % b[0])
+    if len(rows) < min_rows: raise ValueError('only %d closed candles' % len(rows))
+    return rows
+
+
+def days_from_4h(path, upto):
+    """Daily candles made from closed 4H candles (UTC days whose 20:00 candle has closed; high/low/close over the day)."""
+    out = {}
+    for t, o, h, l, c in load_csv(path, 14400, upto, min_rows=1):
+        d = t - t % 86400
+        if d not in out: out[d] = [d, o, h, l, c, False]
+        x = out[d]; x[2] = max(x[2], h); x[3] = min(x[3], l); x[4] = c
+        if t % 86400 == 72000: x[5] = True
+    return [tuple(x[:5]) for k, x in sorted(out.items()) if x[5]]
+
+
+def load_rows(md, tab, upto):
+    """The tab's closed candles: its file, then (USDT.D daily) days made from 4H after the file's last day; x scale."""
+    rows = load_csv(os.path.join(md, tab['file']), tab['period_s'], upto, min_rows=1)
+    if tab.get('then_days_from_4h'):
+        last = rows[-1][0]
+        rows = rows + [r for r in days_from_4h(os.path.join(md, tab['then_days_from_4h']), upto) if r[0] > last]
+    k = tab.get('scale', 1)
+    if k != 1: rows = [(t, o * k, h * k, l * k, c * k) for t, o, h, l, c in rows]
     if len(rows) < 400: raise ValueError('only %d closed candles' % len(rows))
     return rows
 
@@ -93,9 +116,9 @@ def main():
     series, kept, done, failed = [], [], [], []
     for tab in CFG['tabs']:
         info = dict(id=tab['id'], title=tab['title'], symbol=tab['symbol'], tf='1D' if tab['profile'] == 'D' else '4H',
-                    series=tab['series'], source='Binance spot via Market-Data', period_s=tab['period_s'])
+                    series=tab['series'], source=tab.get('source', 'Binance spot via Market-Data'), period_s=tab['period_s'])
         try:
-            rows = load_csv(os.path.join(md, tab['file']), tab['period_s'], upto)
+            rows = load_rows(md, tab, upto)
             info.update(rows=len(rows), last_close=rows[-1][0] + tab['period_s'])
             if not force and built.get(tab['id']) == rows[-1][0]:
                 info['built_from'] = built.get(tab['id'])

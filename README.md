@@ -20,3 +20,7 @@ Tests:
 - Parity, the artifact's refresh commands on the Drive files versus `build.py` on Market-Data, same last candle, same starting logs: `python3 tests/parity.py <market-data dir> <dir with d.json h4.json ethd.json eth4h.json from drive_to_json.py>`. 14 Nov 2026: all 24 files identical except the generated time.
 - Render, all eight tabs: `node tests/render.js <node_modules dir with jsdom@24 and d3@7.9.0>`.
 - Page and engine unchanged: `node tools/check_page.js`.
+
+## USDT.D Daily tab (20 Nov 2026)
+
+Owner's request: USDT.D (TradingView CRYPTOCAP:USDT.D via Market-Data: stored daily history from Mar 2015, then days made from closed 4H candles). Same engine, rules and layout as the other tabs (made from the ETH Daily tab by tools/page.js, page_coins usdtd). The engine rounds prices to whole numbers, so build.py feeds USDT.D x1000 and the USDT.D tab shows values / 1000 as %. A projected USDT.D top is a peak in USDT dominance, which has tended to line up with a crypto low. No 4H tab: TradingView keeps USDT.D 4H only back to Jan 2026, with no completed 4H setups for the engine. Forecast log starts 20 Nov 2026.

@@ -63,7 +63,7 @@
       draws.forEach(function (d) {
         document.querySelectorAll('[data-draw="' + d.name + '"]').forEach(function (el) {
           if (hiddenUnder(el)) return;
-          try { d.fn(el); } catch (e) { console.error('drawing ' + d.name + ': ' + (e && e.message)); }
+          try { window.__ftEl = el; d.fn(el); } catch (e) { console.error('drawing ' + d.name + ': ' + (e && e.message)); }
         });
       });
     } finally { if (mo) mo.takeRecords(); busy = false; }

@@ -1,5 +1,5 @@
 /* Render check: public/index.html (artifact host head + d3 + shim.js + the original page + cloud.js) opened with the
-   built public/data/*.json. Clicks through all eight tabs and fails on any page error, a drawing that stays empty, a
+   built public/data/*.json. Clicks through all nine tabs and fails on any page error, a drawing that stays empty, a
    wrong number on screen (compared with summary.json), or a chart missing.
    usage: node tests/render.js <node_modules dir that has jsdom and d3> */
 'use strict';
@@ -7,8 +7,8 @@ const fs = require('fs'), path = require('path');
 const NM = path.resolve(process.argv[2]);
 const { JSDOM, VirtualConsole } = require(path.join(NM, 'jsdom'));
 const PUB = path.resolve(__dirname, '..', 'public');
-const TABS = [['daily', ''], ['h4', 'h4_'], ['ethd', 'eth_'], ['ethh4', 'eth_h4_'], ['sold', 'sol_'], ['solh4', 'sol_h4_'], ['bnbd', 'bnb_'], ['bnbh4', 'bnb_h4_']];
-const usd = (v) => (v == null ? '—' : '$' + Math.round(v).toLocaleString('en-US'));
+const TABS = [['daily', ''], ['h4', 'h4_'], ['ethd', 'eth_'], ['ethh4', 'eth_h4_'], ['sold', 'sol_'], ['solh4', 'sol_h4_'], ['bnbd', 'bnb_'], ['bnbh4', 'bnb_h4_'], ['usdtdd', 'usdtd_']];   // USDT.D: Daily only, shown in % (x1000 in the data)
+const usd = (v, pre) => (v == null ? '—' : /^usdtd/.test(pre || '') ? (v / 1000).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%' : '$' + Math.round(v).toLocaleString('en-US'));
 (async () => {
   const html = fs.readFileSync(path.join(PUB, 'index.html'), 'utf8')
     .replace('<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>', () => '<script>' + fs.readFileSync(path.join(NM, 'd3/dist/d3.min.js'), 'utf8') + '</script>')
@@ -41,7 +41,7 @@ const usd = (v) => (v == null ? '—' : '$' + Math.round(v).toLocaleString('en-U
       bt: sec.querySelectorAll('[data-draw="bt"] tr').length, ladder: sec.querySelectorAll('[data-draw="ladder"] tr').length,
       live: t('[data-draw="livedate"]') };
     v.status = take && take.querySelector('[data-draw="status"]').textContent.trim();
-    const want = { status: s.status_label, close: usd(s.live_close), target: usd(broken ? s.broken_low : s.target), live: s.live_date };
+    const want = { status: s.status_label, close: usd(s.live_close, pre), target: usd(broken ? s.broken_low : s.target, pre), live: s.live_date };
     for (const k of Object.keys(want)) if (v[k] !== want[k]) bad.push(id + ' ' + k + ': page shows ' + v[k] + ', data says ' + want[k]);
     if (!v.shown || !v.take_shown || !v.other_hidden || v.chart < 2 || v.rsi < 1 || v.log < 1 || v.bt < 1 || v.ladder < 1) bad.push(id + ' incomplete: ' + JSON.stringify(v));
     const empty = [...sec.querySelectorAll('[data-draw]')].filter((e) => !e.closest('[hidden]') && !e.closest('[data-when]') && e.textContent.trim() === '—' && !['note', 'posthigh', 'posthighdate', 'drop', 'nearres'].includes(e.dataset.draw));
@@ -55,5 +55,5 @@ const usd = (v) => (v == null ? '—' : '$' + Math.round(v).toLocaleString('en-U
   console.log(JSON.stringify(res, null, 1));
   w.close();
   if (bad.length) { console.error('RENDER FAILED:\n' + bad.join('\n')); process.exit(1); }
-  console.log('RENDER OK: all eight tabs drawn, numbers match the data, no page errors.');
+  console.log('RENDER OK: all nine tabs drawn, numbers match the data, no page errors.');
 })();
