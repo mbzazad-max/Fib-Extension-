@@ -44,3 +44,7 @@ A "🧭 Cycle and level" card above the bottom tracker on every tab: daily tabs 
 ## Time window (21 Nov 2026)
 
 `build/regimes.py` also stores, per tab and per tracker, the bars from C to the top (or low) over all completed setups (median, 25/75/90th percentiles) and the current C (provisional or confirmed, or broken). The Cycle and level card shows how much time has passed since C, what share of past tops/lows had come by now and the middle-half window; past the 90% mark it says the turn may be in or close.
+
+## Weekly cycle scale (21 Nov 2026, context only)
+
+`build/weekly.py` (CI step) runs the same ABC method on closed Monday weeks with a 25% zigzag, for tops and (mirrored) bottoms, per coin (BTC from the Coinbase history + Binance, USDT.D from TradingView). Output `public/data/fibx_weekly.json`, shown on the Cycle and level card with its record (BTC 11/23 within ±15%; the other coins about a third), so it is labelled a rough map, not a call.

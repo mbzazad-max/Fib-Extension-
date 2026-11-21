@@ -113,12 +113,25 @@
       L.push(one(RG.top_time, 'top', false));
       L.push(one(RG.bottom_time, 'low', true));
     }
+    const WK = WEEK && WEEK.coins && WEEK.coins[isU ? 'USDT.D' : Y.coin];
+    if (WK && WK.top) {
+      const fx = isU ? pcv : usd, nm = isU ? 'USDT.D' : Y.coin;
+      const one = (R, low) => {
+        const N = R.now, word = low ? 'low' : 'top', rec = `record ${R.within}/${R.tested} within ±${Math.round(R.tol * 100)}%`;
+        if (!N) return `<b>${low ? 'Weekly low' : 'Weekly top'}:</b> no setup (${rec}).`;
+        if (N.broken) return `<b>${low ? 'Weekly low' : 'Weekly top'}:</b> no valid setup: price went ${low ? 'above' : 'below'} weekly A ${fx(N.A)} (${dd(N.a)}); waits for a new ${low ? 'lower high' : 'higher low'} (${rec}).`;
+        return `<b>${low ? 'Weekly low' : 'Weekly top'}:</b> A ${fx(N.A)} (${dd(N.a)}) → B ${fx(N.B)} (${dd(N.b)}) → C ${fx(N.C)} (${dd(N.c)}${N.c_confirmed ? '' : ', not confirmed yet'}). Projected ${word} ${fx(N.target)}, zone ${fx(N.zone[0])} – ${fx(N.zone[1])} (${rec}).`;
+      };
+      L.push(`<b>Weekly cycle scale, ${nm} (25% swings, context only)</b>: the same ABC method on closed weeks. Few weekly setups exist and the record is weak, so read this as a rough map, not a call.`);
+      L.push(one(WK.top, false));
+      L.push(one(WK.bottom, true));
+    }
     L.forEach((x) => c.append(typeof x === 'string' ? el('p', 'ft-note', x) : x));
     c.append(el('p', 'ft-note', 'Weekly read = the same rules as the BTC cycle and USDT.D tabs of the BTC & ETH dashboard (closed Monday weeks; updates each Monday 11:00 Sydney).'));
     return c;
   }
 
-  let CONF = null, REG = null;
+  let CONF = null, REG = null, WEEK = null;
   function drawAll() {
     document.querySelectorAll('.fx-root[data-fx]').forEach((root) => {
       const id = root.dataset.fx;
@@ -130,6 +143,6 @@
   }
   window.__fibxTabs = TABS;
   const get = (f) => fetch('data/' + f, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
-  const start = () => Promise.all([get('fibx_confluence.json'), get('fibx_regime.json')]).then(([x, y]) => { CONF = x; REG = y; drawAll(); });
+  const start = () => Promise.all([get('fibx_confluence.json'), get('fibx_regime.json'), get('fibx_weekly.json')]).then(([x, y, z]) => { CONF = x; REG = y; WEEK = z; drawAll(); });
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
