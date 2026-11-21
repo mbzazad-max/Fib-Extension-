@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-21 02:44 UTC",
- "checked_at": 1795229091,
+ "generated": "2026-11-21 04:03 UTC",
+ "checked_at": 1795233787,
  "series": [
   {
    "id": "btc_d",
@@ -12,8 +12,7 @@
    "period_s": 86400,
    "rows": 3383,
    "last_close": 1795219200,
-   "built_from": 1795132800,
-   "status": "broken"
+   "built_from": 1795132800
   },
   {
    "id": "btc_4h",
@@ -25,8 +24,7 @@
    "period_s": 14400,
    "rows": 20281,
    "last_close": 1795219200,
-   "built_from": 1795204800,
-   "status": "broken"
+   "built_from": 1795204800
   },
   {
    "id": "eth_d",
@@ -38,8 +36,7 @@
    "period_s": 86400,
    "rows": 3383,
    "last_close": 1795219200,
-   "built_from": 1795132800,
-   "status": "broken"
+   "built_from": 1795132800
   },
   {
    "id": "eth_4h",
@@ -51,8 +48,7 @@
    "period_s": 14400,
    "rows": 20281,
    "last_close": 1795219200,
-   "built_from": 1795204800,
-   "status": "broken"
+   "built_from": 1795204800
   },
   {
    "id": "sol_d",
@@ -64,8 +60,7 @@
    "period_s": 86400,
    "rows": 2293,
    "last_close": 1795219200,
-   "built_from": 1795132800,
-   "status": "broken"
+   "built_from": 1795132800
   },
   {
    "id": "sol_4h",
@@ -77,8 +72,7 @@
    "period_s": 14400,
    "rows": 13757,
    "last_close": 1795219200,
-   "built_from": 1795204800,
-   "status": "broken"
+   "built_from": 1795204800
   },
   {
    "id": "bnb_d",
@@ -90,8 +84,7 @@
    "period_s": 86400,
    "rows": 3302,
    "last_close": 1795219200,
-   "built_from": 1795132800,
-   "status": "broken"
+   "built_from": 1795132800
   },
   {
    "id": "bnb_4h",
@@ -103,8 +96,7 @@
    "period_s": 14400,
    "rows": 19796,
    "last_close": 1795219200,
-   "built_from": 1795204800,
-   "status": "broken"
+   "built_from": 1795204800
   },
   {
    "id": "usdtd_d",
@@ -114,9 +106,9 @@
    "series": "tv/CRYPTOCAP_USDT.D/1D",
    "source": "TradingView via Market-Data",
    "period_s": 86400,
-   "rows": 4275,
-   "last_close": 1795132800,
-   "built_from": 1795046400,
+   "rows": 4276,
+   "last_close": 1795219200,
+   "built_from": 1795132800,
    "status": "broken"
   },
   {
@@ -127,12 +119,12 @@
    "series": "tv/CRYPTOCAP_USDT.D/4H",
    "source": "TradingView via Market-Data",
    "period_s": 14400,
-   "rows": 6329,
-   "last_close": 1795204800,
-   "built_from": 1795190400,
+   "rows": 6330,
+   "last_close": 1795219200,
+   "built_from": 1795204800,
    "status": "in_zone"
   }
  ],
  "kept": [],
- "last_result": "Rebuilt: BTC Daily 2026-11-20 (Structure broken); BTC 4H 2026-11-20 20:00 (Structure broken); ETH Daily 2026-11-20 (Structure broken); ETH 4H 2026-11-20 20:00 (Structure broken); SOL Daily 2026-11-20 (Structure broken); SOL 4H 2026-11-20 20:00 (Structure broken); BNB Daily 2026-11-20 (Structure broken); BNB 4H 2026-11-20 20:00 (Structure broken); USDT.D Daily 2026-11-19 (Structure broken); USDT.D 4H 2026-11-20 16:00 (Inside target zone)."
+ "last_result": "Rebuilt: USDT.D Daily 2026-11-20 (Structure broken); USDT.D 4H 2026-11-20 20:00 (Inside target zone)."
 }
