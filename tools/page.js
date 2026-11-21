@@ -66,5 +66,17 @@ module.exports = function makePage() {
       "const fmtK = (v) => ((" + M + ")[((window.__ftEl && window.__ftEl.closest && window.__ftEl.closest('[data-tf]')) || { dataset: { tf: '' } }).dataset.tf.split('_')[0]] ? d3.format(',.2f')(v / (" + M + ")[window.__ftEl.closest('[data-tf]').dataset.tf.split('_')[0]]) + '%' : Math.abs(v) >= 1000 ?");
   }
   if (cfg.title) page = once(page, '<h1 class="ft-title">BTC &amp; ETH Fib Top Tracker</h1>', '<h1 class="ft-title">' + cfg.title + '</h1>');
+  // Extras (owner, 21 Nov 2026): an empty <div class="fx-root"> right under each tab's header, filled by public/fibx.js
+  // (the Fib bottom tracker and the other additions); the original markup is otherwise untouched.
+  const FX = { daily: 'btc_d', h4: 'btc_4h', ethd: 'eth_d', ethh4: 'eth_4h', sold: 'sol_d', solh4: 'sol_4h', bnbd: 'bnb_d', bnbh4: 'bnb_4h', usdtdd: 'usdtd_d', usdtdh4: 'usdtd_4h' };
+  for (const [sec, id] of Object.entries(FX)) {
+    const at = page.indexOf('<section class="ft-page" id="' + sec + '"');
+    if (at < 0) continue;
+    const h = page.indexOf('\n  </header>\n', at);
+    if (h < 0) throw new Error('page.js: header of ' + sec + ' not found');
+    const cut = h + '\n  </header>\n'.length;
+    page = page.slice(0, cut) + '  <div class="fx-root" data-fx="' + id + '"></div>\n' + page.slice(cut);
+  }
+  page += '\n<script src="fibx.js"></script>';
   return page;
 };

@@ -14,7 +14,7 @@ on:
     - cron: '25 1 * * *'   # once a day as a safety net (12:25 Sydney summer time); Market-Data commits trigger it too
   push:
     branches: [main]
-    paths: ['.github/workflows/build.yml', 'public/index.html', 'public/shim.js', 'public/cloud.js', 'worker/**', 'build/**', 'config/**', 'engine/**', 'tools/**', 'wrangler.jsonc', 'reference/**']
+    paths: ['.github/workflows/build.yml', 'public/index.html', 'public/shim.js', 'public/cloud.js', 'public/fibx.js', 'worker/**', 'build/**', 'config/**', 'engine/**', 'tools/**', 'wrangler.jsonc', 'reference/**']
 permissions:
   contents: write
 concurrency:
@@ -45,6 +45,8 @@ jobs:
           python-version: '3.12'
       - name: Run the engine on closed candles (each tab keeps its last good data on any failure)
         run: python3 build/build.py md ${{ inputs.force && '--force' || '' }}
+      - name: Fib bottom tracker, the same engine on the mirror image of each chart (each tab keeps its last good data on any failure)
+        run: python3 build/bottoms.py md ${{ inputs.force && '--force' || '' }}
       - name: Save the new data and forecast logs (one commit)
         run: |
           git config user.name "github-actions[bot]"
