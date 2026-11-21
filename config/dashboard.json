@@ -103,6 +103,19 @@
    "source": "TradingView via Market-Data",
    "prefix": "usdtd_",
    "log": "state/forecast_log_usdtd.json"
+  },
+  {
+   "id": "usdtd_4h",
+   "title": "USDT.D 4H",
+   "series": "tv/CRYPTOCAP_USDT.D/4H",
+   "file": "data/tv/CRYPTOCAP_USDT.D_4H.csv",
+   "scale": 1000,
+   "period_s": 14400,
+   "profile": "4H",
+   "symbol": "CRYPTOCAP:USDT.D",
+   "source": "TradingView via Market-Data",
+   "prefix": "usdtd_h4_",
+   "log": "state/forecast_log_usdtd_4h.json"
   }
  ],
  "datasets": [
@@ -145,11 +158,10 @@
      "from Market-Data (your Binance upload)",
      "from Market-Data (daily TradingView load)"
     ]
-   ],
-   "only": "D"
+   ]
   }
  ],
  "_about_page_coins": "Coins added on Cloudflare (14 Nov 2026). Their two tabs are made by tools/page.js from the ETH Daily and ETH 4H tabs of the original page, with only the coin, its data and its history start changed. Their forecast logs start empty.",
  "title": "BTC, ETH, SOL, BNB &amp; USDT.D Fib Top Tracker",
- "_about_usdtd": "USDT.D (owner, 20 Nov 2026): USDT dominance, %, from TradingView via Market-Data (daily 1D history from 2015, then days made from closed 4H candles; 4H as loaded). The unchanged engine rounds prices to whole numbers, so the build feeds USDT.D x1000 (scale) and the USDT.D tabs show prices divided by 1000 as % (pct_scale; tools/page.js + shim.js). A projected USDT.D top is a peak in USDT dominance, which has tended to line up with a crypto low. Daily tab only: TradingView keeps USDT.D 4H back to Jan 2026, which has no completed 4H setups for the engine to measure (it stops with no median), so there is no USDT.D 4H tab."
+ "_about_usdtd": "USDT.D (owner, 20 Nov 2026): USDT dominance, %, from TradingView via Market-Data (daily 1D history from 2015, then days made from closed 4H candles; 4H as loaded). The unchanged engine rounds prices to whole numbers, so the build feeds USDT.D x1000 (scale) and the USDT.D tabs show prices divided by 1000 as % (pct_scale; tools/page.js + shim.js). A projected USDT.D top is a peak in USDT dominance, which has tended to line up with a crypto low. 4H tab added 21 Nov 2026 once Market-Data held USDT.D 4H back to 2024-01-01 (owner's PC upload, about 6,330 candles)."
 }

@@ -1,5 +1,5 @@
 /* Render check: public/index.html (artifact host head + d3 + shim.js + the original page + cloud.js) opened with the
-   built public/data/*.json. Clicks through all nine tabs and fails on any page error, a drawing that stays empty, a
+   built public/data/*.json. Clicks through all ten tabs and fails on any page error, a drawing that stays empty, a
    wrong number on screen (compared with summary.json), or a chart missing.
    usage: node tests/render.js <node_modules dir that has jsdom and d3> */
 'use strict';
@@ -7,7 +7,7 @@ const fs = require('fs'), path = require('path');
 const NM = path.resolve(process.argv[2]);
 const { JSDOM, VirtualConsole } = require(path.join(NM, 'jsdom'));
 const PUB = path.resolve(__dirname, '..', 'public');
-const TABS = [['daily', ''], ['h4', 'h4_'], ['ethd', 'eth_'], ['ethh4', 'eth_h4_'], ['sold', 'sol_'], ['solh4', 'sol_h4_'], ['bnbd', 'bnb_'], ['bnbh4', 'bnb_h4_'], ['usdtdd', 'usdtd_']];   // USDT.D: Daily only, shown in % (x1000 in the data)
+const TABS = [['daily', ''], ['h4', 'h4_'], ['ethd', 'eth_'], ['ethh4', 'eth_h4_'], ['sold', 'sol_'], ['solh4', 'sol_h4_'], ['bnbd', 'bnb_'], ['bnbh4', 'bnb_h4_'], ['usdtdd', 'usdtd_'], ['usdtdh4', 'usdtd_h4_']];   // USDT.D: Daily only, shown in % (x1000 in the data)
 const usd = (v, pre) => (v == null ? '—' : /^usdtd/.test(pre || '') ? (v / 1000).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%' : '$' + Math.round(v).toLocaleString('en-US'));
 (async () => {
   const html = fs.readFileSync(path.join(PUB, 'index.html'), 'utf8')
@@ -55,5 +55,5 @@ const usd = (v, pre) => (v == null ? '—' : /^usdtd/.test(pre || '') ? (v / 100
   console.log(JSON.stringify(res, null, 1));
   w.close();
   if (bad.length) { console.error('RENDER FAILED:\n' + bad.join('\n')); process.exit(1); }
-  console.log('RENDER OK: all nine tabs drawn, numbers match the data, no page errors.');
+  console.log('RENDER OK: all ten tabs drawn, numbers match the data, no page errors.');
 })();
