@@ -32,3 +32,7 @@ Owner's request: the mirror of the tracker, so every tab also projects the next 
 ## Cycle and level (21 Nov 2026)
 
 A "🧭 Cycle and level" card above the bottom tracker on every tab: daily tabs follow 10% swings (local-to-swing turns), 4H tabs 5% swings (local); the cycle comes from the weekly read, computed in `build/bottoms.py` (`cycles()`) with the same rules as the BTC cycle and USDT.D tabs of the BTC & ETH dashboard (checked equal on 21 Nov 2026: BTC 50W 74,991, 100W 88,690, 200W 67,976; USDT.D 50W 7.42, 100W 6.09). Stored as `cycle` in `public/data/fibx_<tab>.json` and refreshed on every run: BTC's read, the coin's own read and USDT.D's, with what a projected top or low means under that read.
+
+## Zone + early-sign test (21 Nov 2026)
+
+`research/confluence_test.py` (run: `python3 -I research/confluence_test.py <market-data> [inv]`) replays every past setup that touched the zone and compares selling at the first zone touch with waiting for a pullback (WATCH) or an RSI(7) drop back under 70 after the touch. The zone alone ended closer to the actual top on every tab (BTC D median −6.5% vs −8.5% / −10.0%; same for bottoms), so no confluence signal was added; the result is shown on each tab's Cycle and level card from `public/data/fibx_confluence.json`.

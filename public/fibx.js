@@ -81,11 +81,17 @@
       const O = Y.own;
       if (Y.coin !== 'BTC' && O) L.push(`<b>${Y.coin}'s own read: <span class="ft-pill">${O.verdict}</span></b> · weekly close ${usd(O.week_close)}; 50W ${usd(O.w50)}, 100W ${usd(O.w100)}, 200W ${usd(O.w200)}.`);
     }
+    const cf = CONF && CONF.top && CONF.top[id], cb = CONF && CONF.bottom && CONF.bottom[id];
+    if (cf && cf.zone && cf.pull && cf.rsi) {
+      const f = (x) => (x > 0 ? '+' : '') + x.toFixed(1) + '%';
+      L.push(`<b>Tested 21 Nov 2026: zone touch vs zone touch + early sign.</b> Selling at the first touch of the zone ended a median ${f(cf.zone.med)} from the actual top (${cf.zone.n} past setups); waiting for a ${h4 ? '2.5' : '5'}% pullback after the touch gave ${f(cf.pull.med)}, and waiting for RSI(7) to drop back under 70 gave ${f(cf.rsi.med)}. So the zone itself is the better level; a sign only helped in the rare runs that kept going far past the zone (sold more than ${h4 ? '10' : '20'}% under the top: ${cf.zone.bad}% at the zone vs ${cf.rsi.bad}% with the RSI sign).${cb && cb.zone ? ` Bottoms: same result (${f(cb.zone.med)} at the zone vs ${f(cb.pull.med)} after a bounce sign).` : ''} The trackers keep the zone as the call.`);
+    }
     L.forEach((x) => c.append(el('p', 'ft-note', x)));
     c.append(el('p', 'ft-note', 'Weekly read = the same rules as the BTC cycle and USDT.D tabs of the BTC & ETH dashboard (closed Monday weeks; updates each Monday 11:00 Sydney).'));
     return c;
   }
 
+  let CONF = null;
   function drawAll() {
     document.querySelectorAll('.fx-root[data-fx]').forEach((root) => {
       const id = root.dataset.fx;
@@ -96,5 +102,6 @@
     });
   }
   window.__fibxTabs = TABS;
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', drawAll); else drawAll();
+  const start = () => fetch('data/fibx_confluence.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null).then((x) => { CONF = x; drawAll(); });
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
