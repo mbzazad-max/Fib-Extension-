@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-21 08:55 UTC",
- "checked_at": 1795251337,
+ "generated": "2026-11-21 12:05 UTC",
+ "checked_at": 1795262736,
  "series": [
   {
    "id": "btc_d",
@@ -24,8 +24,7 @@
    "period_s": 14400,
    "rows": 20283,
    "last_close": 1795248000,
-   "built_from": 1795233600,
-   "status": "broken"
+   "built_from": 1795233600
   },
   {
    "id": "eth_d",
@@ -49,8 +48,7 @@
    "period_s": 14400,
    "rows": 20283,
    "last_close": 1795248000,
-   "built_from": 1795233600,
-   "status": "broken"
+   "built_from": 1795233600
   },
   {
    "id": "sol_d",
@@ -74,8 +72,7 @@
    "period_s": 14400,
    "rows": 13759,
    "last_close": 1795248000,
-   "built_from": 1795233600,
-   "status": "broken"
+   "built_from": 1795233600
   },
   {
    "id": "bnb_d",
@@ -99,8 +96,7 @@
    "period_s": 14400,
    "rows": 19798,
    "last_close": 1795248000,
-   "built_from": 1795233600,
-   "status": "broken"
+   "built_from": 1795233600
   },
   {
    "id": "usdtd_d",
@@ -122,11 +118,12 @@
    "series": "tv/CRYPTOCAP_USDT.D/4H",
    "source": "TradingView via Market-Data",
    "period_s": 14400,
-   "rows": 6331,
-   "last_close": 1795233600,
-   "built_from": 1795219200
+   "rows": 6332,
+   "last_close": 1795248000,
+   "built_from": 1795233600,
+   "status": "in_zone"
   }
  ],
  "kept": [],
- "last_result": "Rebuilt: BTC 4H 2026-11-21 04:00 (Structure broken); ETH 4H 2026-11-21 04:00 (Structure broken); SOL 4H 2026-11-21 04:00 (Structure broken); BNB 4H 2026-11-21 04:00 (Structure broken)."
+ "last_result": "Rebuilt: USDT.D 4H 2026-11-21 04:00 (Inside target zone)."
 }
