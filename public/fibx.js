@@ -98,6 +98,21 @@
       L.push(`<b>Hit record by market</b> (walk-forward replay; each past setup tagged by BTC's weekly side at its C point: bull = weekly close above both the 50W and 100W). Now: <b>${side} side</b>, shown in bold.`);
       L.push(t);
     }
+    if (RG && RG.top_time) {
+      const span = (bars, per) => { const hrs = bars * per / 3600; return hrs < 48 ? Math.round(hrs) + ' h' : (Math.round(hrs / 24 * 10) / 10) + ' days'; };
+      const day = (ts) => new Date(ts * 1000).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric', ...(h4 ? { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' } : { timeZone: 'UTC' }) }) + (h4 ? ' UTC' : '');
+      const one = (T, word, low) => {
+        const past = `half of past ${word}s came within ${span(T.med, T.period)} of C, 3 in 4 within ${span(T.p75, T.period)}, 9 in 10 within ${span(T.p90, T.period)} (${T.n} setups)`;
+        if (T.broken) return `<b>${low ? 'Bottom' : 'Top'} tracker:</b> no valid setup right now, so no clock. For reference, ${past}.`;
+        if (!T.c_confirmed) return `<b>${low ? 'Bottom' : 'Top'} tracker:</b> C not confirmed yet, so the clock has not started. Once it is: ${past}.`;
+        const by = Math.round(T.share_by_now * 100);
+        const w1 = day(T.c_time + T.p25 * T.period), w2 = day(T.c_time + T.p75 * T.period);
+        return `<b>${low ? 'Bottom' : 'Top'} tracker:</b> C ${day(T.c_time)}, ${span(T.bars_since_c, T.period)} ago. By this point ${by}% of past ${word}s had already come; the middle half came ${w1} – ${w2}. ${by >= 90 ? `This one is running long: past the 9-in-10 mark, so treat the ${word} as possibly in or close.` : ''} Full record: ${past}.`;
+      };
+      L.push(`<b>Time window (C to the ${isU ? 'USDT.D ' : ''}top / low)</b>`);
+      L.push(one(RG.top_time, 'top', false));
+      L.push(one(RG.bottom_time, 'low', true));
+    }
     L.forEach((x) => c.append(typeof x === 'string' ? el('p', 'ft-note', x) : x));
     c.append(el('p', 'ft-note', 'Weekly read = the same rules as the BTC cycle and USDT.D tabs of the BTC & ETH dashboard (closed Monday weeks; updates each Monday 11:00 Sydney).'));
     return c;

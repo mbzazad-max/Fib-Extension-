@@ -40,3 +40,7 @@ A "🧭 Cycle and level" card above the bottom tracker on every tab: daily tabs 
 ## Hit record by market (21 Nov 2026)
 
 `build/regimes.py` (a CI step after the bottom tracker) replays the walk-forward backtest for tops and bottoms on every tab and tags each past setup by BTC's weekly side at its C point (bull side = last closed weekly close above both the 50W and 100W SMA). Output `public/data/fibx_regime.json`, shown as a small table on the Cycle and level card with the current side in bold. Replay counts differ slightly from the engine's headline record (no 4H archive, no forecast-log merge).
+
+## Time window (21 Nov 2026)
+
+`build/regimes.py` also stores, per tab and per tracker, the bars from C to the top (or low) over all completed setups (median, 25/75/90th percentiles) and the current C (provisional or confirmed, or broken). The Cycle and level card shows how much time has passed since C, what share of past tops/lows had come by now and the middle-half window; past the 90% mark it says the turn may be in or close.

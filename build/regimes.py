@@ -43,14 +43,29 @@ def replay(rows, profile, inv):
     for j in range(len(p) - 3):
         (ka, a), (kb, b), (kc, cc), (kd, d) = p[j:j + 4]
         if ka != 'L' or l[cc] <= l[a] or sma[cc] is None: continue
-        hist.append(dict(tc=t[cc], A=l[a], B=h[b], C=l[cc], T=h[d], r=(h[d] - l[cc]) / (h[b] - l[a]), up=c[cc] > sma[cc]))
+        hist.append(dict(tc=t[cc], bars=d - cc, A=l[a], B=h[b], C=l[cc], T=h[d], r=(h[d] - l[cc]) / (h[b] - l[a]), up=c[cc] > sma[cc]))
+    # time from C to the top: all completed setups; the current C as the engine picks it
+    bars = sorted(x['bars'] for x in hist)
+    lk, li = p[-1]
+    if lk == 'H':
+        cc = min(range(li + 1, n), key=lambda i: l[i]) if li + 1 < n else li; cconf = False
+        top = None
+    else:
+        cc = li; cconf = True; top = max(range(cc, n), key=lambda i: h[i])
+    bi = li if lk == 'H' else next(i for k, i in reversed(p[:-1]) if k == 'H')
+    ai = next((i for k, i in reversed(p) if k == 'L' and i < bi), None)
+    broken = ai is None or l[cc] <= l[ai]
+    per = t[1] - t[0]
+    TIME = dict(n=len(bars), p25=E.pct(bars, .25), med=st.median(bars), p75=E.pct(bars, .75), p90=E.pct(bars, .9), period=per, broken=broken,
+                c_time=t[cc], c_confirmed=cconf, bars_since_c=n - 1 - cc, top_time=(t[top] if top is not None else None),
+                last_time=t[-1], share_by_now=round(sum(b <= n - 1 - cc for b in bars) / len(bars), 3) if bars else None)
     out = []
     for k, x in enumerate(hist):
         prior = [y['r'] for y in hist[:k] if y['up'] == x['up']]
         if len(prior) < 15: continue
         tgt = x['C'] + st.median(prior) * (x['B'] - x['A'])
         out.append((x['tc'], x['T'] / tgt - 1))
-    return out
+    return out, TIME
 
 
 def main():
@@ -59,10 +74,12 @@ def main():
         rows = B.load_rows(md, tab, None); tol = E.PROFILES[tab['profile']]['HIT_TOL']; T = {}
         for kind, inv in (('top', False), ('bottom', True)):
             g = {'bull': [0, 0], 'bear': [0, 0]}
-            for tc, e in replay(rows, tab['profile'], inv):
+            rp, TIME = replay(rows, tab['profile'], inv)
+            for tc, e in rp:
                 if inv: e = -e / (1 + e)              # error back in price terms
                 s = at(tc)
                 if s: g[s][0] += 1; g[s][1] += abs(e) <= tol
+            T[kind + '_time'] = TIME
             T[kind] = {s: dict(n=v[0], hit=v[1], rate=round(v[1] / v[0], 3) if v[0] else None) for s, v in g.items()}
         T['now'] = at(rows[-1][0]); T['tol'] = tol
         R['tabs'][tab['id']] = T
