@@ -53,12 +53,45 @@
     return c;
   }
 
+  // ---------- part 2: cycle and level ----------
+  function cycleCard(id, J) {
+    const Y = J.cycle; if (!Y || !Y.btc) return null;
+    const isU = id.startsWith('usdtd'), h4 = id.endsWith('_4h');
+    const usd = (v) => (v == null ? '—' : '$' + (v >= 1000 ? Math.round(v).toLocaleString('en-US') : v.toLocaleString('en-US', { maximumFractionDigits: 2 })));
+    const pcv = (v) => (v == null ? '—' : v.toFixed(2) + '%');
+    const bearish = (v) => /^Bear|Turning bear/.test(v);
+    const c = el('section', 'ft-card'); c.style.borderLeft = '3px solid var(--color-accent, #2557d6)';
+    c.append(el('h2', null, '🧭 Cycle and level <span class="ft-note" style="font-weight:400">· what a projection on this tab can and cannot tell you</span>'));
+    const L = [];
+    L.push(`<b>Level:</b> ${h4 ? '4H tabs follow 5% swings: local turns, several a month.' : 'daily tabs follow 10% swings: local-to-swing turns, a few a quarter.'} Neither tracker calls the cycle top or bottom by itself; the weekly read below does.`);
+    const B = Y.btc, bw = `weekly close ${usd(B.week_close)} (week of ${dd(B.week)}); 50W ${usd(B.w50)}, 100W ${usd(B.w100)}, 200W ${usd(B.w200)}`;
+    L.push(`<b>BTC cycle read: <span class="ft-pill">${B.verdict}</span></b> · ${bw}.`);
+    if (isU) {
+      const U = Y.usdtd;
+      if (U) {
+        L.push(`<b>USDT.D read: <span class="ft-pill">${U.verdict}</span></b> · weekly close ${pcv(U.week_close)}; 50W ${pcv(U.w50)}, 100W ${pcv(U.w100)}. (USDT.D up = crypto down.)`);
+        L.push(bearish(U.verdict)
+          ? `<b>Top tracker (this page):</b> a projected USDT.D top marks a crypto relief-rally low until USDT.D closes weeks below its 50W (${pcv(U.w50)}) and then its 100W (${pcv(U.w100)}); after the Nov 2022 peak that took until Jan 2023 and Oct 2023.<br><b>Bottom tracker:</b> a projected USDT.D low marks the top of a crypto relief rally inside the bear, not the cycle top.`
+          : `<b>Top tracker (this page):</b> USDT.D is in the bull pattern for crypto, so a projected USDT.D top is a pause in a crypto uptrend.<br><b>Bottom tracker:</b> a projected USDT.D low is a crypto swing top until USDT.D closes weeks back above its 50W (${pcv(U.w50)}) and 100W (${pcv(U.w100)}).`);
+      }
+    } else {
+      L.push(bearish(B.verdict)
+        ? `<b>Top tracker (this page):</b> with BTC in a bear, a projected top is a relief-rally top, not the cycle top.<br><b>Bottom tracker:</b> a projected low is a swing low until BTC closes weeks back above its 50W (${usd(B.w50)}) and then its 100W (${usd(B.w100)}); the Nov 2022 low only showed itself as the cycle low that way (50W Mar 2023, 100W Oct 2023).`
+        : `<b>Top tracker (this page):</b> a projected top is a swing top inside the bull until BTC closes weeks below its 50W (${usd(B.w50)}); the Nov 2021 top turned that way (50W lost Dec 2021).<br><b>Bottom tracker:</b> a projected low is a dip inside the bull (in 2023–25 BTC held its 50W about 9 weeks in 10).`);
+      const O = Y.own;
+      if (Y.coin !== 'BTC' && O) L.push(`<b>${Y.coin}'s own read: <span class="ft-pill">${O.verdict}</span></b> · weekly close ${usd(O.week_close)}; 50W ${usd(O.w50)}, 100W ${usd(O.w100)}, 200W ${usd(O.w200)}.`);
+    }
+    L.forEach((x) => c.append(el('p', 'ft-note', x)));
+    c.append(el('p', 'ft-note', 'Weekly read = the same rules as the BTC cycle and USDT.D tabs of the BTC & ETH dashboard (closed Monday weeks; updates each Monday 11:00 Sydney).'));
+    return c;
+  }
+
   function drawAll() {
     document.querySelectorAll('.fx-root[data-fx]').forEach((root) => {
       const id = root.dataset.fx;
       if (root.dataset.done) return; root.dataset.done = '1';
       fetch('data/fibx_' + id + '.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).then((J) => {
-        if (!J) return; const c = card(id, J); if (c) root.replaceChildren(c);
+        if (!J) return; root.replaceChildren(...[cycleCard(id, J), card(id, J)].filter(Boolean));
       }).catch(() => {});
     });
   }

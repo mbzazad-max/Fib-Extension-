@@ -106,13 +106,91 @@ def mapped(s, K, scale, rows=None, profile='D'):
     return out
 
 
+# ---------- cycle level (owner, 21 Nov 2026): the weekly read, same rules as the BTC cycle and USDT.D tabs of the BTC & ETH
+# dashboard (build/usdtd.js there): Monday weeks of closed days, 20/50/100/200-week SMAs of weekly closes.
+#   price assets (BTC, ETH, SOL, BNB): below the 100W = Bear (held near the prior year's low with a daily close back above the
+#     20D or 50D = Bear, possibly ending); below the 50W but above the 100W = Turning bear; above both with the 50W under the
+#     100W = Turning bull; else Bull.
+#   USDT.D (up = crypto down): below the 100W = Bull; below the 50W = Turning bull; turned back near the prior year's peak with
+#     a daily close below the 20D or 50D = Bear, possibly ending; 50W over the 100W = Bear; else Turning bear.
+def daily_rows(md, path):
+    import csv, time
+    now, out = time.time(), []
+    with open(os.path.join(md, path), newline='') as f:
+        r = csv.reader(f); next(r)
+        for x in r:
+            t = int(x[0])
+            if t + 86400 <= now: out.append((t, float(x[2]), float(x[3]), float(x[4])))
+    return out
+
+
+def weekly_read(rows, usdtd=False):
+    """rows: (t, high, low, close) closed UTC days, oldest first."""
+    if len(rows) < 800: return None
+    sma = lambda xs, n: sum(xs[-n:]) / n if len(xs) >= n else None
+    # Monday weeks; the current week counts only once its Sunday has closed
+    weeks = []
+    for t, h, l, c in rows:
+        d = dt.datetime.fromtimestamp(t, dt.UTC); wk = t - (d.weekday()) * 86400
+        if weeks and weeks[-1][0] == wk: weeks[-1][1] = c; weeks[-1][2] = t
+        else: weeks.append([wk, c, t])
+    if weeks[-1][2] != weeks[-1][0] + 6 * 86400: weeks = weeks[:-1]
+    wc = [w[1] for w in weeks]
+    S = {n: sma(wc, n) for n in (20, 50, 100, 200)}
+    C = [r[3] for r in rows]
+    d20, d50, c = sma(C, 20), sma(C, 50), C[-1]
+    w = wc[-1]
+    prior = C[-365:-19]
+    if usdtd:
+        hi20, zone = max(C[-20:]), max(prior)
+        reject = hi20 >= zone * 0.98 and c <= hi20 * 0.95
+        if w < S[100]: v = 'Bull'
+        elif w < S[50]: v = 'Turning bull'
+        elif reject and (c < d20 or c < d50): v = 'Bear, possibly ending'
+        elif S[50] > S[100]: v = 'Bear'
+        else: v = 'Turning bear'
+    else:
+        lo20, zone = min(C[-20:]), min(prior)
+        hold = lo20 <= zone * 1.02 and c >= lo20 * 1.05
+        if w < S[100]: v = 'Bear, possibly ending' if hold and (c > d20 or c > d50) else 'Bear'
+        elif w < S[50]: v = 'Turning bear'
+        elif S[50] < S[100]: v = 'Turning bull'
+        else: v = 'Bull'
+    R = lambda x: None if x is None else round(x, 6 if usdtd else 2)
+    return dict(verdict=v, week=dt.datetime.fromtimestamp(weeks[-1][0], dt.UTC).strftime('%Y-%m-%d'), week_close=R(w),
+                w20=R(S[20]), w50=R(S[50]), w100=R(S[100]), w200=R(S[200]), day=dt.datetime.fromtimestamp(rows[-1][0], dt.UTC).strftime('%Y-%m-%d'), close=R(c))
+
+
+def cycles(md):
+    """BTC's read (Coinbase BTCUSD history, then Binance BTCUSDT, as on the BTC cycle tab), each coin's own, USDT.D's."""
+    out = {}
+    a, b = daily_rows(md, 'data/tv/COINBASE_BTCUSD_1D.csv'), daily_rows(md, 'data/binance/BTCUSDT_1D.csv')
+    out['BTC'] = weekly_read(a + [r for r in b if r[0] > a[-1][0]])
+    for k in ('ETH', 'SOL', 'BNB'):
+        try: out[k] = weekly_read(daily_rows(md, 'data/binance/%sUSDT_1D.csv' % k))
+        except Exception: out[k] = None
+    try:
+        u = daily_rows(md, 'data/tv/CRYPTOCAP_USDT.D_1D.csv')
+        h4 = B.days_from_4h(os.path.join(md, 'data/tv/CRYPTOCAP_USDT.D_4H.csv'), None)
+        u = u + [(t, h, l, c) for t, o, h, l, c in h4 if t > u[-1][0]]
+        out['USDT.D'] = weekly_read(u, usdtd=True)
+    except Exception: out['USDT.D'] = None
+    return out
+
+
 def main():
     md = sys.argv[1]
     force = '--force' in sys.argv
     built_p = os.path.join(STATE, 'built_bottoms.json')
     built = json.load(open(built_p)) if os.path.exists(built_p) else {}
     done, kept = [], []
+    try: CY = cycles(md)
+    except Exception as e: CY = None; print('::warning::cycle read skipped: %s' % e)
     for tab in B.CFG['tabs']:
+        outp = os.path.join(PUB, 'fibx_' + tab['id'] + '.json')
+        if CY and os.path.exists(outp):      # the weekly read is cheap: refresh it on every run
+            J = json.load(open(outp)); cy = dict(btc=CY.get('BTC'), own=CY.get(coin(tab)), usdtd=CY.get('USDT.D'), coin=coin(tab))
+            if J.get('cycle') != cy: J['cycle'] = cy; json.dump(J, open(outp, 'w'))
         try:
             rows = B.load_rows(md, tab, None)
             outp = os.path.join(PUB, 'fibx_' + tab['id'] + '.json')
@@ -122,6 +200,7 @@ def main():
             s = run_engine(tab, rows, K, os.path.join(STATE, 'bottom_log_' + tab['id'] + '.json'))
             if s['live']['date'] != B.fmt(rows[-1][0], tab['profile']): raise RuntimeError('state is not for the last candle')
             prev = json.load(open(outp)) if os.path.exists(outp) else {}
+            if CY: prev['cycle'] = dict(btc=CY.get('BTC'), own=CY.get(coin(tab)), usdtd=CY.get('USDT.D'), coin=coin(tab))
             prev['bottom'] = dict(mapped(s, K, tab.get('scale', 1), rows, tab['profile']), invert_k=K, unit=('pct' if tab.get('scale', 1) != 1 else 'usd'),
                                   generated=dt.datetime.now(dt.UTC).strftime('%Y-%m-%d %H:%M UTC'))
             os.makedirs(PUB, exist_ok=True)
