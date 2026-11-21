@@ -47,6 +47,8 @@ jobs:
         run: python3 build/build.py md ${{ inputs.force && '--force' || '' }}
       - name: Fib bottom tracker, the same engine on the mirror image of each chart (each tab keeps its last good data on any failure)
         run: python3 build/bottoms.py md ${{ inputs.force && '--force' || '' }}
+      - name: Hit record by market (bull / bear side)
+        run: python3 build/regimes.py md
       - name: Save the new data and forecast logs (one commit)
         run: |
           git config user.name "github-actions[bot]"

@@ -86,12 +86,24 @@
       const f = (x) => (x > 0 ? '+' : '') + x.toFixed(1) + '%';
       L.push(`<b>Tested 21 Nov 2026: zone touch vs zone touch + early sign.</b> Selling at the first touch of the zone ended a median ${f(cf.zone.med)} from the actual top (${cf.zone.n} past setups); waiting for a ${h4 ? '2.5' : '5'}% pullback after the touch gave ${f(cf.pull.med)}, and waiting for RSI(7) to drop back under 70 gave ${f(cf.rsi.med)}. So the zone itself is the better level; a sign only helped in the rare runs that kept going far past the zone (sold more than ${h4 ? '10' : '20'}% under the top: ${cf.zone.bad}% at the zone vs ${cf.rsi.bad}% with the RSI sign).${cb && cb.zone ? ` Bottoms: same result (${f(cb.zone.med)} at the zone vs ${f(cb.pull.med)} after a bounce sign).` : ''} The trackers keep the zone as the call.`);
     }
-    L.forEach((x) => c.append(el('p', 'ft-note', x)));
+    const RG = REG && REG.tabs && REG.tabs[id];
+    if (RG && RG.top) {
+      const tol = Math.round(RG.tol * 100), side = RG.now;
+      const cell = (g, s) => { const x = g[s]; if (!x || !x.n) return '<td>—</td>'; const r = Math.round(x.rate * 100);
+        return `<td style="padding-right:18px;text-align:left;${s === side ? 'font-weight:700' : 'opacity:.75'}">${r}% <span class="ft-note">(${x.hit}/${x.n})</span></td>`; };
+      const t = el('table'); t.style.cssText = 'margin:6px 0 4px;font-size:13px;border-collapse:collapse;width:auto';
+      t.innerHTML = `<tr><th style="text-align:left;padding-right:18px">Hit record (within ±${tol}%)</th><th style="padding-right:18px;text-align:left">BTC bull side</th><th style="text-align:left">BTC bear side</th></tr>`
+        + `<tr><td style="padding-right:18px">Top tracker</td>${cell(RG.top, 'bull')}${cell(RG.top, 'bear')}</tr>`
+        + `<tr><td style="padding-right:18px">Bottom tracker</td>${cell(RG.bottom, 'bull')}${cell(RG.bottom, 'bear')}</tr>`;
+      L.push(`<b>Hit record by market</b> (walk-forward replay; each past setup tagged by BTC's weekly side at its C point: bull = weekly close above both the 50W and 100W). Now: <b>${side} side</b>, shown in bold.`);
+      L.push(t);
+    }
+    L.forEach((x) => c.append(typeof x === 'string' ? el('p', 'ft-note', x) : x));
     c.append(el('p', 'ft-note', 'Weekly read = the same rules as the BTC cycle and USDT.D tabs of the BTC & ETH dashboard (closed Monday weeks; updates each Monday 11:00 Sydney).'));
     return c;
   }
 
-  let CONF = null;
+  let CONF = null, REG = null;
   function drawAll() {
     document.querySelectorAll('.fx-root[data-fx]').forEach((root) => {
       const id = root.dataset.fx;
@@ -102,6 +114,7 @@
     });
   }
   window.__fibxTabs = TABS;
-  const start = () => fetch('data/fibx_confluence.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null).then((x) => { CONF = x; drawAll(); });
+  const get = (f) => fetch('data/' + f, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+  const start = () => Promise.all([get('fibx_confluence.json'), get('fibx_regime.json')]).then(([x, y]) => { CONF = x; REG = y; drawAll(); });
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

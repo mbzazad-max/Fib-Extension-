@@ -36,3 +36,7 @@ A "🧭 Cycle and level" card above the bottom tracker on every tab: daily tabs 
 ## Zone + early-sign test (21 Nov 2026)
 
 `research/confluence_test.py` (run: `python3 -I research/confluence_test.py <market-data> [inv]`) replays every past setup that touched the zone and compares selling at the first zone touch with waiting for a pullback (WATCH) or an RSI(7) drop back under 70 after the touch. The zone alone ended closer to the actual top on every tab (BTC D median −6.5% vs −8.5% / −10.0%; same for bottoms), so no confluence signal was added; the result is shown on each tab's Cycle and level card from `public/data/fibx_confluence.json`.
+
+## Hit record by market (21 Nov 2026)
+
+`build/regimes.py` (a CI step after the bottom tracker) replays the walk-forward backtest for tops and bottoms on every tab and tags each past setup by BTC's weekly side at its C point (bull side = last closed weekly close above both the 50W and 100W SMA). Output `public/data/fibx_regime.json`, shown as a small table on the Cycle and level card with the current side in bold. Replay counts differ slightly from the engine's headline record (no 4H archive, no forecast-log merge).
