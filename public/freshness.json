@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-22 21:35 UTC",
- "checked_at": 1795383327,
+ "generated": "2026-11-23 01:12 UTC",
+ "checked_at": 1795396363,
  "series": [
   {
    "id": "btc_d",
@@ -12,7 +12,8 @@
    "period_s": 86400,
    "rows": 3384,
    "last_close": 1795305600,
-   "built_from": 1795219200
+   "built_from": 1795219200,
+   "status": "broken"
   },
   {
    "id": "btc_4h",
@@ -24,7 +25,8 @@
    "period_s": 14400,
    "rows": 20292,
    "last_close": 1795377600,
-   "built_from": 1795363200
+   "built_from": 1795363200,
+   "status": "broken"
   },
   {
    "id": "eth_d",
@@ -36,7 +38,8 @@
    "period_s": 86400,
    "rows": 3384,
    "last_close": 1795305600,
-   "built_from": 1795219200
+   "built_from": 1795219200,
+   "status": "broken"
   },
   {
    "id": "eth_4h",
@@ -48,7 +51,8 @@
    "period_s": 14400,
    "rows": 20292,
    "last_close": 1795377600,
-   "built_from": 1795363200
+   "built_from": 1795363200,
+   "status": "broken"
   },
   {
    "id": "sol_d",
@@ -60,7 +64,8 @@
    "period_s": 86400,
    "rows": 2294,
    "last_close": 1795305600,
-   "built_from": 1795219200
+   "built_from": 1795219200,
+   "status": "broken"
   },
   {
    "id": "sol_4h",
@@ -72,7 +77,8 @@
    "period_s": 14400,
    "rows": 13768,
    "last_close": 1795377600,
-   "built_from": 1795363200
+   "built_from": 1795363200,
+   "status": "broken"
   },
   {
    "id": "bnb_d",
@@ -84,7 +90,8 @@
    "period_s": 86400,
    "rows": 3303,
    "last_close": 1795305600,
-   "built_from": 1795219200
+   "built_from": 1795219200,
+   "status": "broken"
   },
   {
    "id": "bnb_4h",
@@ -96,7 +103,8 @@
    "period_s": 14400,
    "rows": 19807,
    "last_close": 1795377600,
-   "built_from": 1795363200
+   "built_from": 1795363200,
+   "status": "broken"
   },
   {
    "id": "usdtd_d",
@@ -108,7 +116,8 @@
    "period_s": 86400,
    "rows": 4277,
    "last_close": 1795305600,
-   "built_from": 1795219200
+   "built_from": 1795219200,
+   "status": "broken"
   },
   {
    "id": "usdtd_4h",
@@ -125,5 +134,5 @@
   }
  ],
  "kept": [],
- "last_result": "Rebuilt: USDT.D 4H 2026-11-22 16:00 (Pullback forming)."
+ "last_result": "Rebuilt: BTC Daily 2026-11-21 (Structure broken); BTC 4H 2026-11-22 16:00 (Structure broken); ETH Daily 2026-11-21 (Structure broken); ETH 4H 2026-11-22 16:00 (Structure broken); SOL Daily 2026-11-21 (Structure broken); SOL 4H 2026-11-22 16:00 (Structure broken); BNB Daily 2026-11-21 (Structure broken); BNB 4H 2026-11-22 16:00 (Structure broken); USDT.D Daily 2026-11-21 (Structure broken); USDT.D 4H 2026-11-22 16:00 (Pullback forming)."
 }
