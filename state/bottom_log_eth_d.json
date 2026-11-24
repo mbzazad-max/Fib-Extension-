@@ -28,7 +28,7 @@
   {
    "key": "2026-11-20|2026-11-21|2026-11-22",
    "opened": "2026-11-22",
-   "state": "open",
+   "state": "invalidated",
    "a": "2026-11-20",
    "b": "2026-11-21",
    "c": "2026-11-22",
@@ -41,7 +41,11 @@
     629229,
     669258
    ],
-   "last_seen": "2026-11-22"
+   "last_seen": "2026-11-22",
+   "max_high": 606667,
+   "zone_touched": false,
+   "closed": "2026-11-23",
+   "reason": "Price broke below A"
   }
  ]
 }
