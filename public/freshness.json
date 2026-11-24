@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-23 21:36 UTC",
- "checked_at": 1795469768,
+ "generated": "2026-11-24 00:23 UTC",
+ "checked_at": 1795479794,
  "series": [
   {
    "id": "btc_d",
@@ -106,9 +106,10 @@
    "series": "tv/CRYPTOCAP_USDT.D/1D",
    "source": "TradingView via Market-Data",
    "period_s": 86400,
-   "rows": 4278,
-   "last_close": 1795392000,
-   "built_from": 1795305600
+   "rows": 4279,
+   "last_close": 1795478400,
+   "built_from": 1795392000,
+   "status": "pullback"
   },
   {
    "id": "usdtd_4h",
@@ -118,12 +119,12 @@
    "series": "tv/CRYPTOCAP_USDT.D/4H",
    "source": "TradingView via Market-Data",
    "period_s": 14400,
-   "rows": 6347,
-   "last_close": 1795464000,
-   "built_from": 1795449600,
+   "rows": 6348,
+   "last_close": 1795478400,
+   "built_from": 1795464000,
    "status": "rallying"
   }
  ],
  "kept": [],
- "last_result": "Rebuilt: USDT.D 4H 2026-11-23 16:00 (Rally under way)."
+ "last_result": "Rebuilt: USDT.D Daily 2026-11-23 (Pullback forming); USDT.D 4H 2026-11-23 20:00 (Rally under way)."
 }
