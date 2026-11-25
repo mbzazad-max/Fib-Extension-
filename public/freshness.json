@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-25 04:04 UTC",
- "checked_at": 1795579495,
+ "generated": "2026-11-25 04:10 UTC",
+ "checked_at": 1795579849,
  "series": [
   {
    "id": "btc_d",
@@ -22,9 +22,10 @@
    "series": "binance/BTCUSDT/4H",
    "source": "Binance spot via Market-Data",
    "period_s": 14400,
-   "rows": 20305,
-   "last_close": 1795564800,
-   "built_from": 1795550400
+   "rows": 20306,
+   "last_close": 1795579200,
+   "built_from": 1795564800,
+   "status": "pullback"
   },
   {
    "id": "eth_d",
@@ -46,9 +47,10 @@
    "series": "binance/ETHUSDT/4H",
    "source": "Binance spot via Market-Data",
    "period_s": 14400,
-   "rows": 20305,
-   "last_close": 1795564800,
-   "built_from": 1795550400
+   "rows": 20306,
+   "last_close": 1795579200,
+   "built_from": 1795564800,
+   "status": "pullback"
   },
   {
    "id": "sol_d",
@@ -70,9 +72,10 @@
    "series": "binance/SOLUSDT/4H",
    "source": "Binance spot via Market-Data",
    "period_s": 14400,
-   "rows": 13781,
-   "last_close": 1795564800,
-   "built_from": 1795550400
+   "rows": 13782,
+   "last_close": 1795579200,
+   "built_from": 1795564800,
+   "status": "broken"
   },
   {
    "id": "bnb_d",
@@ -94,9 +97,10 @@
    "series": "binance/BNBUSDT/4H",
    "source": "Binance spot via Market-Data",
    "period_s": 14400,
-   "rows": 19820,
-   "last_close": 1795564800,
-   "built_from": 1795550400
+   "rows": 19821,
+   "last_close": 1795579200,
+   "built_from": 1795564800,
+   "status": "pullback"
   },
   {
    "id": "usdtd_d",
@@ -108,8 +112,7 @@
    "period_s": 86400,
    "rows": 4280,
    "last_close": 1795564800,
-   "built_from": 1795478400,
-   "status": "pullback"
+   "built_from": 1795478400
   },
   {
    "id": "usdtd_4h",
@@ -121,10 +124,9 @@
    "period_s": 14400,
    "rows": 6354,
    "last_close": 1795564800,
-   "built_from": 1795550400,
-   "status": "rallying"
+   "built_from": 1795550400
   }
  ],
  "kept": [],
- "last_result": "Rebuilt: USDT.D Daily 2026-11-24 (Pullback forming); USDT.D 4H 2026-11-24 20:00 (Rally under way)."
+ "last_result": "Rebuilt: BTC 4H 2026-11-25 00:00 (Pullback forming); ETH 4H 2026-11-25 00:00 (Pullback forming); SOL 4H 2026-11-25 00:00 (Structure broken); BNB 4H 2026-11-25 00:00 (Pullback forming)."
 }
