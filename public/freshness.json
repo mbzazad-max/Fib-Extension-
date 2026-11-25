@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-25 17:10 UTC",
- "checked_at": 1795626636,
+ "generated": "2026-11-25 21:01 UTC",
+ "checked_at": 1795640505,
  "series": [
   {
    "id": "btc_d",
@@ -22,10 +22,10 @@
    "series": "binance/BTCUSDT/4H",
    "source": "Binance spot via Market-Data",
    "period_s": 14400,
-   "rows": 20309,
-   "last_close": 1795622400,
-   "built_from": 1795608000,
-   "status": "pullback"
+   "rows": 20310,
+   "last_close": 1795636800,
+   "built_from": 1795622400,
+   "status": "rallying"
   },
   {
    "id": "eth_d",
@@ -47,10 +47,10 @@
    "series": "binance/ETHUSDT/4H",
    "source": "Binance spot via Market-Data",
    "period_s": 14400,
-   "rows": 20309,
-   "last_close": 1795622400,
-   "built_from": 1795608000,
-   "status": "pullback"
+   "rows": 20310,
+   "last_close": 1795636800,
+   "built_from": 1795622400,
+   "status": "rallying"
   },
   {
    "id": "sol_d",
@@ -72,9 +72,9 @@
    "series": "binance/SOLUSDT/4H",
    "source": "Binance spot via Market-Data",
    "period_s": 14400,
-   "rows": 13785,
-   "last_close": 1795622400,
-   "built_from": 1795608000,
+   "rows": 13786,
+   "last_close": 1795636800,
+   "built_from": 1795622400,
    "status": "broken"
   },
   {
@@ -97,10 +97,10 @@
    "series": "binance/BNBUSDT/4H",
    "source": "Binance spot via Market-Data",
    "period_s": 14400,
-   "rows": 19824,
-   "last_close": 1795622400,
-   "built_from": 1795608000,
-   "status": "pullback"
+   "rows": 19825,
+   "last_close": 1795636800,
+   "built_from": 1795622400,
+   "status": "rallying"
   },
   {
    "id": "usdtd_d",
@@ -128,5 +128,5 @@
   }
  ],
  "kept": [],
- "last_result": "Rebuilt: BTC 4H 2026-11-25 12:00 (Pullback forming); ETH 4H 2026-11-25 12:00 (Pullback forming); SOL 4H 2026-11-25 12:00 (Structure broken); BNB 4H 2026-11-25 12:00 (Pullback forming)."
+ "last_result": "Rebuilt: BTC 4H 2026-11-25 16:00 (Rally under way); ETH 4H 2026-11-25 16:00 (Rally under way); SOL 4H 2026-11-25 16:00 (Structure broken); BNB 4H 2026-11-25 16:00 (Rally under way)."
 }
