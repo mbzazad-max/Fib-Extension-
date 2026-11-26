@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-26 01:19 UTC",
- "checked_at": 1795655952,
+ "generated": "2026-11-26 04:06 UTC",
+ "checked_at": 1795665962,
  "series": [
   {
    "id": "btc_d",
@@ -12,8 +12,7 @@
    "period_s": 86400,
    "rows": 3388,
    "last_close": 1795651200,
-   "built_from": 1795564800,
-   "status": "pullback"
+   "built_from": 1795564800
   },
   {
    "id": "btc_4h",
@@ -23,9 +22,9 @@
    "series": "binance/BTCUSDT/4H",
    "source": "Binance spot via Market-Data",
    "period_s": 14400,
-   "rows": 20311,
-   "last_close": 1795651200,
-   "built_from": 1795636800,
+   "rows": 20312,
+   "last_close": 1795665600,
+   "built_from": 1795651200,
    "status": "rallying"
   },
   {
@@ -38,8 +37,7 @@
    "period_s": 86400,
    "rows": 3388,
    "last_close": 1795651200,
-   "built_from": 1795564800,
-   "status": "pullback"
+   "built_from": 1795564800
   },
   {
    "id": "eth_4h",
@@ -49,9 +47,9 @@
    "series": "binance/ETHUSDT/4H",
    "source": "Binance spot via Market-Data",
    "period_s": 14400,
-   "rows": 20311,
-   "last_close": 1795651200,
-   "built_from": 1795636800,
+   "rows": 20312,
+   "last_close": 1795665600,
+   "built_from": 1795651200,
    "status": "rallying"
   },
   {
@@ -64,8 +62,7 @@
    "period_s": 86400,
    "rows": 2298,
    "last_close": 1795651200,
-   "built_from": 1795564800,
-   "status": "pullback"
+   "built_from": 1795564800
   },
   {
    "id": "sol_4h",
@@ -75,9 +72,9 @@
    "series": "binance/SOLUSDT/4H",
    "source": "Binance spot via Market-Data",
    "period_s": 14400,
-   "rows": 13787,
-   "last_close": 1795651200,
-   "built_from": 1795636800,
+   "rows": 13788,
+   "last_close": 1795665600,
+   "built_from": 1795651200,
    "status": "broken"
   },
   {
@@ -90,8 +87,7 @@
    "period_s": 86400,
    "rows": 3307,
    "last_close": 1795651200,
-   "built_from": 1795564800,
-   "status": "pullback"
+   "built_from": 1795564800
   },
   {
    "id": "bnb_4h",
@@ -101,9 +97,9 @@
    "series": "binance/BNBUSDT/4H",
    "source": "Binance spot via Market-Data",
    "period_s": 14400,
-   "rows": 19826,
-   "last_close": 1795651200,
-   "built_from": 1795636800,
+   "rows": 19827,
+   "last_close": 1795665600,
+   "built_from": 1795651200,
    "status": "rallying"
   },
   {
@@ -132,5 +128,5 @@
   }
  ],
  "kept": [],
- "last_result": "Rebuilt: BTC Daily 2026-11-25 (Pullback forming); BTC 4H 2026-11-25 20:00 (Rally under way); ETH Daily 2026-11-25 (Pullback forming); ETH 4H 2026-11-25 20:00 (Rally under way); SOL Daily 2026-11-25 (Pullback forming); SOL 4H 2026-11-25 20:00 (Structure broken); BNB Daily 2026-11-25 (Pullback forming); BNB 4H 2026-11-25 20:00 (Rally under way)."
+ "last_result": "Rebuilt: BTC 4H 2026-11-26 00:00 (Rally under way); ETH 4H 2026-11-26 00:00 (Rally under way); SOL 4H 2026-11-26 00:00 (Structure broken); BNB 4H 2026-11-26 00:00 (Rally under way)."
 }
