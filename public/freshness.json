@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-28 05:06 UTC",
- "checked_at": 1795842375,
+ "generated": "2026-11-28 05:48 UTC",
+ "checked_at": 1795844910,
  "series": [
   {
    "id": "btc_d",
@@ -24,8 +24,7 @@
    "period_s": 14400,
    "rows": 20324,
    "last_close": 1795838400,
-   "built_from": 1795824000,
-   "status": "pullback"
+   "built_from": 1795824000
   },
   {
    "id": "eth_d",
@@ -49,8 +48,7 @@
    "period_s": 14400,
    "rows": 20324,
    "last_close": 1795838400,
-   "built_from": 1795824000,
-   "status": "pullback"
+   "built_from": 1795824000
   },
   {
    "id": "sol_d",
@@ -74,8 +72,7 @@
    "period_s": 14400,
    "rows": 13800,
    "last_close": 1795838400,
-   "built_from": 1795824000,
-   "status": "pullback"
+   "built_from": 1795824000
   },
   {
    "id": "bnb_d",
@@ -99,8 +96,7 @@
    "period_s": 14400,
    "rows": 19839,
    "last_close": 1795838400,
-   "built_from": 1795824000,
-   "status": "rallying"
+   "built_from": 1795824000
   },
   {
    "id": "usdtd_d",
@@ -122,11 +118,12 @@
    "series": "tv/CRYPTOCAP_USDT.D/4H",
    "source": "TradingView via Market-Data",
    "period_s": 14400,
-   "rows": 6372,
-   "last_close": 1795824000,
-   "built_from": 1795809600
+   "rows": 6373,
+   "last_close": 1795838400,
+   "built_from": 1795824000,
+   "status": "pullback"
   }
  ],
  "kept": [],
- "last_result": "Rebuilt: BTC 4H 2026-11-28 00:00 (Pullback forming); ETH 4H 2026-11-28 00:00 (Pullback forming); SOL 4H 2026-11-28 00:00 (Pullback forming); BNB 4H 2026-11-28 00:00 (Rally under way)."
+ "last_result": "Rebuilt: USDT.D 4H 2026-11-28 00:00 (Pullback forming)."
 }
